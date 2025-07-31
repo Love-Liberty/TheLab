@@ -1,0 +1,132 @@
+notes 
+note_id:int, 
+uuid:uuid, 
+author_id:uuid, 
+audience_id:uuid, 
+reply_to:int, 
+timestamp:timestamp, 
+title:text, 
+content:text, 
+category_id:int, 
+status_id:int, 
+importance:int, 
+last_updated:timestamp
+is_archived:boolean, 
+
+
+Notes_categories
+id:int, 
+user_id:
+uuid, 
+name:text, 
+description:text, 
+ordinal:int
+notes_status 
+id:int, 
+user_id:uuid, 
+name:text, 
+description:text, 
+ordinal:int
+
+SQL for the notes table
+
+-- Table: notes
+CREATE TABLE notes (
+    note_id SERIAL PRIMARY KEY,
+    uuid UUID DEFAULT gen_random_uuid() UNIQUE,
+    author_id UUID NOT NULL,
+    audience_id UUID,
+    reply_to INTEGER REFERENCES notes(note_id),
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    title TEXT,
+    content TEXT NOT NULL,
+    category_id INTEGER REFERENCES notes_categories(id),
+    status_id INTEGER REFERENCES notes_status(id),
+    is_archived BOOLEAN DEFAULT FALSE,
+    importance INTEGER,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table: notes_categories
+CREATE TABLE notes_categories (
+    id SERIAL PRIMARY KEY,
+    user_id UUID NOT NULL,
+    name TEXT NOT NULL,
+    description TEXT,
+    ordinal INTEGER NOT NULL
+);
+
+-- Table: notes_status
+CREATE TABLE notes_status (
+    id SERIAL PRIMARY KEY,
+    user_id UUID NOT NULL,
+    name TEXT NOT NULL,
+    description TEXT,
+    ordinal INTEGER NOT NULL
+);
+A trigger function to store the date when lastUpdated 
+CREATE OR REPLACE FUNCTION update_last_modified_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.last_updated := CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER set_last_updated
+BEFORE UPDATE ON notes
+FOR EACH ROW
+EXECUTE FUNCTION update_last_modified_column();
+
+TEST DATA for notes, categories, status
+INSERT INTO notes (author_id, audience_id, reply_to, title, content, category_id, status_id, importance)
+VALUES
+('b63b1db0-3f43-43a2-8c7f-77da04812e8c', NULL, NULL, 'Fix login bug', 'User unable to login on mobile.', 1, 1, 5),
+('b63b1db0-3f43-43a2-8c7f-77da04812e8c', 'f98c2a7f-b76b-47f0-9b5e-e9e7382bfe0c', NULL, 'Add dark mode', 'User feedback requests dark mode toggle.', 2, 2, 3),
+('f98c2a7f-b76b-47f0-9b5e-e9e7382bfe0c', 'b63b1db0-3f43-43a2-8c7f-77da04812e8c', 1, 'Re: Fix login bug', 'Investigating iOS app logs—bug replicated.', 1, 2, 4);
+INSERT INTO notes_categories (user_id, name, description, ordinal) VALUES
+('b63b1db0-3f43-43a2-8c7f-77da04812e8c', 'Bug', 'Software defect or issue', 1),
+('b63b1db0-3f43-43a2-8c7f-77da04812e8c', 'Feature Request', 'Proposed new functionality', 2),
+('b63b1db0-3f43-43a2-8c7f-77da04812e8c', 'Meeting Notes', 'Summary of discussion outcomes', 3);
+
+
+INSERT INTO notes_status (user_id, name, description, ordinal) VALUES
+('b63b1db0-3f43-43a2-8c7f-77da04812e8c', 'New', 'Freshly created, unreviewed', 1),
+('b63b1db0-3f43-43a2-8c7f-77da04812e8c', 'In Progress', 'Currently being addressed', 2),
+('b63b1db0-3f43-43a2-8c7f-77da04812e8c', 'Resolved', 'Issue closed or completed', 3);
+
+
+Test queries
+SELECT * FROM notes
+WHERE author_id = 'b63b1db0-3f43-43a2-8c7f-77da04812e8c'
+ORDER BY last_updated DESC;
+
+SELECT * FROM notes
+WHERE audience_id = 'f98c2a7f-b76b-47f0-9b5e-e9e7382bfe0c'
+AND is_archived = FALSE;
+
+SELECT * FROM notes
+WHERE reply_to = 1  -- assuming note_id 1 is the root
+ORDER BY timestamp ASC;
+SELECT ns.name AS status, COUNT(*) AS note_count
+FROM notes n
+JOIN notes_status ns ON n.status_id = ns.id
+GROUP BY ns.name
+ORDER BY note_count DESC;
+
+SELECT * FROM notes
+WHERE last_updated < CURRENT_DATE - INTERVAL '30 days'
+AND is_archived = FALSE;
+
+SELECT n.title, n.content, nc.name AS category, ns.name AS status
+FROM notes n
+JOIN notes_categories nc ON n.category_id = nc.id
+JOIN notes_status ns ON n.status_id = ns.id
+WHERE nc.name = 'Bug'
+AND ns.name != 'Resolved'
+AND n.importance >= 4
+ORDER BY n.last_updated DESC;
+
+SELECT * FROM notes_categories
+WHERE user_id = 'b63b1db0-3f43-43a2-8c7f-77da04812e8c'
+ORDER BY ordinal;
