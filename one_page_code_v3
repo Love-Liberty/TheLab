@@ -1,0 +1,572 @@
+import React, { useState } from 'react';
+
+const App = () => {
+  const [activePage, setActivePage] = useState('home');
+  const [noteContent, setNoteContent] = useState('');
+  const [noteType, setNoteType] = useState('bug');
+  const [importance, setImportance] = useState('3');
+  const [noteTags, setNoteTags] = useState([]);
+  // Initialize card data for each page separately so they can be independently edited
+  const [linksCardData, setLinksCardData] = useState(Array.from({ length: 15 }, (_, i) => ({
+    id: `links-${i + 1}`,
+    name: `A${(i % 5) + 1}`,
+    section: String.fromCharCode(65 + Math.floor(i / 5)),
+    content: `Link ${(i % 5) + 1}`
+  })));
+  const [scriptsCardData, setScriptsCardData] = useState(Array.from({ length: 15 }, (_, i) => ({
+    id: `scripts-${i + 1}`,
+    name: `A${(i % 5) + 1}`,
+    section: String.fromCharCode(65 + Math.floor(i / 5)),
+    content: `Script ${(i % 5) + 1}`
+  })));
+  // Data page links and card data
+  const initialDataLinks = [
+    { name: 'React Documentation', url: 'https://react.dev/learn' },
+    { name: 'W3Schools React Intro', url: 'https://www.w3schools.com/react/react_intro.asp' },
+    { name: 'TailwindCSS v2 Docs', url: 'https://v2.tailwindcss.com/docs' },
+    { name: 'CommonMark Markdown Help', url: 'https://commonmark.org/help/' },
+    { name: 'CodePen', url: 'https://codepen.io' },
+    { name: 'Raphaël JS Library', url: 'https://raphael.org' },
+    { name: 'Bing Images', url: 'https://www.bing.com/images' },
+    { name: 'Microsoft Copilot', url: 'https://copilot.microsoft.com/' },
+    { name: 'Google Gemini', url: 'https://gemini.google.com/app' },
+    { name: 'GitHub', url: 'https://github.com' },
+  ];
+  const [dataCardData, setDataCardData] = useState(Array.from({ length: 15 }, (_, i) => {
+    const linkIndex = i % initialDataLinks.length;
+    return {
+      id: `data-${i + 1}`,
+      name: `A${(i % 5) + 1}`,
+      section: String.fromCharCode(65 + Math.floor(i / 5)),
+      ...initialDataLinks[linkIndex]
+    };
+  }));
+  // State for editing
+  const [editingCard, setEditingCard] = useState(null);
+  const [editName, setEditName] = useState('');
+  const [editUrl, setEditUrl] = useState('');
+  const [currentPage, setCurrentPage] = useState('');
+  const menuItems = [
+    { id: 'home', label: 'Home', tooltip: 'Display of error messages or output from scripts' },
+    { id: 'notes', label: 'Notes', tooltip: 'Where to type & store text without formatting' },
+    { id: 'links', label: 'Links', tooltip: 'Where to find your scripts, wisdom & email' },
+    { id: 'data', label: 'Data', tooltip: 'Lists of any files you regard as not executable' },
+    { id: 'scripts', label: 'Scripts', tooltip: 'Lists of files you regard as executable' },
+    { id: 'plan', label: 'Plan', tooltip: 'What we are aiming to do, heaven helps us' }
+  ];
+  // Handle card editing
+  const handleCardClick = (card, pageType) => {
+    setEditingCard(card.id);
+    setEditName(card.name);
+    setEditUrl(card.url || '');
+    setCurrentPage(pageType);
+  };
+  // Save edited card
+  const handleSaveEdit = () => {
+    if (!editingCard) return;
+    // Update the appropriate card data based on current page
+    if (currentPage === 'data') {
+      setDataCardData(prev => prev.map(card => 
+        card.id === editingCard 
+          ? { ...card, name: editName, url: editUrl }
+          : card
+      ));
+    } else if (currentPage === 'links') {
+      setLinksCardData(prev => prev.map(card => 
+        card.id === editingCard 
+          ? { ...card, name: editName, content: editName }
+          : card
+      ));
+    } else if (currentPage === 'scripts') {
+      setScriptsCardData(prev => prev.map(card => 
+        card.id === editingCard 
+          ? { ...card, name: editName, content: editName }
+          : card
+      ));
+    }
+    // Show alert about database save (future implementation)
+    alert(`Card updated! In future, this will save to the 'external_links' database table.`);
+    // Reset editing state
+    setEditingCard(null);
+    setEditName('');
+    setEditUrl('');
+  };
+  // Cancel editing
+  const handleCancelEdit = () => {
+    setEditingCard(null);
+    setEditName('');
+    setEditUrl('');
+  };
+  // Render edit form when a card is being edited
+  const renderEditForm = () => {
+    if (!editingCard) return null;
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+          <h3 className="text-lg font-semibold mb-4">Edit Card</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+              <input
+                type="text"
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            {(currentPage === 'data') && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">URL</label>
+                <input
+                  type="url"
+                  value={editUrl}
+                  onChange={(e) => setEditUrl(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            )}
+          </div>
+          <div className="flex justify-end space-x-3 mt-6">
+            <button
+              onClick={handleCancelEdit}
+              className="px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleSaveEdit}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+  const handleClearNotes = () => {
+    if (window.confirm('Are you sure you want to clear all notes?')) {
+      setNoteContent('');
+    }
+  };
+  const handleSaveNotes = () => {
+    alert('Notes saved (Stage 1 - no actual saving)');
+  };
+  const toggleTag = (tag) => {
+    setNoteTags(prev => 
+      prev.includes(tag) 
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    );
+  };
+  const renderHomePage = () => (
+    <div className="space-y-6">
+      {/* Instructions Section */}
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="flex items-center mb-4">
+          <h2 className="text-2xl font-bold text-gray-800">Instructions</h2>
+          <span className="ml-2 text-sm text-gray-500">They said it was easy</span>
+        </div>
+        <div className="prose max-w-none text-gray-700">
+          <p><strong>To use The Lab you need to have an account at GitHub</strong> <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">[Learn how]</a></p>
+          <p><strong>You also need an account at Supabase</strong> <a href="https://supabase.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">[Learn how]</a></p>
+          <p><strong>Both need to be connected to your account at Lovable</strong> <a href="https://lovable.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">[Learn how]</a></p>
+          <p>In addition you need to know where to put pages and how to get them recognised by Lovable. If you put them in the wrong places… don’t.</p>
+          <p>Here are some initial instructions…</p>
+          <h4 className="text-lg font-semibold mt-4">How to include a new webpage:</h4>
+          <ul className="list-disc pl-5 space-y-1">
+            <li>Create your HTML file in the appropriate folder (usually /pages or /src)</li>
+            <li>Edit the navigation configuration file to include your new page</li>
+            <li>Add the route to your routing configuration</li>
+            <li>Commit and push to your GitHub repository</li>
+            <li>Lovable will automatically recognize and deploy your new page</li>
+          </ul>
+          <h4 className="text-lg font-semibold mt-4">Adding a new script:</h4>
+          <ul className="list-disc pl-5 space-y-1">
+            <li>Scripts should be placed in the /scripts or /src/utils folder</li>
+            <li>Ensure your script follows the required format (JavaScript/TypeScript)</li>
+            <li>Reference your script in the appropriate HTML or component file</li>
+            <li>Test locally before committing</li>
+            <li>Push to GitHub for automatic deployment</li>
+          </ul>
+        </div>
+      </div>
+      {/* Dynamic Web Pages Section */}
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="flex items-center mb-4">
+          <h2 className="text-2xl font-bold text-gray-800">Dynamic Web Pages</h2>
+          <span className="ml-2 text-sm text-gray-500">They change, they click</span>
+        </div>
+        <div className="text-center text-gray-400 py-8">
+          <div className="text-4xl mb-2">🖱️</div>
+          <p className="text-lg">Awaiting implementation</p>
+        </div>
+      </div>
+      {/* Static Web Pages Section */}
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="flex items-center mb-4">
+          <h2 className="text-2xl font-bold text-gray-800">Static Web Pages</h2>
+          <span className="ml-2 text-sm text-gray-500">Text, pics, that do nothing</span>
+        </div>
+        <div className="text-center text-gray-400 py-8">
+          <div className="text-4xl mb-2">📄</div>
+          <p className="text-lg">Awaiting implementation</p>
+        </div>
+      </div>
+      {/* Backend Section */}
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="flex items-center mb-4">
+          <h2 className="text-2xl font-bold text-gray-800">Backend</h2>
+          <span className="ml-2 text-sm text-gray-500">Code under test</span>
+        </div>
+        <div className="text-center text-gray-400 py-8">
+          <div className="text-4xl mb-2">⚙️</div>
+          <p className="text-lg">Awaiting implementation</p>
+        </div>
+      </div>
+      {/* Notes Section */}
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="flex items-center mb-4">
+          <h2 className="text-2xl font-bold text-gray-800">Notes</h2>
+          <span className="ml-2 text-sm text-gray-500">reminders or log of horrible errors</span>
+        </div>
+        <div className="text-center text-gray-400 py-8">
+          <div className="text-4xl mb-2">📝</div>
+          <p className="text-lg">Awaiting implementation</p>
+        </div>
+      </div>
+    </div>
+  );
+  const renderNotesPage = () => (
+    <div className="space-y-6">
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Notes</h2>
+        {/* Note Input */}
+        <div className="mb-6">
+          <textarea
+            value={noteContent}
+            onChange={(e) => setNoteContent(e.target.value)}
+            placeholder="Enter your notes here... (Stage 1 - no actual saving)"
+            className="w-full h-32 p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+        {/* Note Type Radio Buttons */}
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold mb-3">Note Type</h3>
+          <div className="flex space-x-4">
+            {[
+              { value: 'me', label: 'Me' },
+              { value: 'bug', label: 'Bug' },
+              { value: 'else', label: 'Else' },
+              { value: 'reply', label: 'Reply' }
+            ].map(option => (
+              <label key={option.value} className="flex items-center">
+                <input
+                  type="radio"
+                  name="note_type"
+                  value={option.value}
+                  checked={noteType === option.value}
+                  onChange={(e) => setNoteType(e.target.value)}
+                  className="mr-2 text-blue-600"
+                />
+                {option.label}
+              </label>
+            ))}
+          </div>
+        </div>
+        {/* Importance Radio Buttons */}
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold mb-3">Importance</h3>
+          <div className="flex flex-col space-y-2">
+            {[5, 4, 3, 2, 1].map(level => (
+              <label key={level} className="flex items-center">
+                <input
+                  type="radio"
+                  name="importance"
+                  value={level}
+                  checked={importance === level.toString()}
+                  onChange={(e) => setImportance(e.target.value)}
+                  className="mr-2 text-blue-600"
+                />
+                {level}
+              </label>
+            ))}
+          </div>
+        </div>
+        {/* Tagging Section */}
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold mb-3">Tag the note for easier retrieval</h3>
+          {/* Workflow & Process Tags */}
+          <div className="mb-6">
+            <h4 className="text-md font-semibold mb-3 text-gray-700">📝 Workflow & Process Tags</h4>
+            <div className="flex flex-wrap gap-2 mb-3">
+              {['todo', 'idea', 'note', 'blocker', 'refactor', 'meeting', 'review'].map(tag => (
+                <label key={tag} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    name="workflow"
+                    value={tag}
+                    checked={noteTags.includes(tag)}
+                    onChange={() => toggleTag(tag)}
+                    className="mr-2 text-blue-600"
+                  />
+                  <span className="text-sm">{tag}</span>
+                </label>
+              ))}
+            </div>
+            <p className="text-sm text-gray-600 mb-4">
+              Use these for navigating your development flow—planning, decision-making, and handling obstacles.
+            </p>
+          </div>
+          {/* External & Resource Tags */}
+          <div className="mb-6">
+            <h4 className="text-md font-semibold mb-3 text-gray-700">🌐 External & Resource Tags</h4>
+            <div className="flex flex-wrap gap-2 mb-3">
+              {['insight', 'resource', 'hack', 'howto', 'diary'].map(tag => (
+                <label key={tag} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    name="resource"
+                    value={tag}
+                    checked={noteTags.includes(tag)}
+                    onChange={() => toggleTag(tag)}
+                    className="mr-2 text-blue-600"
+                  />
+                  <span className="text-sm">{tag}</span>
+                </label>
+              ))}
+            </div>
+            <p className="text-sm text-gray-600 mb-4">
+              Ideal for logging clever tricks, external references, lessons learned, and internal reflections.
+            </p>
+          </div>
+          {/* Emotional & Experience Tags */}
+          <div className="mb-6">
+            <h4 className="text-md font-semibold mb-3 text-gray-700">🎭 Emotional & Experience Tags</h4>
+            <div className="flex flex-wrap gap-2 mb-3">
+              {['disaster', 'triumph', 'rant'].map(tag => (
+                <label key={tag} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    name="emotion"
+                    value={tag}
+                    checked={noteTags.includes(tag)}
+                    onChange={() => toggleTag(tag)}
+                    className="mr-2 text-blue-600"
+                  />
+                  <span className="text-sm">{tag}</span>
+                </label>
+              ))}
+            </div>
+            <p className="text-sm text-gray-600">
+              Capture the highs, lows, and candid moments that make the journey memorable (and searchable).
+            </p>
+          </div>
+        </div>
+        {/* Buttons */}
+        <div className="flex space-x-4">
+          <button
+            onClick={handleClearNotes}
+            className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
+          >
+            Clear all
+          </button>
+          <button
+            onClick={handleSaveNotes}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+          >
+            Save/Send
+          </button>
+        </div>
+        {/* Future Functionality Info */}
+        <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <p className="text-blue-800">
+            <strong>Future functionality:</strong> The implementation of NOTES will use a database table. 
+            Eventually it will be a logging system to record bugs as well as reminders and a scratch pad for temporary 'sticky notes'
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+  const renderLinksPage = () => (
+    <div className="space-y-6">
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">Links</h2>
+        <p className="text-gray-600 mb-6">This is where links to run various scripts will be located.</p>
+        {['A', 'B', 'C'].map(section => (
+          <div key={section} className="mb-8">
+            <h3 className="text-xl font-semibold text-gray-700 mb-4">{section}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+              {linksCardData
+                .filter(card => card.section === section)
+                .map(card => (
+                  <div
+                    key={card.id}
+                    onClick={() => handleCardClick(card, 'links')}
+                    className="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform scale-75 origin-top-left"
+                  >
+                    <div className="text-xl mb-1">📄</div>
+                    <p className="font-medium text-sm">{card.name}</p>
+                    <p className="text-xs text-gray-500 mt-1">{card.content}</p>
+                  </div>
+                ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+  const renderDataPage = () => (
+    <div className="space-y-6">
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">Data</h2>
+        <p className="text-gray-600 mb-6">This will be where lists will be of files that the user regards as not executables, such as instructions, and design ideas.</p>
+        {['A', 'B', 'C'].map(section => (
+          <div key={section} className="mb-8">
+            <h3 className="text-xl font-semibold text-gray-700 mb-4">{section}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+              {dataCardData
+                .filter(card => card.section === section)
+                .map(card => (
+                  <div
+                    key={card.id}
+                    onClick={() => handleCardClick(card, 'data')}
+                    className="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform scale-75 origin-top-left"
+                  >
+                    <div className="text-xl mb-1">📄</div>
+                    <p className="font-medium text-sm">{card.name}</p>
+                    <p className="text-xs text-gray-500 mt-1 truncate">{card.url}</p>
+                  </div>
+                ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+  const renderScriptsPage = () => (
+    <div className="space-y-6">
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">Scripts</h2>
+        <p className="text-gray-600 mb-6">This is where lists will be of files the user regards as executable files that have been added to the sandbox.</p>
+        {['A', 'B', 'C'].map(section => (
+          <div key={section} className="mb-8">
+            <h3 className="text-xl font-semibold text-gray-700 mb-4">{section}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+              {scriptsCardData
+                .filter(card => card.section === section)
+                .map(card => (
+                  <div
+                    key={card.id}
+                    onClick={() => handleCardClick(card, 'scripts')}
+                    className="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform scale-75 origin-top-left"
+                  >
+                    <div className="text-xl mb-1">📄</div>
+                    <p className="font-medium text-sm">{card.name}</p>
+                    <p className="text-xs text-gray-500 mt-1">{card.content}</p>
+                  </div>
+                ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+  const renderPlanPage = () => (
+    <div className="space-y-6">
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">Plan</h2>
+        <p className="text-gray-600 mb-6">Where hopes die</p>
+        <div className="space-y-8">
+          <div>
+            <h3 className="text-xl font-semibold text-gray-700 mb-4">Stage 2</h3>
+            <ul className="list-disc pl-5 space-y-2 text-gray-700">
+              <li>Connect The Lab with Github repository</li>
+              <li>Connect The Lab with Supabase</li>
+              <li>Enable editable links on card components</li>
+              <li>Implement step by step instructions published on The Lab web pages</li>
+              <li>Test creating additional static and dynamic pages edited at Github and committed to the project</li>
+              <li>Create the initial database tables & any needed webpages to interact with them</li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-gray-700 mb-4">Stage 3</h3>
+            <ul className="list-disc pl-5 space-y-2 text-gray-700">
+              <li>Connect the notes page to a database table & program basic functionality</li>
+              <li>Store Notes in Supabase database</li>
+              <li>Log user progress or bugs</li>
+              <li>Build a first test project by making the Notes page functional</li>
+              <li>Use this to create step by step instructions on how to create a working database+webpage</li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-gray-700 mb-4">Stage 4</h3>
+            <ul className="list-disc pl-5 space-y-2 text-gray-700">
+              <li>Create a 'profiles' TABLE and a simple sign-in form for invited test users</li>
+              <li>Publish the web app but only allow invited users to have access to the messaging system</li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-gray-700 mb-4">Stage 5</h3>
+            <ul className="list-disc pl-5 space-y-2 text-gray-700">
+              <li>Build an instructions database and dynamic page production based on a store of tagged code snippets, how to lists, advice and instructions</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+  const renderContent = () => {
+    switch (activePage) {
+      case 'home':
+        return renderHomePage();
+      case 'notes':
+        return renderNotesPage();
+      case 'links':
+        return renderLinksPage();
+      case 'data':
+        return renderDataPage();
+      case 'scripts':
+        return renderScriptsPage();
+      case 'plan':
+        return renderPlanPage();
+      default:
+        return renderHomePage();
+    }
+  };
+  return (
+    <div className="flex h-screen bg-gray-50">
+      {/* Side Panel */}
+      <div className="w-1/4 bg-white border-r border-gray-200 p-6">
+        <h1 className="text-2xl font-bold text-gray-800 mb-8">The Lab</h1>
+        <nav className="space-y-2">
+          {menuItems.map(item => (
+            <button
+              key={item.id}
+              onClick={() => setActivePage(item.id)}
+              className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
+                activePage === item.id
+                  ? 'bg-blue-100 text-blue-800 border-l-4 border-blue-500'
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`}
+              title={item.tooltip}
+            >
+              {item.label}
+            </button>
+          ))}
+        </nav>
+      </div>
+      {/* Main Panel */}
+      <div className="w-3/4 bg-amber-50 p-8">
+        <div className="max-w-4xl mx-auto">
+          {renderContent()}
+        </div>
+      </div>
+      {/* Edit Modal */}
+      {renderEditForm()}
+    </div>
+  );
+};
+
+export default App;
+
