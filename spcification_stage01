@@ -1,0 +1,25 @@
+Purpose: The Lab is a browser-based sandbox for developing and organizing scripts, links, and documentation relating to Supabase and Lovable. Stage 1 targets single-user functionality with no backend storage or third-party access.
+Key Features:
+Static user interface layout with vertical navigation and dynamic main content areas
+Placeholder interactive components (e.g., cards, buttons) with future-ready structure
+Instructional resources and links to external services (GitHub, Supabase)
+
+The web app is for development and testing of ways of using Lovable & Supabase. It is a ‘sandbox’ from which different scripts can be linked and information about the two software services. 
+
+The eventual aim is that it is a web services which users can sign-into to have their own version of the sandbox to try out ideas, cut and paste code snippets or entire template style functions.
+
+The web app will not actually run the scripts, but is a way to keep track of a project and to have all the relevant links in one control panel. Running the scripts and hosting is done by a platform which we do not control.
+
+Eventually each user will get a persistent sandbox tied to a membership database and their auth credentials.
+
+For now, development is under a single-user model managed by the platform.
+
+There will be no 3rd party users and no backend storage in Stage 1.
+
+It will start very simply for 1 user to develop the concept. Later it will have member management.
+
+Base Template
+Layout: Split screen
+Side Panel: 25% width (vertical menu)
+Main Panel: 75% width, pale cream background
+Content divs: horizontal layout, 90% width, white background
