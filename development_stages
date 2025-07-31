@@ -1,0 +1,186 @@
+Stage 1
+
+Build the home page and connected pages.
+
+A simple page template of a side panel and a main panel.  
+A vertical side panel of 25% of width. The side panel is for menu links. 
+The 75% main panel may be divided horizontally in divs. The divs are 90% of width of panel. The panel background is a pale cream color. The divs are white background.
+The horizontal divs have small titles which are listed below in description of specific kinds of page.
+
+SIDE PANEL MENU LINKS:
+(Menu - tooltip)
+Home - Display of error messages or output from scripts
+Notes - Where to type & store text without formatting
+Links - Where to find your scripts, wisdom & email
+Data - Lists of any files you regard as not executable
+Scripts - Lists of files you regard as executable
+Plan - What we are aiming to do, heaven helps us
+
+
+HOME:
+The main panel is divided horizontally in 5 divs which are listed here:
+            Title:”Instructions”. Subtitle: ‘They said it was easy” (Content detailed below)
+Title:”Notes”, subtitle:”reminders or log of horrible errors” (empty placeholder)
+Title: ‘Dynamic Web Pages’. Subtitle:”They change, they click” (empty placeholder)
+Title: ‘Static Web Pages’. Subtitle:”Text, pics, that do nothing”(empty placeholder)
+Title:”Backend”, Subtitle:”Code under test” (empty placeholder)
+ 
+2) MESSAGES
+This is where text will be displayed in a later implementation. (empty placeholder)
+
+3)NOTES: subtitle:’A text input where the user can store text. It does not allow markup.’ 
+ A defined box 90% of width of the panel and 25% of height. With visible border.
+Buttons: [Clear all] , [Save/Send], 
+
+Radio buttons:
+Name: ‘Note_type’ 
+Options: [Me],[Bug], [Else], [Reply] 
+Values:  ‘me’,’bug’,’else’,’reply’
+Default ‘Bug’ selected on load
+Orientation: horizontal
+
+Radio buttons:
+Name: ‘importance’
+Options:[5],[4],[3],[2],[1],
+Values ‘5’,’4’,’3’,’2’,’1’
+Default ‘3’ selected on load
+Orientation:Vertical (with ‘5’ at the top)
+
+Checkboxes
+📝 Workflow & Process Tags: /todo /idea /note /blocker /refactor /meeting /review
+Use these for navigating your development flow—planning, decision-making, and handling obstacles.
+🌐 External & Resource Tags: /insight /resource /hack /howto /diary
+Ideal for logging clever tricks, external references, lessons learned, and internal reflections.
+🎭 Emotional & Experience Tags: /disaster /triumph /rant
+Capture the highs, lows, and candid moments that make the journey memorable (and searchable).
+
+
+ 
+Future functionality: database logging (bugs, reminders, sticky notes)
+Content: “The implementation of NOTES will use a database table. Eventually it will be a logging system to record bugs as well as reminders and a scratch pad for temporary 'sticky notes'”
+
+4)LINKS, 5)DATA 6)SCRIPTS
+Each has: 3 titled divs: A, B, C
+Each div contains 5 numbered cards: A1–A5, B1–B5, C1–C5
+Cards: Alert on click: “Not yet implemented”
+Future functionality: editable titles + hyperlinks
+ 
+
+4)LINKS:  
+subtitle:”This is where links to run various scripts will be located.” 
+
+(In a later implementation this page will have a means to assign the names and hyperlinks of the cards. So, for example, the user’s Supabase project will be linked to one of the cards. )
+
+
+
+5) DATA:
+subtitle:’This will be where lists will be of files that the user regards as not executables, such as instructions, and design ideas.” 
+
+
+6)SCRIPTS: 
+Subtitle ‘This is where lists will be of files the user regards as executable files that have been added to the sandbox.’ 
+The div has this text “You will have a means to edit the title on the card and the hyperlink to whatever is useful - to your webpages in your project, instructions on using REACT, your email. These will probably be unrelated test pages, but may also be links to Microsoft's copilot or links to instructions on how to use Typescript.  In this way the person who is using and developing can keep links here rather than in browser tabs. This is the HQ of a small project”
+
+(In a later implementation the user will be able to change the titles and the hyperlinks to whatever is required.)
+
+7) PLAN:
+Subtitle:’Where hopes die’
+Content: “Stage 2
+Connect The Lab with Github repository.
+Connect The Lab with Supabase
+Enable editable links on card components
+Implement step by step instructions published on The Lab web pages
+LINKS Functionality
+Make cards editable by the user; they serve as bookmark-style quick-launch pads for external content, projects, or documentation—not to trigger runtime logic.
+There’s no memory allocation, no function execution—it’s purely navigational.
+Test creating additional static and dynamic pages edited at Github and committed to the project. Check that they function & that the instructions how to do this are accurately published in The Lab section. (The Lab is to have step by step instructions for future users how to do all these things.) 
+
+Create the initial database tables & and any needed webpages to interact with them. Check that they function & that the instructions on The Lab are correct.
+
+Stage 3
+Connect the notes page to a database table & program basic functionality.
+
+Store Notes in Supabase database
+Log user progress or bugs
+Serve as a functional test case for simple database integration
+
+Build a first test project by making the Notes page functional. Use this to create step by step instructions on how to create a working database+webpage that carries out a useful function.
+
+Then use the notes function to keep a log of progress.
+
+Notes will then be stored in the Supabase table. This table becomes a core part of The Lab.
+Long-term: it will evolve into a bug tracker, scratchpad, and memo system.
+
+Stage 4
+Create a ‘profiles’ TABLE and a simple sign-in form for invited test users. 
+Publish the web app but only allow invited users to have access to the messaging system. (There will, in this stage, only be one instance of the app.)
+
+Stage 5
+Build an instructions database and dynamic page production based on a store of tagged code snippets, how to lists, advice and instructions. “
+
+Content in the HOME page (div by div):
+
+            Div Title:”Instructions”. 
+Subtitle: ‘They said it was easy”
+
+Text:
+“To use The Lab you need to have an account at GitHub” (LINK to a page at either Lovable or GitHub that explains how to do this) 
+
+“You also need an account at Supabase”(LINK to a page at either Lovable or Supabase that explains how to do this).”
+
+“Both need to be connected to your account at Lovable(LINK to a page at either Lovable that explains how to do this)”
+
+“In addition you need to know where to put pages and how to get them recognised by Lovable. If you put them in the wrong places… don’t.”
+
+
+“Here are some initial instructions…”
+
+Include links to existing instructions for users of Lovable:
+
+Include a link to github
+Include a link to Supabase
+
+Generate an explanation of what happens if the repository is new and empty and the user has not yet asked lovable to do anything more than connect to Supabase.
+For example how they obtain a standard set of folders for a Lovable project 
+
+
+With a GitHub account it is not obvious how to include a new web page that hasn’t been generated by Lovable.  Therefore please find or generate, step by step, instructions on 
+
+‘How to include a new webpage’. 
+That includes what folder to store it in and what files need to be edited to include it in a website menu & to be recognised by the server and available for viewing.
+
+‘Adding a new script’
+Include any relevant information about scripts. What format the system requires and where they are stored & if there are other things that need to be changed in order for a webpage to run such a script.
+
+---end of ‘Instructions’ div---
+
+
+
+The following divs will be empty initially and have a greyed-out initial state with a phrase or symbol indicating that nothing has been added yet such as “Awaiting implementation”:
+
+Div Title: ‘Dynamic Web Pages’. Subtitle:”They change they get clicked”
+Div Title: ‘Static Web Pages’. Subtitle:”Text, pictures, that don’t do anything”
+Div Title:”Backend”, Subtitle:”Code under test”
+Div Title:”Notes”, subtitle:”reminders or log of horrible errors”
+
+Stage 1 - Implementation
+Display UI - Render static layout and menu navigation
+Link cards - Cards return alert: not active
+Notes Input - accepts text does not save
+External links - to Github, Supabase & Lovable help pages
+Cards in Data & Scripts - Are placeholders for later implementation
+
+
+In stage 1 there is no connection to GitHub or Supabase.  
+
+At the much later stage of offering this as a service the users will need their own GitHub accounts. That will be essential when actually using the Lab as a service. Our web app does not need to handle this as the platform we are deploying on already handles that. When offering The Lab as a service it will be in individually  isolated environments for each user. These would persist. There would be, at that stage, a membership database and Oauth for that. As a single user this is handled by the platform we are building on so, at this stage as a single user we don't need to add to it. 
+
+
+
+
+General observation:
+Script & File Handling via GitHub
+File editing and placement will happen through GitHub; syncing is handled automatically by Lovable.
+The system itself won’t execute or validate scripts—it’s a tracker and hub for user workflows.
+Executable vs non-executable classifications are informal and user-defined.
+
