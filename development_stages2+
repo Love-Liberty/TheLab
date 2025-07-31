@@ -1,0 +1,32 @@
+“Stage 2
+Connect The Lab with Github repository.
+Connect The Lab with Supabase
+Enable editable links on card components
+Implement step by step instructions published on The Lab web pages
+LINKS Functionality
+Make cards editable by the user; they serve as bookmark-style quick-launch pads for external content, projects, or documentation—not to trigger runtime logic.
+There’s no memory allocation, no function execution—it’s purely navigational.
+Test creating additional static and dynamic pages edited at Github and committed to the project. Check that they function & that the instructions how to do this are accurately published in The Lab section. (The Lab is to have step by step instructions for future users how to do all these things.) 
+
+Create the initial database tables & and any needed webpages to interact with them. Check that they function & that the instructions on The Lab are correct.
+
+Stage 3
+Connect the notes page to a database table & program basic functionality.
+
+Store Notes in Supabase database
+Log user progress or bugs
+Serve as a functional test case for simple database integration
+
+Build a first test project by making the Notes page functional. Use this to create step by step instructions on how to create a working database+webpage that carries out a useful function.
+
+Then use the notes function to keep a log of progress.
+
+Notes will then be stored in the Supabase table. This table becomes a core part of The Lab.
+Long-term: it will evolve into a bug tracker, scratchpad, and memo system.
+
+Stage 4
+Create a ‘profiles’ TABLE and a simple sign-in form for invited test users. 
+Publish the web app but only allow invited users to have access to the messaging system. (There will, in this stage, only be one instance of the app.)
+
+Stage 5
+Build an instructions database and dynamic page production based on a store of tagged code snippets, how to lists, advice and instructions. “
