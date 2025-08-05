@@ -3,42 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Lab BUILD</title>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Lab BUILD</title>
-  <!--  attempting to connect to supabase-->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"> </script>
-<script>
-  const supabase = supabase.createClient(
-    'https://kcdlbqotmuyyqvzzbxcn.supabase.co',
- 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw'
-  );
-
-  supabase.from('notes').select('*').then(({ data, error }) => {
-    if (error) {
-      console.error('Supabase error:', error);
-    } else {
-      console.log('Retrieved data:', data);
-    }
-  });
-</script>
-
-</head>
-<body>
-  <!-- Rest of your HTML -->
-</body>
-</html>  
- <script src="https://cdn.tailwindcss.com"></script>
-
-
-
-
-  
-  
+  <title>The Lab - Supabase Integration</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Add the Supabase browser client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     .transform-scale-75 {
       transform: scale(0.75);
@@ -78,30 +46,10 @@
     .modal.show {
       display: flex;
     }
-    .fade-enter {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-    .fade-enter-active {
-      opacity: 1;
-      transform: scale(1);
-      transition: opacity 200ms, transform 200ms;
-    }
-    .fade-exit {
-      opacity: 1;
-    }
-    .fade-exit-active {
-      opacity: 0;
-      transform: scale(0.95);
-      transition: opacity 200ms, transform 200ms;
-    }
   </style>
 </head>
-
-
-  
 <body class="flex h-screen bg-gray-50">
-  <div id="app" class="flex w-full h-full">
+  <div id="app">
     <!-- Side Panel -->
     <div class="w-1/4 bg-white border-r border-gray-200 p-6">
       <h1 class="text-2xl font-bold text-gray-800 mb-8">The Lab</h1>
@@ -781,6 +729,24 @@
   </div>
 
   <script>
+    // Initialize Supabase client (this replaces the import statement)
+    const supabaseUrl = 'https://kxdplsvojxgdskbbfonp.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw';
+    
+    // The Supabase client is now available as Supabase.createClient after loading the script
+    let supabase;
+    
+    // Wait for the Supabase script to load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Create the Supabase client after the library is loaded
+      supabase = Supabase.createClient(supabaseUrl, supabaseAnonKey);
+      
+      console.log('Supabase client initialized');
+      
+      // Now initialize the rest of the application
+      initializeApp();
+    });
+
     // Initialize state
     let activePage = 'home';
     let editingCard = null;
@@ -824,164 +790,166 @@
       };
     });
     
-    // DOM elements
-    const app = document.getElementById('app');
-    const modal = document.getElementById('edit-modal');
-    const editNameInput = document.getElementById('edit-name');
-    const editUrlInput = document.getElementById('edit-url');
-    const urlField = document.getElementById('url-field');
-    
-    // Page navigation
-    document.querySelectorAll('[data-page]').forEach(button => {
-      button.addEventListener('click', (e) => {
-        // Remove active class from all buttons
-        document.querySelectorAll('[data-page]').forEach(btn => {
-          btn.classList.remove('active-page', 'bg-blue-100', 'text-blue-800', 'border-l-4', 'border-blue-500');
-          btn.classList.add('text-gray-700');
+    function initializeApp() {
+      // DOM elements
+      const app = document.getElementById('app');
+      const modal = document.getElementById('edit-modal');
+      const editNameInput = document.getElementById('edit-name');
+      const editUrlInput = document.getElementById('edit-url');
+      const urlField = document.getElementById('url-field');
+      
+      // Page navigation
+      document.querySelectorAll('[data-page]').forEach(button => {
+        button.addEventListener('click', (e) => {
+          // Remove active class from all buttons
+          document.querySelectorAll('[data-page]').forEach(btn => {
+            btn.classList.remove('active-page', 'bg-blue-100', 'text-blue-800', 'border-l-4', 'border-blue-500');
+            btn.classList.add('text-gray-700');
+          });
+          
+          // Add active class to clicked button
+          e.target.classList.add('active-page', 'bg-blue-100', 'text-blue-800', 'border-l-4', 'border-blue-500');
+          e.target.classList.remove('text-gray-700');
+          
+          // Hide all pages
+          document.querySelectorAll('.page-content').forEach(page => {
+            page.classList.add('hidden');
+          });
+          
+          // Show selected page
+          const pageId = e.target.getAttribute('data-page') + '-page';
+          document.getElementById(pageId).classList.remove('hidden');
+          
+          // Update active page
+          activePage = e.target.getAttribute('data-page');
         });
-        
-        // Add active class to clicked button
-        e.target.classList.add('active-page', 'bg-blue-100', 'text-blue-800', 'border-l-4', 'border-blue-500');
-        e.target.classList.remove('text-gray-700');
-        
-        // Hide all pages
-        document.querySelectorAll('.page-content').forEach(page => {
-          page.classList.add('hidden');
+      });
+      
+      // Card editing functionality
+      document.querySelectorAll('[data-card-id]').forEach(card => {
+        card.addEventListener('click', (e) => {
+          const cardId = e.currentTarget.getAttribute('data-card-id');
+          const pageType = cardId.split('-')[0]; // links, data, or scripts
+          
+          // Find the card data
+          let cardData;
+          if (pageType === 'links') {
+            cardData = linksCardData.find(c => c.id === cardId);
+          } else if (pageType === 'data') {
+            cardData = dataCardData.find(c => c.id === cardId);
+          } else if (pageType === 'scripts') {
+            cardData = scriptsCardData.find(c => c.id === cardId);
+          }
+          
+          if (cardData) {
+            // Set editing state
+            editingCard = cardId;
+            currentPageType = pageType;
+            
+            // Populate form
+            editNameInput.value = cardData.name;
+            editUrlInput.value = cardData.url || '';
+            
+            // Show/hide URL field based on page type
+            if (pageType === 'data') {
+              urlField.style.display = 'block';
+            } else {
+              urlField.style.display = 'none';
+            }
+            
+            // Show modal
+            modal.classList.add('show');
+          }
         });
-        
-        // Show selected page
-        const pageId = e.target.getAttribute('data-page') + '-page';
-        document.getElementById(pageId).classList.remove('hidden');
-        
-        // Update active page
-        activePage = e.target.getAttribute('data-page');
       });
-    });
-    
-    // Card editing functionality
-    document.querySelectorAll('[data-card-id]').forEach(card => {
-      card.addEventListener('click', (e) => {
-        const cardId = e.currentTarget.getAttribute('data-card-id');
-        const pageType = cardId.split('-')[0]; // links, data, or scripts
-        
-        // Find the card data
-        let cardData;
-        if (pageType === 'links') {
-          cardData = linksCardData.find(c => c.id === cardId);
-        } else if (pageType === 'data') {
-          cardData = dataCardData.find(c => c.id === cardId);
-        } else if (pageType === 'scripts') {
-          cardData = scriptsCardData.find(c => c.id === cardId);
-        }
-        
-        if (cardData) {
-          // Set editing state
-          editingCard = cardId;
-          currentPageType = pageType;
-          
-          // Populate form
-          editNameInput.value = cardData.name;
-          editUrlInput.value = cardData.url || '';
-          
-          // Show/hide URL field based on page type
-          if (pageType === 'data') {
-            urlField.style.display = 'block';
-          } else {
-            urlField.style.display = 'none';
-          }
-          
-          // Show modal
-          modal.classList.add('show');
-        }
-      });
-    });
-    
-    // Modal buttons
-    document.getElementById('cancel-edit').addEventListener('click', () => {
-      modal.classList.remove('show');
-      editingCard = null;
-    });
-    
-    document.getElementById('save-edit').addEventListener('click', () => {
-      if (!editingCard) return;
       
-      // Update the appropriate card data based on current page
-      if (currentPageType === 'data') {
-        const cardIndex = dataCardData.findIndex(card => card.id === editingCard);
-        if (cardIndex !== -1) {
-          dataCardData[cardIndex].name = editNameInput.value;
-          dataCardData[cardIndex].url = editUrlInput.value;
-          
-          // Update the DOM
-          const cardElement = document.querySelector(`[data-card-id="${editingCard}"]`);
-          if (cardElement) {
-            const nameElement = cardElement.querySelector('p.font-medium');
-            const urlElement = cardElement.querySelector('p.text-xs');
-            if (nameElement) nameElement.textContent = editNameInput.value;
-            if (urlElement) urlElement.textContent = editUrlInput.value;
-          }
-        }
-      } else if (currentPageType === 'links') {
-        const cardIndex = linksCardData.findIndex(card => card.id === editingCard);
-        if (cardIndex !== -1) {
-          linksCardData[cardIndex].name = editNameInput.value;
-          linksCardData[cardIndex].content = editNameInput.value;
-          
-          // Update the DOM
-          const cardElement = document.querySelector(`[data-card-id="${editingCard}"]`);
-          if (cardElement) {
-            const nameElement = cardElement.querySelector('p.font-medium');
-            const contentElement = cardElement.querySelector('p.text-xs');
-            if (nameElement) nameElement.textContent = editNameInput.value;
-            if (contentElement) contentElement.textContent = editNameInput.value;
-          }
-        }
-      } else if (currentPageType === 'scripts') {
-        const cardIndex = scriptsCardData.findIndex(card => card.id === editingCard);
-        if (cardIndex !== -1) {
-          scriptsCardData[cardIndex].name = editNameInput.value;
-          scriptsCardData[cardIndex].content = editNameInput.value;
-          
-          // Update the DOM
-          const cardElement = document.querySelector(`[data-card-id="${editingCard}"]`);
-          if (cardElement) {
-            const nameElement = cardElement.querySelector('p.font-medium');
-            const contentElement = cardElement.querySelector('p.text-xs');
-            if (nameElement) nameElement.textContent = editNameInput.value;
-            if (contentElement) contentElement.textContent = editNameInput.value;
-          }
-        }
-      }
-      
-      // Show alert about database save (future implementation)
-      alert(`Card updated! In future, this will save to the 'external_links' database table.`);
-      
-      // Hide modal
-      modal.classList.remove('show');
-      editingCard = null;
-    });
-    
-    // Notes functionality
-    document.getElementById('clear-notes').addEventListener('click', () => {
-      if (window.confirm('Are you sure you want to clear all notes?')) {
-        document.getElementById('note-content').value = '';
-      }
-    });
-    
-    document.getElementById('save-notes').addEventListener('click', () => {
-      alert('Notes saved (Stage 1 - no actual saving)');
-    });
-    
-    // Close modal when clicking outside
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
+      // Modal buttons
+      document.getElementById('cancel-edit').addEventListener('click', () => {
         modal.classList.remove('show');
         editingCard = null;
-      }
-    });
-    
-    // Initialize - show home page
-    document.getElementById('home-page').classList.remove('hidden');
+      });
+      
+      document.getElementById('save-edit').addEventListener('click', () => {
+        if (!editingCard) return;
+        
+        // Update the appropriate card data based on current page
+        if (currentPageType === 'data') {
+          const cardIndex = dataCardData.findIndex(card => card.id === editingCard);
+          if (cardIndex !== -1) {
+            dataCardData[cardIndex].name = editNameInput.value;
+            dataCardData[cardIndex].url = editUrlInput.value;
+            
+            // Update the DOM
+            const cardElement = document.querySelector(`[data-card-id="${editingCard}"]`);
+            if (cardElement) {
+              const nameElement = cardElement.querySelector('p.font-medium');
+              const urlElement = cardElement.querySelector('p.text-xs');
+              if (nameElement) nameElement.textContent = editNameInput.value;
+              if (urlElement) urlElement.textContent = editUrlInput.value;
+            }
+          }
+        } else if (currentPageType === 'links') {
+          const cardIndex = linksCardData.findIndex(card => card.id === editingCard);
+          if (cardIndex !== -1) {
+            linksCardData[cardIndex].name = editNameInput.value;
+            linksCardData[cardIndex].content = editNameInput.value;
+            
+            // Update the DOM
+            const cardElement = document.querySelector(`[data-card-id="${editingCard}"]`);
+            if (cardElement) {
+              const nameElement = cardElement.querySelector('p.font-medium');
+              const contentElement = cardElement.querySelector('p.text-xs');
+              if (nameElement) nameElement.textContent = editNameInput.value;
+              if (contentElement) contentElement.textContent = editNameInput.value;
+            }
+          }
+        } else if (currentPageType === 'scripts') {
+          const cardIndex = scriptsCardData.findIndex(card => card.id === editingCard);
+          if (cardIndex !== -1) {
+            scriptsCardData[cardIndex].name = editNameInput.value;
+            scriptsCardData[cardIndex].content = editNameInput.value;
+            
+            // Update the DOM
+            const cardElement = document.querySelector(`[data-card-id="${editingCard}"]`);
+            if (cardElement) {
+              const nameElement = cardElement.querySelector('p.font-medium');
+              const contentElement = cardElement.querySelector('p.text-xs');
+              if (nameElement) nameElement.textContent = editNameInput.value;
+              if (contentElement) contentElement.textContent = editNameInput.value;
+            }
+          }
+        }
+        
+        // Show alert about database save (future implementation)
+        alert(`Card updated! In future, this will save to the 'external_links' database table.`);
+        
+        // Hide modal
+        modal.classList.remove('show');
+        editingCard = null;
+      });
+      
+      // Notes functionality
+      document.getElementById('clear-notes').addEventListener('click', () => {
+        if (window.confirm('Are you sure you want to clear all notes?')) {
+          document.getElementById('note-content').value = '';
+        }
+      });
+      
+      document.getElementById('save-notes').addEventListener('click', () => {
+        alert('Notes saved (Stage 1 - no actual saving)');
+      });
+      
+      // Close modal when clicking outside
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.remove('show');
+          editingCard = null;
+        }
+      });
+      
+      // Initialize - show home page
+      document.getElementById('home-page').classList.remove('hidden');
+    }
   </script>
 </body>
 </html>
