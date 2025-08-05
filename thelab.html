@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Lab BUILD</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
+
+    <!-- Add this in the <head> section says the bot at supabase-->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+
+  
   <style>
     .transform-scale-75 {
       transform: scale(0.75);
@@ -63,6 +70,8 @@
     }
   </style>
 </head>
+
+
   
 <body class="flex h-screen bg-gray-50">
   <div id="app" class="flex w-full h-full">
@@ -749,6 +758,17 @@
     let activePage = 'home';
     let editingCard = null;
     let currentPageType = '';
+
+//Connect to database
+import { createClient } from '@supabase/supabase-js'
+const supabaseUrl = 'kcdlbqotmuyyqvzzbxcn'
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw
+'
+const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+
+
+
     
     // Card data
     const linksCardData = Array.from({ length: 15 }, (_, i) => ({
