@@ -7,6 +7,41 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Add the Supabase browser client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+    // Initialize Supabase client
+    const supabaseUrl = 'https://kxdplsvojxgdskbbfonp.supabase.co';
+      const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw';
+
+    let supabase;
+    
+    // Wait for the Supabase script to load
+    document.addEventListener('DOMContentLoaded', function() {
+      // When loaded from CDN, the client is already created
+      // The supabase object is available directly with the configuration
+      try {
+        supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+        console.log('Supabase client initialized');
+      } catch (error) {
+        console.error('Error initializing Supabase:', error);
+        // Fallback - sometimes the CDN exposes it differently
+        supabase = supabase || { 
+          from: () => ({ 
+            select: () => ({ data: [], error: null }) 
+          })
+        };
+        console.log('Using fallback Supabase client');
+      }
+      
+      // Now initialize the rest of the application
+      initializeApp();
+    });
+</script>
+
+
+
+
+  
   <style>
     .transform-scale-75 {
       transform: scale(0.75);
@@ -728,24 +763,6 @@
     </div>
   </div>
 
-  <script>
-    // Initialize Supabase client (this replaces the import statement)
-    const supabaseUrl = 'https://kxdplsvojxgdskbbfonp.supabase.co';
-    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw';
-    
-    // The Supabase client is now available as Supabase.createClient after loading the script
-    let supabase;
-    
-    // Wait for the Supabase script to load
-    document.addEventListener('DOMContentLoaded', function() {
-      // Create the Supabase client after the library is loaded
-      supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
-      
-      console.log('Supabase client initialized');
-      
-      // Now initialize the rest of the application
-      initializeApp();
-    });
 
     // Initialize state
     let activePage = 'home';
