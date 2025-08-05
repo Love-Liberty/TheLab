@@ -1,4 +1,7 @@
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+//put on line 86    <div id="app" class='flex w-full h-full '>  used to be   <div id="app">
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
     // Initialize Supabase client
