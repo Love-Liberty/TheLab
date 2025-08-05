@@ -35,6 +35,16 @@
       
       // Now initialize the rest of the application
      // initializeApp();
+
+supabase.from('notes').select('*').then(({ data, error }) => {
+    if (error) {
+      console.error('Supabase error:', error);
+    } else {
+      console.log('Retrieved data:', data);
+    }
+  });
+
+      
     });
 </script>
 
