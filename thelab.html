@@ -739,7 +739,7 @@
     // Wait for the Supabase script to load
     document.addEventListener('DOMContentLoaded', function() {
       // Create the Supabase client after the library is loaded
-      supabase = Supabase.createClient(supabaseUrl, supabaseAnonKey);
+      supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
       
       console.log('Supabase client initialized');
       
