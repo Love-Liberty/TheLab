@@ -4,20 +4,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Lab BUILD</title>
-       <!--  attempting to connect to supabase-->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script>
-  // Wait for the Supabase library to load
-  document.addEventListener('DOMContentLoaded', () => {
-    const supabase = createClient(
-      'https://kcdlbqotmuyyqvzzbxcn.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw'
-    );
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Lab BUILD</title>
+  <!--  attempting to connect to supabase-->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script>
+    // Wait for the Supabase library to load
+    document.addEventListener('DOMContentLoaded', () => {
+      const supabase = supabase.createClient(
+        'https://kcdlbqotmuyyqvzzbxcn.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw'
+      );
 
-    console.log('Supabase client created:', supabase);
-  });
-</script>
+      console.log('Supabase client created:', supabase);
+    });
+  </script>
   
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <!-- Rest of your HTML -->
+</body>
+</html>  
  <script src="https://cdn.tailwindcss.com"></script>
 
 
