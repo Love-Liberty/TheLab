@@ -37,25 +37,21 @@
      // initializeApp();
 
 // Test reading from Supabase with error handling
+// Test reading from Supabase with error handling
 async function testReadFromSupabase() {
   try {
-    // Make sure supabase client is available
     if (!window.supabase) {
       console.error('Supabase client not available');
       return;
     }
 
-    // Attempt to read from the notes table
     const { data, error } = await supabase
       .from('notes')
       .select('*')
-      .limit(10); // Limit to avoid loading too much data
+      .limit(10);
 
-    // Check for errors
     if (error) {
       console.error('Supabase read error:', error);
-      
-      // Provide specific guidance based on common error types
       if (error.message.includes('Invalid API key')) {
         console.log('Check: Verify your Supabase anon key has proper permissions');
       } else if (error.message.includes('relation "notes" does not exist')) {
@@ -63,29 +59,24 @@ async function testReadFromSupabase() {
       } else if (error.code === '42501') {
         console.log('Check: Row Level Security policies may be blocking access');
       }
-      
       return;
     }
 
-    // Log the retrieved data
     console.log('Successfully retrieved data from Supabase:', data);
-    
-    // Additional information
     console.log(`Retrieved ${data.length} records from the notes table`);
-    
-    // Display sample data if available
     if (data && data.length > 0) {
       console.log('Sample record:', data[0]);
     } else {
       console.log('No data found in the notes table');
     }
-    
-} catch (err) {
-  console.error('Unexpected error during Supabase read:', err);
+
+  } catch (err) {
+    console.error('Unexpected error during Supabase read:', err);
+  }
 }
-// Call the function to test the read operation
+
+// ✅ Safe to call the function like this, *outside* the definition:
 testReadFromSupabase();
-});
 
 </script>
 
