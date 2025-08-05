@@ -8,9 +8,10 @@
 
        <!-- Add this in the <head> section says the bot at supabase-->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
- 
+
+  
 <script>
-  const supabase = window.supabase.createClient(
+  const supabase = supabase.createClient(
     'https://kcdlbqotmuyyqvzzbxcn.supabase.co',
 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw
 '
@@ -18,7 +19,7 @@
   );
 
   // Test the connection
-  supabase.from('your_table').select('*').then(result => {
+  supabase.from('notes').select('*').then(result => {
     console.log('Data:', result);
   });
 </script>
