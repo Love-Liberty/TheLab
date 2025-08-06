@@ -9,7 +9,9 @@
 </head>
 <body>
   <h1>Database Connection & write Diagnostic</h1>
-  <div id="output" style="white-space: pre-wrap; font-family: monospace;"></div>
+//  <div id="output" style="white-space: pre-wrap; font-family: monospace;"></div>
+  <div style="white-space: pre-wrap; font-family: monospace;"></div>
+
 </body>
   <script>
     function log(message) {
@@ -288,7 +290,7 @@ document.addEventListener('DOMContentLoaded', diagnoseSupabase);
               </div>
               <div class="text-center text-gray-400 py-8">
                 <div class="text-4xl mb-2">📝</div>
-                <p class="text-lg">Awaiting implementation</p>
+                <p id="output" class="text-lg">Awaiting implementation</p>
               </div>
             </div>
           </div>
