@@ -54,10 +54,7 @@
           .from('notes')
           .select('*')
           ;
-await insertNote( supabase,
-  '0023236b-58d7-4c41-ba0f-45a7efc31847',
-  'This is an attempt to write to the db from a indexTest.html',
-  'Testing param injection');
+await insertNote(supabase,'0023236b-58d7-4c41-ba0f-45a7efc31847','This is an attempt to write to the db from a indexTest.html','Testing param injection');
 
 
         if (error) {
