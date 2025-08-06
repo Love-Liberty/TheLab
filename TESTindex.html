@@ -1056,7 +1056,7 @@ document.getElementById('save-notes').addEventListener('click', async () => {
   const author_id = '4023236b-58d7-4c41-ba0f-45a7efc31847'; // Later fetch dynamically
   const title = 'Note from UI';
 
-  await insertNote(supabase, author_id, content, title);
+  await insertNote(window.supabase, author_id, content, title);
 });
 
 
