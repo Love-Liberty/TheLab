@@ -27,9 +27,25 @@
     }
     
     // Initialize Supabase client
+
+
+
+
+    
     const supabaseUrl = 'https://kxdplsvojxgdskbbfonp.supabase.co';
     const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw';
 
+
+// Add these options to rule out cookie issues
+const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: false  // Disable automatic session persistence
+  }
+});
+
+
+
+    
     let supabase;
     
     async function initializeSupabase() {
@@ -37,7 +53,7 @@
       document.getElementById('console-output').innerHTML = '<p><strong>Console output:</strong></p>';
       
       writeToOutput('Starting Supabase connection...');
-      
+    
       // Initialize Supabase client
       try {
         supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
