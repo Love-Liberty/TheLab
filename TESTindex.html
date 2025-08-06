@@ -83,11 +83,11 @@ async function insertNote(supabase, author_id, content, title = 'Quick note entr
       .insert([
         {
           author_id: author_id,
-          audience_id: null,
-          reply_to_id: null,
+          audience_id: audience_id,
+          reply_to_id: reply_to_id,
           title: title,
           content: content,
-          status: null
+          status: status
         }
       ]);
 
