@@ -5,6 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Lab</title>
   <script src="https://cdn.tailwindcss.com"></script>
+ <!-- Add the Supabase browser client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+   const supabaseUrl = 'https://kcdlbqotmuyyqvzzbxcn.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw';
+
+document.addEventListener('DOMContentLoaded', function() {
+  try {
+    const { createClient } = window.supabase;
+    
+    if (typeof createClient !== 'function') {
+      throw new Error('createClient is not a function');
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+    
+    // Verify client methods
+    if (typeof supabase.from !== 'function') {
+      throw new Error('supabase.from is not a function');
+    }
+
+    console.log('Supabase client initialized successfully');
+    
+    // Your application initialization here
+  } catch (error) {
+    console.error('Supabase initialization failed:', error);
+  }
+});   
+
+  
   <style>
     .transform-scale-75 {
       transform: scale(0.75);
