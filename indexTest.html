@@ -967,13 +967,10 @@ document.addEventListener('DOMContentLoaded', function() {
 //async function insertNote(supabase) {
  
 
-
-
-    
   document.getElementById('save-notes').addEventListener('click', async () => { 
   const author_id = '0023236b-58d7-4c41-ba0f-45a7efc31847';
-  const content = 'This is an attempt to write to the db from a TestWriteToDb.html';
-  const title = 'Test Insert via Script';
+  const content =document.getElementById('save-notes').content;
+  const title = 'The form has no title.';
 
   try {
     const { data, error } = await supabase
