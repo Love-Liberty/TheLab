@@ -34,6 +34,9 @@ document.addEventListener('DOMContentLoaded', function() {
     console.error('Supabase initialization failed:', error);
   }
 });      
+
+initializeApp();
+ 
 </script>
 
   
@@ -763,7 +766,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let activePage = 'home';
     let editingCard = null;
     let currentPageType = '';
-    let initializeApp(); 
+    
     // Card data
     const linksCardData = Array.from({ length: 15 }, (_, i) => ({
       id: `links-${i + 1}`,
