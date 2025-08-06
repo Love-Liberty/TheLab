@@ -33,8 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
   } catch (error) {
     console.error('Supabase initialization failed:', error);
   }
-});
-initializeApp();       
+});      
 </script>
 
   
@@ -764,7 +763,7 @@ initializeApp();
     let activePage = 'home';
     let editingCard = null;
     let currentPageType = '';
-    
+    let initializeApp(); 
     // Card data
     const linksCardData = Array.from({ length: 15 }, (_, i) => ({
       id: `links-${i + 1}`,
