@@ -73,8 +73,45 @@
     }
 
 
+
+async function insertNote(supabase) {
+  const author_id = '0023236b-58d7-4c41-ba0f-45a7efc31847';
+  const content = 'This is an attempt to write to the db from a TestWriteToDb.html';
+  const title = 'Test Insert via Script';
+
+  try {
+    const { data, error } = await supabase
+      .from('notes')
+      .insert([
+        {
+          author_id: author_id,
+          audience_id: null,
+          reply_to_id: null,
+          title: title,
+          content: content,
+          status: null
+        }
+      ]);
+
+    if (error) {
+      log(`✗ Insert error:\n${JSON.stringify(error, null, 2)}`);
+    } else {
+      log('✓ Note successfully inserted into database');
+      log(`Inserted ID: ${data[0].id}`);
+    }
+  } catch (err) {
+    log(`✗ Unexpected insert error:\n${err.message}`);
+  }
+}
+
+
+    
+document.addEventListener('DOMContentLoaded', diagnoseSupabase);
+
+    
   </script>    
-<body>
+
+  <body>
   <h1>Supabase Connection Test</h1>
   <p>Testing connection to Supabase database...</p>
   
