@@ -1,16 +1,107 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supabase Connection Test</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
 <body>
+  <h1>Supabase Connection Test</h1>
+  <p>Testing connection to Supabase database...</p>
+  
+  <div id="console-output" style="margin-top: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 5px; min-height: 200px; max-height: 400px; overflow-y: auto; font-family: monospace; white-space: pre-wrap;">
+    <p><strong>Console output:</strong></p>
+  </div>
+  
+  <button id="retry-button" style="margin-top: 10px; padding: 10px 15px; background-color: #3b82f6; color: white; border: none; border-radius: 5px; cursor: pointer;">Retry Connection</button>
 
-<h1>The Lab 
-</h1>
-<p>Notepad, messages,links to web information. A kind of Lab notebook for keeping track of a project.
-</p>
-  <p>Have to use a branch.. Have to commit for GitHub Pages to do something.</p>>
-  <p>The url is:  username.github.io/repositoryname</p>
-    <p>React files have to be converted into HTML/javascript/CSS to be published. This can be done using <code>npm run build </code>.  </p>
-<p><i>This is an index page set up for GitHubPages</i></p>
+  <script>
+    // Function to write output to the DOM instead of console
+    function writeToOutput(message) {
+      const output = document.getElementById('console-output');
+      const messageElement = document.createElement('p');
+      messageElement.textContent = message;
+      output.appendChild(messageElement);
+      output.scrollTop = output.scrollHeight; // Auto-scroll to bottom
+    }
+    
+    // Initialize Supabase client
+    const supabaseUrl = 'https://kxdplsvojxgdskbbfonp.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw';
+
+    let supabase;
+    
+    async function initializeSupabase() {
+      // Clear previous output
+      document.getElementById('console-output').innerHTML = '<p><strong>Console output:</strong></p>';
+      
+      writeToOutput('Starting Supabase connection...');
+      
+      // Initialize Supabase client
+      try {
+        supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+        writeToOutput('✓ Supabase client initialized');
+        
+        // Test reading from the database
+        await testSupabaseRead();
+      } catch (error) {
+        writeToOutput(`✗ Error initializing Supabase: ${error.message}`);
+        // Fallback client
+        supabase = {
+          from: () => ({
+            select: () => ({ data [], error: error })
+          })
+        };
+        writeToOutput('Using fallback Supabase client');
+      }
+    }
+    
+    // Function to test reading from Supabase
+    async function testSupabaseRead() {
+      try {
+        // Make sure supabase is available
+        if (!supabase) {
+          writeToOutput('✗ Supabase client not available');
+          return;
+        }
+        
+        writeToOutput('Attempting to read from "notes" table...');
+        
+        // Attempt to read from the notes table
+        const { data, error } = await supabase
+          .from('notes')
+          .select('*')
+          .limit(10);
+          
+        // Log the results to our DOM output
+        if (error) {
+          writeToOutput(`✗ Supabase read error: ${JSON.stringify(error, null, 2)}`);
+        } else {
+          writeToOutput(`✓ Successfully retrieved data from Supabase`);
+          writeToOutput(`Found ${data.length} records in the notes table`);
+          
+          // Display sample data if available
+          if (data && data.length > 0) {
+            writeToOutput(`First record: ${JSON.stringify(data[0], null, 2)}`);
+          } else {
+            writeToOutput('No data found in the notes table');
+          }
+        }
+      } catch (err) {
+        writeToOutput(`✗ Error during Supabase read: ${err.message}`);
+      }
+    }
+    
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeSupabase();
+      
+      // Add retry button functionality
+      document.getElementById('retry-button').addEventListener('click', function() {
+        initializeSupabase();
+      });
+    });
+  </script>
 </body>
 </html>
-
-
