@@ -54,7 +54,7 @@
           .from('notes')
           .select('*')
           ;
-await insertNote(supabase,'0023236b-58d7-4c41-ba0f-45a7efc31847','This is an attempt to write to the db from a indexTest.html','Testing param injection');
+await insertNote(supabase,'0023236b-58d7-4c41-ba0f-45a7efc31847','More writing to the db from indexTest.html','Testing more param injection');
 
 
         if (error) {
@@ -74,7 +74,7 @@ await insertNote(supabase,'0023236b-58d7-4c41-ba0f-45a7efc31847','This is an att
 
 
 
-async function insertNote(supabase, author_id, content, title = 'Quick note entry') {
+async function insertNote(supabase, author_id, content, title = 'Quick note entry',audience_id=null,teply_to_id=null,status=null) {
  
 
   try {
