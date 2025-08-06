@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });      
 
-initializeApp();
+//initializeApp(); used to be here, but now throws error 'undeclared' Moved to L843 after the func declared
  
 </script>
 
@@ -839,6 +839,8 @@ initializeApp();
           activePage = e.target.getAttribute('data-page');
         });
       });
+
+initializeApp();
       
       // Card editing functionality
       document.querySelectorAll('[data-card-id]').forEach(card => {
