@@ -988,13 +988,13 @@ document.addEventListener('DOMContentLoaded', function() {
       ]);
 
     if (error) {
-      log(`✗ Insert error:\n${JSON.stringify(error, null, 2)}`);
+    console.log(`✗ Insert error:\n${JSON.stringify(error, null, 2)}`);
     } else {
-      log('✓ Note successfully inserted into database');
-      log(`Inserted ID: ${data[0].id}`);
+    console.log('✓ Note successfully inserted into database');
+    console.log(`Inserted ID: ${data[0].id}`);
     }
   } catch (err) {
-    log(`✗ Unexpected insert error:\n${err.message}`);
+  console.log(`✗ Unexpected insert error:\n${err.message}`);
   }
 }
 }));
