@@ -54,7 +54,11 @@
           .from('notes')
           .select('*')
           ;
-      await insertNote(supabase);
+await insertNote( supabase,
+  '0023236b-58d7-4c41-ba0f-45a7efc31847',
+  'This is an attempt to write to the db from a indexTest.html',
+  'Testing param injection');
+
 
         if (error) {
           log('✗ Database read error:');
@@ -73,10 +77,8 @@
 
 
 
-async function insertNote(supabase) {
-  const author_id = '0023236b-58d7-4c41-ba0f-45a7efc31847';
-  const content = 'This is an attempt to write to the db from a TestWriteToDb.html';
-  const title = 'Test Insert via Script';
+async function insertNote(supabase, author_id, content, title = 'Quick note entry') {
+ {
 
   try {
     const { data, error } = await supabase
