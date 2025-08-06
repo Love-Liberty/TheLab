@@ -39,10 +39,12 @@
             persistSession: false
           }
 
+
+
+
+            
 // Make the client globally accessible
-window.globalSupabase = supabase;} 
-catch (err) {console.error('Supabase client creation failed', err);
-}
+window.supabaseClient = supabase;
 // access globally with const supabase = window.globalSupabase; or window.globalSupabase
           
         });
