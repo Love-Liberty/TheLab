@@ -50,7 +50,7 @@
         // Fallback client
         supabase = {
           from: () => ({
-            select: () => ({ data [], error: error })
+            select: () => ({ data: [], error: error })
           })
         };
         writeToOutput('Using fallback Supabase client');
