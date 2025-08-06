@@ -71,37 +71,41 @@ let content = 'This is an attempt to write to the db from a TestWriteToDb.html'
         log(err.message);
         log(JSON.stringify(err, null, 2));
       }
+      await insertNote(supabase);
     }
 
 
     
-    document.addEventListener('DOMContentLoaded', diagnoseSupabase);
- try {
+async function insertNote(supabase) {
+  const author_id = '0023236b-58d7-4c41-ba0f-45a7efc31847';
+  const content = 'This is an attempt to write to the db from a TestWriteToDb.html';
+  const title = 'Test Insert via Script';
+
+  try {
     const { data, error } = await supabase
       .from('notes')
       .insert([
         {
-          author_id: authorId,
+          author_id: author_id,
           audience_id: null,
           reply_to_id: null,
           title: title,
-          content: noteContent,
+          content: content,
           status: null
         }
       ]);
 
     if (error) {
-      console.error('Insert error:', error);
-      alert('❌ Failed to save note. See console for details.');
+      log(`✗ Insert error:\n${JSON.stringify(error, null, 2)}`);
     } else {
-      alert('✅ Note successfully saved to database');
-      console.log('Insert response:', data);
+      log('✓ Note successfully inserted into database');
+      log(`Inserted ID: ${data[0].id}`);
     }
   } catch (err) {
-    console.error('Unexpected insert error:', err);
-    alert('⚠️ Something went wrong saving the note');
+    log(`✗ Unexpected insert error:\n${err.message}`);
   }
-});
+}
+
 
 
 
