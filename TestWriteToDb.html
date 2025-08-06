@@ -11,6 +11,9 @@
   <div id="output" style="white-space: pre-wrap; font-family: monospace;"></div>
 
   <script>
+Let author_id = '0023236b-58d7-4c41-ba0f-45a7efc31847';
+Let content = 'This is an attempt to write to the db from a TestWriteToDb.html'
+    
     function log(message) {
       const output = document.getElementById('output');
       output.textContent += message + '\n';
@@ -70,8 +73,6 @@
       }
     }
 
-Let author_id = '0023236b-58d7-4c41-ba0f-45a7efc31847';
-Let content = 'This is an attempt to write to the db from a TestWriteToDb.html'
 
     
     document.addEventListener('DOMContentLoaded', diagnoseSupabase);
