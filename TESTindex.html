@@ -38,16 +38,14 @@
           auth: {
             persistSession: false
           }
-
-
-
-
+        });
             
 // Make the client globally accessible
-window.supabaseClient = supabase;
-// access globally with const supabase = window.globalSupabase; or window.globalSupabase
+ window.supabaseClient = supabase;
+    log('✓ Supabase client created and assigned globally');
+  } catch (error) {
+    log(`✗ Error during Supabase setup: ${error.message}`);// access globally with const supabase = window.globalSupabase; or window.globalSupabase
           
-        });
 
         log('✓ Supabase client created successfully');
 
