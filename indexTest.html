@@ -961,64 +961,16 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('note-content').value = '';
       }
     });
-    
-  document.getElementById('save-notes').addEventListener('click', async () => {
-  const noteContent = document.getElementById('note-content').value || '';
-  const authorId = 'b63b1db0-3f43-43a2-8c7f-77da04812e8c'; // Replace with dynamic user ID if needed
-  const title = 'Quick note entry'; // You could source this from a form field
 
-  if (!noteContent.trim()) {
-    alert('🛑 Please enter some text before saving');
-    return;
-  }
 
-  try {
-    const { data, error } = await supabase
-      .from('notes')
-      .insert([
-        {
-          author_id: authorId,
-          audience_id: null,
-          reply_to_id: null,
-          title: title,
-          content: noteContent,
-          status: null
-        }
-      ]);
 
-    if (error) {
-      console.error('Insert error:', error);
-      alert('❌ Failed to save note. See console for details.');
-    } else {
-      alert('✅ Note successfully saved to database');
-      console.log('Insert response:', data);
-    }
-  } catch (err) {
-    console.error('Unexpected insert error:', err);
-    alert('⚠️ Something went wrong saving the note');
-  }
-});
+//async function insertNote(supabase) {
+ 
 
 
 
     
-    
-    // Close modal when clicking outside
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.classList.remove('show');
-        editingCard = null;
-      }
-    });
-    
-    // Initialize - show home page
-    document.getElementById('home-page').classList.remove('hidden');
-  </script>
-</body>
-</html>
-
-
-async function insertNote(supabase) {
+  document.getElementById('save-notes').addEventListener('click', async () => { 
   const author_id = '0023236b-58d7-4c41-ba0f-45a7efc31847';
   const content = 'This is an attempt to write to the db from a TestWriteToDb.html';
   const title = 'Test Insert via Script';
@@ -1047,3 +999,19 @@ async function insertNote(supabase) {
     log(`✗ Unexpected insert error:\n${err.message}`);
   }
 }
+});
+    
+    
+    // Close modal when clicking outside
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('show');
+        editingCard = null;
+      }
+    });
+    
+    // Initialize - show home page
+    document.getElementById('home-page').classList.remove('hidden');
+  </script>
+</body>
+</html>
