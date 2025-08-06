@@ -9,31 +9,65 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-   const supabaseUrl = 'https://kcdlbqotmuyyqvzzbxcn.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw';
-
-document.addEventListener('DOMContentLoaded', function() {
-  try {
-    const { createClient } = window.supabase;
-    
-    if (typeof createClient !== 'function') {
-      throw new Error('createClient is not a function');
+      function log(message) {
+      const output = document.getElementById('output');
+      output.textContent += message + '\n';
+      console.log(message);
     }
 
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
-    
-    // Verify client methods
-    if (typeof supabase.from !== 'function') {
-      throw new Error('supabase.from is not a function');
-    }
+    async function diagnoseSupabase() {
+      const supabaseUrl = 'https://kcdlbqotmuyyqvzzbxcn.supabase.co';
+      const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw';
 
-    console.log('Supabase client initialized successfully');
-    
-    // Your application initialization here
-  } catch (error) {
-    console.error('Supabase initialization failed:', error);
-  }
-});   
+      log('Starting Supabase Diagnostic...');
+      log(`Supabase URL: ${supabaseUrl}`);
+      
+      try {
+        // Explicit client creation using the library's method
+        const { createClient } = window.supabase;
+        
+        if (typeof createClient !== 'function') {
+          throw new Error('createClient is not a function');
+        }
+
+        log('✓ Supabase createClient method found');
+
+        const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+          auth: {
+            persistSession: false
+          }
+        });
+
+        log('✓ Supabase client created successfully');
+
+        // Verify the client has the 'from' method
+        if (typeof supabase.from !== 'function') {
+          throw new Error('supabase.from is not a function');
+        }
+
+        log('✓ Supabase client methods verified');
+
+        // Test database connection
+        const { data, error } = await supabase
+          .from('notes')
+          .select('*')
+          ;
+      await insertNote(supabase);
+
+        if (error) {
+          log('✗ Database read error:');
+          log(JSON.stringify(error, null, 2));
+        } else {
+          log('✓ Successfully read from database');
+          log(`Records found: ${data.length}`);
+        }
+
+      } catch (err) {
+        log('✗ Diagnostic failed:');
+        log(err.message);
+        log(JSON.stringify(err, null, 2));
+      }
+    }   
 </script>
   
   <style>
