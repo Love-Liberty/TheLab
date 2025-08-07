@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>6Aug-23:30</title>
+  <title>7Aug-9:33</title>
     <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -64,8 +64,8 @@
         const { data, error } = await supabase
           .from('notes')
           .select('*')
-          ;
-await insertNote(supabase,'0023236b-58d7-4c41-ba0f-45a7efc31847','More writing to the db from indexTest.html','Testing more param injection');
+          ; //order in db: author_id(required), audience_id, reply_to_id, title, content, status
+await insertNote(supabase,'0023236b-58d7-4c41-ba0f-45a7efc31847',null,null,'Title 7 aug from indexTest.html','Content:Testing writing from form');
 
 
         if (error) {
@@ -84,8 +84,8 @@ await insertNote(supabase,'0023236b-58d7-4c41-ba0f-45a7efc31847','More writing t
     }
 
 
-
-async function insertNote(supabase, author_id, content, title = 'Quick note entry',audience_id=null,reply_to_id=null,status=null) {
+//order in db: author_id(required), audience_id, reply_to_id, title, content, status
+async function insertNote(supabase, author_id,audience_id=null,reply_to_id=null, title = 'AutoTitle',content,status=null) {
  
 
   try {
@@ -95,8 +95,8 @@ async function insertNote(supabase, author_id, content, title = 'Quick note entr
         {
           author_id: author_id,
           audience_id: audience_id,
-          reply_to_id: reply_to_id,
-          title: title,
+          reply_to_id: reply_to_id,         
+          title: title,  
           content: content,
           status: status
         }
@@ -1055,8 +1055,8 @@ document.getElementById('save-notes').addEventListener('click', async () => {
   const content = document.getElementById('note-content').value;
   const author_id = '4023236b-58d7-4c41-ba0f-45a7efc31847'; // Later fetch dynamically
   const title = 'Note from UI';
-
-  await insertNote(window.supabaseClient, author_id, content, title);
+//order in db: author_id(required), audience_id, reply_to_id, title, content, status
+  await insertNote(window.supabaseClient, author_id, 'null','null',title, content);
 });
 
 
