@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1eeply.0">
-  <title>16:35-7Aug  based on 11:46</title>
+  <title>16:40-7Aug  based on 11:46</title>
     <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -36,7 +36,7 @@ async function fetchNotes(page = 1) {
   const { data, count, error } = await supabase
     .from('notes')
     .select('*', { count: 'exact' })
-    .order('sort_id', { ascending: true })
+    .order('sort_int', { ascending: true })
     .range(start, end);
 
   if (error) {
@@ -59,7 +59,7 @@ function renderNotes(notes, totalCount, page) {
 
     return `
       <div class="mb-4 p-2 border-b border-blue-200">
-        <p><strong>ID:</strong> ${note.sort_id}</p>
+        <p><strong>ID:</strong> ${note.sort_int}</p>
         <p><strong>Author:</strong> ${note.author_id.slice(0, 8)}</p>
         <p><strong>Created:</strong> ${new Date(note.created_at).toLocaleString()}</p>
         <p><strong>Content:</strong> ${shortContent}</p>
