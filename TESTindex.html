@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>10:49-7Aug</title>
+  <title>11:29-7Aug</title>
     <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -307,32 +307,15 @@ document.addEventListener('DOMContentLoaded', diagnoseSupabase);
         <div id="notes-page" class="page-content hidden">
           <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
           //not needed as menu shows page name  <h2 class="text-2xl font-bold text-gray-800 mb-6">Notes</h2>
-            
-            <!-- Note Input -->
-            <div class="mb-6">
-              <textarea id="note-content" 
-                        placeholder="Enter your notes here... (Stage 1 - no actual saving)" 
-                        class="w-full h-32 p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
-            </div>
-            
-            <!-- Note Type Radio Buttons -->
-       
-            <!-- Tagging Section -->
-            <div class="mb-6">
-              <h3 class="text-lg font-semibold mb-3">Tag the note for easier retrieval</h3>
-              
-              <!-- Workflow & Process Tags -->
-              <div class="mb-6">
-                <h4 class="text-md font-semibold mb-3 text-gray-700">📝 Workflow & Process Tags</h4>
-                <div class="flex flex-wrap gap-2 mb-3">
-                  
+
+    <label class="flex items-center">
                   <label class="flex items-center">
-                    <input type="checkbox" name="workflow" value="me" class="mr-2 text-blue-600">
-                    <span class="text-sm">me</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="workflow" value="bug" class="mr-2 text-blue-600">
+                    <input type="checkbox" name="workflow" value="bug" checked class="mr-2 text-blue-600">
                     <span class="text-sm">bug</span>
+                  </label>
+
+                  <input type="checkbox" name="workflow" value="me" class="mr-2 text-blue-600">
+                    <span class="text-sm">me</span>
                   </label>
                   <label class="flex items-center">
                     <input type="checkbox" name="workflow" value="else" class="mr-2 text-blue-600">
@@ -342,6 +325,51 @@ document.addEventListener('DOMContentLoaded', diagnoseSupabase);
                     <input type="checkbox" name="workflow" value="reply" class="mr-2 text-blue-600">
                     <span class="text-sm">reply</span>
                   </label>
+
+
+            
+            <!-- Note Input -->
+
+
+            <div class="mb-6">
+              <textarea id="note-content" 
+                        placeholder="Enter your notes here... (Stage 2 - Saves to database-checkboxes not implemented)" 
+                        class="w-full h-32 p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+            </div>
+            
+            <!-- Note Type Radio Buttons -->
+       
+            <!-- Tagging Section -->
+            <div class="mb-6">
+                  
+              <!-- Importance Tags -->
+              <div class="mb-6">
+                <h4 class="text-md font-semibold mb-3 text-gray-700">📝 Importance Tags</h4>
+                <div class="flex flex-wrap gap-2 mb-3">
+                  
+                  <label class="flex items-center">
+                    <input type="radio" name="workflow" value="1" class="mr-2 text-blue-600">
+                    <span class="text-sm">1</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="radio" name="workflow" value="2" class="mr-2 text-blue-600">
+                    <span class="text-sm">2</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="radio" name="workflow" value="3" checked class="mr-2 text-blue-600">
+                    <span class="text-sm">3</span>
+                  </label>                  
+                    <label class="flex items-center">
+                    <input type="radio" name="workflow" value="4" class="mr-2 text-blue-600">
+                    <span class="text-sm">reply</span>
+                  </label>
+
+                  </label>                  
+                    <label class="flex items-center">
+                    <input type="radio" name="workflow" value="5" class="mr-2 text-blue-600">
+                    <span class="text-sm">reply</span>
+                  </label>
+
                   
                   <label class="flex items-center">
                     <input type="checkbox" name="workflow" value="todo" class="mr-2 text-blue-600">
