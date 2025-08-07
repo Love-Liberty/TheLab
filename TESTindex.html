@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1eeply.0">
-  <title>16:12-7Aug  based on 11:46</title>
+  <title>16:35-7Aug  based on 11:46</title>
     <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -23,12 +23,19 @@ const pageSize = 10;
 
 // 2. read a page of notes & call the render function
 async function fetchNotes(page = 1) {
+  const supabase = window.supabaseClient; // ✅ Pull from global
+
+  if (!supabase || typeof supabase.from !== 'function') {
+    console.error('Supabase client not initialized');
+    return;
+  }
+
   const start = (page - 1) * pageSize;
   const end = start + pageSize - 1;
 
   const { data, count, error } = await supabase
     .from('notes')
-    .select('*', { count: 'exact' }) // Get total count for pagination
+    .select('*', { count: 'exact' })
     .order('sort_id', { ascending: true })
     .range(start, end);
 
