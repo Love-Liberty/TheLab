@@ -36,9 +36,9 @@ async function fetchNotes(page = 1) {
   const { data, count, error } = await supabase
     .from('notes')
     .select('*', { count: 'exact' })
-    .order('sort_int', { ascending: true })
+    .order('sort_int', { ascending: false })
     .range(start, end);
-currentPage=count;  //try start from most recent note
+
   if (error) {
     console.error('Error fetching notes:', error);
     return;
