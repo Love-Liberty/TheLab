@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1eeply.0">
-  <title>12:08-7Aug  based on 11:46</title>
+  <title>12:30-7Aug  based on 11:46</title>
     <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -313,18 +313,18 @@ document.addEventListener('DOMContentLoaded', diagnoseSupabase);
                 <div class="flex flex-wrap gap-2 mb-3">
                  <label class="flex items-center">
                     <input type="checkbox" name="main" value="bug" checked class="mr-2 text-blue-600">
-                    <span class="text-sm">bug</span>
+                    <span class="text-sm">~bug</span>
                   </label>
                   <input type="checkbox" name="main" value="me" class="mr-2 text-blue-600">
-                    <span class="text-sm">me</span>
+                    <span class="text-sm">~me</span>
                   </label>
                   <label class="flex items-center">
                     <input type="checkbox" name="main" value="else" class="mr-2 text-blue-600">
-                    <span class="text-sm">else</span>
+                    <span class="text-sm">~else</span>
                   </label>                  
                     <label class="flex items-center">
                     <input type="checkbox" name="main" value="reply" class="mr-2 text-blue-600">
-                    <span class="text-sm">reply</span>
+                    <span class="text-sm">~reply</span>
                   </label>
                 </div>
                     
@@ -334,16 +334,12 @@ document.addEventListener('DOMContentLoaded', diagnoseSupabase);
 
             
             <!-- Note Input -->
-
-
             <div class="mb-6">
               <textarea id="note-content" 
                         placeholder="Enter your notes here... (Stage 2 - Saves to database-checkboxes not implemented)" 
                         class="w-full h-32 p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
             </div>
-            
-            <!-- Note Type Radio Buttons -->
-       
+                   
             <!-- Tagging Section -->
        <!-- Importance Tags -->
               <div class="mb-6">
@@ -387,31 +383,31 @@ document.addEventListener('DOMContentLoaded', diagnoseSupabase);
                   
                   <label class="flex items-center">
                     <input type="checkbox" name="workflow" value="todo" class="mr-2 text-blue-600">
-                    <span class="text-sm">todo</span>
+                    <span class="text-sm">~todo</span>
                   </label>
                   <label class="flex items-center">
                     <input type="checkbox" name="workflow" value="idea" class="mr-2 text-blue-600">
-                    <span class="text-sm">idea</span>
+                    <span class="text-sm">~idea</span>
                   </label>
                   <label class="flex items-center">
                     <input type="checkbox" name="workflow" value="note" class="mr-2 text-blue-600">
-                    <span class="text-sm">note</span>
+                    <span class="text-sm">~note</span>
                   </label>
                   <label class="flex items-center">
                     <input type="checkbox" name="workflow" value="blocker" class="mr-2 text-blue-600">
-                    <span class="text-sm">blocker</span>
+                    <span class="text-sm">~block</span>
                   </label>
                   <label class="flex items-center">
                     <input type="checkbox" name="workflow" value="refactor" class="mr-2 text-blue-600">
-                    <span class="text-sm">refactor</span>
+                    <span class="text-sm">~refactor</span>
                   </label>
                   <label class="flex items-center">
                     <input type="checkbox" name="workflow" value="meeting" class="mr-2 text-blue-600">
-                    <span class="text-sm">meeting</span>
+                    <span class="text-sm">~meeting</span>
                   </label>
                   <label class="flex items-center">
                     <input type="checkbox" name="workflow" value="review" class="mr-2 text-blue-600">
-                    <span class="text-sm">review</span>
+                    <span class="text-sm">~review</span>
                   </label>
                 </div>
                 <p class="text-sm text-gray-600 mb-4">
@@ -425,23 +421,23 @@ document.addEventListener('DOMContentLoaded', diagnoseSupabase);
                 <div class="flex flex-wrap gap-2 mb-3">
                   <label class="flex items-center">
                     <input type="checkbox" name="resource" value="insight" class="mr-2 text-blue-600">
-                    <span class="text-sm">insight</span>
+                    <span class="text-sm">~insight</span>
                   </label>
                   <label class="flex items-center">
                     <input type="checkbox" name="resource" value="resource" class="mr-2 text-blue-600">
-                    <span class="text-sm">resource</span>
+                    <span class="text-sm">~resource</span>
                   </label>
                   <label class="flex items-center">
                     <input type="checkbox" name="resource" value="hack" class="mr-2 text-blue-600">
-                    <span class="text-sm">hack</span>
+                    <span class="text-sm">~hack</span>
                   </label>
                   <label class="flex items-center">
                     <input type="checkbox" name="resource" value="howto" class="mr-2 text-blue-600">
-                    <span class="text-sm">howto</span>
+                    <span class="text-sm">~howto</span>
                   </label>
                   <label class="flex items-center">
                     <input type="checkbox" name="resource" value="diary" class="mr-2 text-blue-600">
-                    <span class="text-sm">diary</span>
+                    <span class="text-sm">~diary</span>
                   </label>
                 </div>
                 <p class="text-sm text-gray-600 mb-4">
@@ -459,11 +455,11 @@ document.addEventListener('DOMContentLoaded', diagnoseSupabase);
                   </label>
                   <label class="flex items-center">
                     <input type="checkbox" name="emotion" value="triumph" class="mr-2 text-blue-600">
-                    <span class="text-sm">triumph</span>
+                    <span class="text-sm">~triumph</span>
                   </label>
                   <label class="flex items-center">
                     <input type="checkbox" name="emotion" value="rant" class="mr-2 text-blue-600">
-                    <span class="text-sm">rant</span>
+                    <span class="text-sm">~rant</span>
                   </label>
                 </div>
                 <p class="text-sm text-gray-600">
