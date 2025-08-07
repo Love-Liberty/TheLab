@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1eeply.0">
-  <title>13:26-7Aug  based on 11:46</title>
+  <title>13:43-7Aug  based on 11:46</title>
     <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -289,17 +289,8 @@ document.addEventListener('DOMContentLoaded', diagnoseSupabase);
               </div>
             </div>
             
-            <!-- Notes Section -->
-            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-              <div class="flex items-center mb-4">
-                <h2 class="text-2xl font-bold text-gray-800">Notes</h2>
-                <span class="ml-2 text-sm text-gray-500">reminders or log of horrible errors</span>
-              </div>
-              <div class="text-center text-gray-400 py-8">
-                <div id="output"  class="text-1xl mb-2">📝</div>
-                <p class="text-lg">Awaiting implementation</p>
-              </div>
-            </div>
+            <!-- Notes Section was here-->
+
           </div>
         </div>
         
@@ -481,7 +472,7 @@ document.addEventListener('DOMContentLoaded', diagnoseSupabase);
             </div>
             
             <!-- Future Functionality Info -->
-            <div class="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div id='output' class="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
               <p class="text-blue-800">
                 <strong>Future functionality:</strong> The implementation of NOTES will use a database table. 
                 Eventually it will be a logging system to record bugs as well as reminders and a scratch pad for temporary 'sticky notes'
