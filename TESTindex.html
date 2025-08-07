@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1eeply.0">
-  <title>16:01-7Aug  based on 11:46</title>
+  <title>16:12-7Aug  based on 11:46</title>
     <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -206,9 +206,11 @@ async function insertNote(supabase, author_id,audience_id=null,reply_to_id=null,
     
 //document.addEventListener('DOMContentLoaded', diagnoseSupabase);
 document.addEventListener('DOMContentLoaded', () => {
-  diagnoseSupabase();        // Set up Supabase
-  fetchNotes(currentPage);   // Load first page of notes
+  diagnoseSupabase().then(() => {
+    fetchNotes(currentPage);
+  });
 });
+
 
 
 </script>    
