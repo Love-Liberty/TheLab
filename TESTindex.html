@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>9:53-7Aug</title>
+  <title>10:04-7Aug</title>
     <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -64,9 +64,9 @@
         const { data, error } = await supabase
           .from('notes')
           .select('*')
-          ; //order in db: author_id(required), audience_id, reply_to_id, title, content, status
-await insertNote(supabase,'0023236b-58d7-4c41-ba0f-45a7efc31847',null,null,'Title 7 aug from indexTest.html','Content:Testing writing from form');
-
+          ; //order in db: author_id(required), audience_id, reply_to_id, title, content, status. Below is a test write. Commented out 10:00 7 Aug
+//await insertNote(supabase,'0023236b-58d7-4c41-ba0f-45a7efc31847',null,null,'Title 7 aug from indexTest.html','Content:Testing writing from form');
+//Input form write to db is on line 1059
 
         if (error) {
           log('✗ Database read error:');
@@ -1073,7 +1073,7 @@ document.getElementById('save-notes').addEventListener('click', async () => {
     });
     
     // Initialize - show home page
-    document.getElementById('home-page').classList.remove('hidden');
+    document.getElementById('notes-page').classList.remove('hidden');
   </script>
 </body>
 </html>
