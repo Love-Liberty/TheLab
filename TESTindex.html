@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1eeply.0">
-  <title>14:56-7Aug  based on 11:46</title>
+  <title>15:14-7Aug  based on 11:46</title>
     <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -40,7 +40,7 @@ async function fetchNotes(page = 1) {
   renderNotes(data, count, page);
 }
 
-// 3    
+// 3    Display a page of notes in the 'output' div
 function renderNotes(notes, totalCount, page) {
   const output = document.getElementById('output');
   output.innerHTML = ''; // Clear previous content
@@ -92,12 +92,13 @@ function toggleContent(el) {
   }
 }
 
-// 6. Wait until the page is displayed, then call the function to fetch the page
 
-    document.addEventListener('DOMContentLoaded', () => {
-  fetchNotes(currentPage);
 });
 
+// 6. Wait until the page is displayed, then call the function to fetch the page
+
+  document.addEventListener('DOMContentLoaded', () => {fetchNotes(currentPage);
+    
 
 //----------end of new read & display page by page functions
     
