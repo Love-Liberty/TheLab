@@ -3,42 +3,233 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Lab</title>
-  <script src="https://cdn.tailwindcss.com"></script>
- <!-- Add the Supabase browser client -->
+  <title>18:29-7Aug  based on 11:46</title>
+    <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
 
-<script>
-   const supabaseUrl = 'https://kcdlbqotmuyyqvzzbxcn.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw';
 
-document.addEventListener('DOMContentLoaded', function() {
-  try {
-    const { createClient } = window.supabase;
-    
-    if (typeof createClient !== 'function') {
-      throw new Error('createClient is not a function');
-    }
-
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
-    
-    // Verify client methods
-    if (typeof supabase.from !== 'function') {
-      throw new Error('supabase.from is not a function');
-    }
-
-    console.log('Supabase client initialized successfully');
-    
-    // Your application initialization here
-  } catch (error) {
-    console.error('Supabase initialization failed:', error);
-  }
-});   
-</script>
   
-  <style>
+  <script>
+    function log(message) {
+      const output = document.getElementById('output');
+      output.textContent += message;
+      console.log(message);
+    }
+
+// Read and display pages of notes. New functions 14:46 7 Aug 2025    
+let currentPage = 1;
+const pageSize = 10;
+
+// 2. read a page of notes & call the render function
+async function fetchNotes(page = 1) {
+  const supabase = window.supabaseClient; // ✅ Pull from global
+
+  if (!supabase || typeof supabase.from !== 'function') {
+    console.error('Supabase client not initialized');
+    return;
+  }
+
+  const start = (page - 1) * pageSize;
+  const end = start + pageSize - 1;
+
+  const { data, count, error } = await supabase
+    .from('notes')
+    .select('*', { count: 'exact' })
+    .order('sort_int', { ascending: false })
+    .range(start, end);
+
+  if (error) {
+    console.error('Error fetching notes:', error);
+    return;
+  }
+
+  renderNotes(data, count, page);
+}
+
+// 3    Display a page of notes in the 'output' div
+function renderNotes(notes, totalCount, page) {
+  const output = document.getElementById('output');
+ // output.innerHTML = ''; // Clear previous content
+
+  const notesHtml = notes.map(note => {
+    const shortContent = note.content.length > 200
+      ? `${note.content.slice(0, 200)} <span class="text-blue-600 cursor-pointer" onclick="toggleContent(this)">[more]</span><span class="hidden">${note.content.slice(200)}</span>`
+      : note.content;
+
+    return `
+      <div class="mb-4 p-2 border-b border-blue-200">
+        <p><strong>ID:</strong> ${note.sort_int}</p>
+        <p><strong>Author:</strong> ${note.author_id.slice(0, 8)}</p>
+        <p><strong>Created:</strong> ${new Date(note.created_at).toLocaleString()}</p>
+        <p><strong>Content:</strong> ${shortContent}</p>
+      </div>
+    `;
+  }).join('');
+
+  const totalPages = Math.ceil(totalCount / pageSize);
+
+  const controls = `
+    <div class="flex items-center justify-between mt-4">
+      <button onclick="changePage(${page - 1})" ${page === 1 ? 'disabled' : ''}>[<-]</button>
+      <span>Page ${page} of ${totalPages}</span>
+      <button onclick="changePage(${page + 1})" ${page === totalPages ? 'disabled' : ''}>[->]</button>
+    </div>
+  `;
+
+  output.innerHTML = notesHtml + controls;
+}
+
+// 4. Store the count of what page we are on 
+function changePage(newPage) {
+  if (newPage < 1) return;
+  currentPage = newPage;
+  fetchNotes(currentPage);
+}
+    
+// 5. Handle 'more' / 'less' for long notes
+function toggleContent(el) {
+  const hiddenSpan = el.nextElementSibling;
+  if (hiddenSpan.classList.contains('hidden')) {
+    hiddenSpan.classList.remove('hidden');
+    el.textContent = '[less]';
+  } else {
+    hiddenSpan.classList.add('hidden');
+    el.textContent = '[more]';
+  }
+}
+
+
+//});
+
+    
+
+//----------end of new read & display page by page functions
+    
+
+    async function diagnoseSupabase() {
+      const supabaseUrl = 'https://kcdlbqotmuyyqvzzbxcn.supabase.co';
+      const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw';
+
+      log('Starting Supabase Diagnostic...');
+      log(`Supabase URL: ${supabaseUrl}`);
+      
+      try {
+        // Explicit client creation using the library's method
+        const { createClient } = window.supabase;
+        
+        if (typeof createClient !== 'function') {
+          throw new Error('createClient is not a function');
+        }
+
+        log('✓ Supabase createClient method found');
+
+        const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+          auth: {
+            persistSession: false
+          }
+        });
+            
+// Make the client globally accessible
+ window.supabaseClient = supabase;
+    log('✓ Supabase client created and assigned globally');
+//  } catch (erro) {
+  //  log('✗ Error during Supabase setup: ${erro.message}');}
+    
+
+    
+  // access globally with const supabase = window.globalSupabase; or window.globalSupabase
+          
+
+        log('✓ Supabase client created successfully');
+
+        // Verify the client has the 'from' method
+        if (typeof supabase.from !== 'function') {
+          throw new Error('supabase.from is not a function');
+        }
+
+        log('✓ Supabase client methods verified');
+
+        // Test database connection
+        const { data, error } = await supabase
+          .from('notes')
+          .select('*')
+          ; //order in db: author_id(required), audience_id, reply_to_id, title, content, status. Below is a test write. Commented out 10:00 7 Aug
+//await insertNote(supabase,'0023236b-58d7-4c41-ba0f-45a7efc31847',null,null,'Title 7 aug from indexTest.html','Content:Testing writing from form');
+//Input form write to db is on line 1059
+
+        if (error) {
+          log('✗ Database read error:');
+          log(JSON.stringify(error, null, 2));
+        } else {
+          log('✓ Successfully read from database');
+          log(`Records found: ${data.length}`);
+        }
+
+      } catch (err) {
+        log('✗ Diagnostic failed:');
+        log(err.message);
+        log(JSON.stringify(err, null, 2));
+      }
+      // 6. Wait until the page is displayed, then call the function to fetch the page
+
+//  document.addEventListener('DOMContentLoaded', () => {fetchNotes(currentPage);
+
+    }
+
+
+
+    
+//order in db: author_id(required), audience_id, reply_to_id, title, content, status
+async function insertNote(supabase, author_id,audience_id=null,reply_to_id=null, title = 'AutoTitle',content,status=null) {
+ 
+
+  try {
+    const { data, error } = await supabase
+      .from('notes')
+      .insert([
+        {
+          author_id: author_id,
+          audience_id: audience_id,
+          reply_to_id: reply_to_id,         
+          title: title,  
+          content: content,
+          status: status
+        }
+      ]);
+
+    if (error) {
+      log(`✗ Insert error:\n${JSON.stringify(error, null, 2)}`);
+    } else {
+      log('✓ Note successfully inserted into database');
+      log(`Inserted ID: ${data[0].id}`);
+    }
+  } catch (err) {
+    log(`✗ Unexpected insert error:\n${err.message}`);
+  }
+}
+
+
+    
+//document.addEventListener('DOMContentLoaded', diagnoseSupabase);
+document.addEventListener('DOMContentLoaded', () => {
+  diagnoseSupabase().then(() => {
+    fetchNotes(currentPage);
+  });
+});
+
+
+
+</script>    
+
+
+
+
+
+
+   <style>
     .transform-scale-75 {
-      transform: scale(0.75);
+      transform: scale(0.9);//this change from 0.75 to 0.9 had no effect
     }
     .origin-top-left {
       transform-origin: top left;
@@ -97,7 +288,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <body class="flex h-screen bg-gray-50">
   <div id="app" class="flex w-full h-full">
     <!-- Side Panel -->
-    <div class="w-1/4 bg-white border-r border-gray-200 p-6">
+    <div class="w-1/8 bg-white border-r border-gray-200 p-6">
       <h1 class="text-2xl font-bold text-gray-800 mb-8">The Lab</h1>
       <nav class="space-y-2">
         <button class="w-full text-left px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100 active-page" 
@@ -200,174 +391,175 @@ document.addEventListener('DOMContentLoaded', function() {
               </div>
             </div>
             
-            <!-- Notes Section -->
-            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-              <div class="flex items-center mb-4">
-                <h2 class="text-2xl font-bold text-gray-800">Notes</h2>
-                <span class="ml-2 text-sm text-gray-500">reminders or log of horrible errors</span>
-              </div>
-              <div class="text-center text-gray-400 py-8">
-                <div class="text-4xl mb-2">📝</div>
-                <p class="text-lg">Awaiting implementation</p>
-              </div>
-            </div>
+            <!-- Notes Section was here-->
+
           </div>
         </div>
         
         <!-- Notes Page Content -->
         <div id="notes-page" class="page-content hidden">
-          <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">Notes</h2>
+          <div class="flex w-full h-full">
+        <!--not needed as menu shows page name  <h2 class="text-2xl font-bold text-gray-800 mb-6">Notes</h2-->
+     <!-- Tagging above the note input -->
+      
+                    <div class="mb-6" >
+                <h4 class="text-md font-semibold mb-3 text-gray-700">🌐 Main click the word</h4>
+                <div class="flex flex-wrap gap-2 mb-3">
+                 <label class="flex items-center">
+                    <input type="checkbox" name="main" value="bug" checked class="mr-2 text-blue-600">
+                    <span class="text-sm">~bug</span>
+                  </label>
+                  <input type="checkbox" name="main" value="me" class="mr-2 text-blue-600">
+                    <span class="text-sm">~me</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" name="main" value="else" class="mr-2 text-blue-600">
+                    <span class="text-sm">~else</span>
+                  </label>                  
+                    <label class="flex items-center">
+                    <input type="checkbox" name="main" value="reply" class="mr-2 text-blue-600">
+                    <span class="text-sm">~reply</span>
+                  </label>
+                </div>
+
+<!-- Importance Tags -->
+              <div class="mb-6">
+                <h4 class="text-md font-semibold mb-3 text-gray-700">📶 Important?</h4>
+                <div class="flex flex-wrap gap-2 mb-3">
+                 <label class="flex items-center">
+                    <input type="radio" name="importance" value="1" class="mr-2 text-blue-600">
+                    <span class="text-sm">1</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="radio" name="importance" value="2" class="mr-2 text-blue-600">
+                    <span class="text-sm">2</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="radio" name="importance" value="3" checked class="mr-2 text-blue-600">
+                    <span class="text-sm">3</span>
+                  </label>                  
+                    <label class="flex items-center">
+                    <input type="radio" name="importance" value="4" class="mr-2 text-blue-600">
+                    <span class="text-sm">4</span>
+                  </label>
+
+                  </label>                  
+                    <label class="flex items-center">
+                    <input type="radio" name="importance" value="5" class="mr-2 text-blue-600">
+                    <span class="text-sm">5</span>
+                  </label>
+                </div></div></div>
+
+            <h1>Is this in flex?</h1>
+                    </div>
+          
+          </div>
+
             
             <!-- Note Input -->
             <div class="mb-6">
               <textarea id="note-content" 
-                        placeholder="Enter your notes here... (Stage 1 - no actual saving)" 
+                        placeholder="Enter your notes here... (Stage 2 - Saves to database-checkboxes not implemented)" 
                         class="w-full h-32 p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
             </div>
-            
-            <!-- Note Type Radio Buttons -->
-            <div class="mb-6">
-              <h3 class="text-lg font-semibold mb-3">Note Type</h3>
-              <div class="flex space-x-4">
-                <label class="flex items-center">
-                  <input type="radio" name="note_type" value="me" class="mr-2 text-blue-600">
-                  Me
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="note_type" value="bug" class="mr-2 text-blue-600" checked>
-                  Bug
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="note_type" value="else" class="mr-2 text-blue-600">
-                  Else
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="note_type" value="reply" class="mr-2 text-blue-600">
-                  Reply
-                </label>
-              </div>
-            </div>
-            
-            <!-- Importance Radio Buttons -->
-            <div class="mb-6">
-              <h3 class="text-lg font-semibold mb-3">Importance</h3>
-              <div class="flex flex-col space-y-2">
-                <label class="flex items-center">
-                  <input type="radio" name="importance" value="5" class="mr-2 text-blue-600">
-                  5
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="importance" value="4" class="mr-2 text-blue-600">
-                  4
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="importance" value="3" class="mr-2 text-blue-600" checked>
-                  3
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="importance" value="2" class="mr-2 text-blue-600">
-                  2
-                </label>
-                <label class="flex items-center">
-                  <input type="radio" name="importance" value="1" class="mr-2 text-blue-600">
-                  1
-                </label>
-              </div>
-            </div>
-            
+                   
             <!-- Tagging Section -->
-            <div class="mb-6">
-              <h3 class="text-lg font-semibold mb-3">Tag the note for easier retrieval</h3>
-              
-              <!-- Workflow & Process Tags -->
+      
+                  
+              <!-- Workflow Tags -->
               <div class="mb-6">
-                <h4 class="text-md font-semibold mb-3 text-gray-700">📝 Workflow & Process Tags</h4>
+                <!--h4 class="text-md font-semibold mb-3 text-gray-700">📝 Workflow: click the word</h4-->
                 <div class="flex flex-wrap gap-2 mb-3">
-                  <label class="flex items-center">
-                    <input type="checkbox" name="workflow" value="todo" class="mr-2 text-blue-600">
-                    <span class="text-sm">todo</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="workflow" value="idea" class="mr-2 text-blue-600">
-                    <span class="text-sm">idea</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="workflow" value="note" class="mr-2 text-blue-600">
-                    <span class="text-sm">note</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="workflow" value="blocker" class="mr-2 text-blue-600">
-                    <span class="text-sm">blocker</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="workflow" value="refactor" class="mr-2 text-blue-600">
-                    <span class="text-sm">refactor</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="workflow" value="meeting" class="mr-2 text-blue-600">
-                    <span class="text-sm">meeting</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="workflow" value="review" class="mr-2 text-blue-600">
-                    <span class="text-sm">review</span>
-                  </label>
-                </div>
-                <p class="text-sm text-gray-600 mb-4">
-                  Use these for navigating your development flow—planning, decision-making, and handling obstacles.
-                </p>
-              </div>
-              
-              <!-- External & Resource Tags -->
-              <div class="mb-6">
-                <h4 class="text-md font-semibold mb-3 text-gray-700">🌐 External & Resource Tags</h4>
-                <div class="flex flex-wrap gap-2 mb-3">
-                  <label class="flex items-center">
-                    <input type="checkbox" name="resource" value="insight" class="mr-2 text-blue-600">
-                    <span class="text-sm">insight</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="resource" value="resource" class="mr-2 text-blue-600">
-                    <span class="text-sm">resource</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="resource" value="hack" class="mr-2 text-blue-600">
-                    <span class="text-sm">hack</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="resource" value="howto" class="mr-2 text-blue-600">
-                    <span class="text-sm">howto</span>
-                  </label>
+                  
                   <label class="flex items-center">
                     <input type="checkbox" name="resource" value="diary" class="mr-2 text-blue-600">
-                    <span class="text-sm">diary</span>
-                  </label>
-                </div>
-                <p class="text-sm text-gray-600 mb-4">
-                  Ideal for logging clever tricks, external references, lessons learned, and internal reflections.
-                </p>
-              </div>
-              
-              <!-- Emotional & Experience Tags -->
-              <div class="mb-6">
-                <h4 class="text-md font-semibold mb-3 text-gray-700">🎭 Emotional & Experience Tags</h4>
-                <div class="flex flex-wrap gap-2 mb-3">
+                    <span class="text-sm">~diary</span>
+                  </label>  
                   <label class="flex items-center">
-                    <input type="checkbox" name="emotion" value="disaster" class="mr-2 text-blue-600">
+                    <input type="checkbox" name="emotion" value="~disaster" class="mr-2 text-blue-600">
                     <span class="text-sm">disaster</span>
                   </label>
                   <label class="flex items-center">
                     <input type="checkbox" name="emotion" value="triumph" class="mr-2 text-blue-600">
-                    <span class="text-sm">triumph</span>
+                    <span class="text-sm">~triumph</span>
                   </label>
                   <label class="flex items-center">
                     <input type="checkbox" name="emotion" value="rant" class="mr-2 text-blue-600">
-                    <span class="text-sm">rant</span>
+                    <span class="text-sm">~rant</span>
                   </label>
                 </div>
-                <p class="text-sm text-gray-600">
+                    <div class="flex flex-wrap gap-2 mb-3">
+                  <label class="flex items-center">
+                    <input type="checkbox" name="workflow" value="todo" class="mr-2 text-blue-600">
+                    <span class="text-sm">~todo</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" name="workflow" value="idea" class="mr-2 text-blue-600">
+                    <span class="text-sm">~idea</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" name="workflow" value="note" class="mr-2 text-blue-600">
+                    <span class="text-sm">~note</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" name="workflow" value="blocker" class="mr-2 text-blue-600">
+                    <span class="text-sm">~block</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" name="workflow" value="refactor" class="mr-2 text-blue-600">
+                    <span class="text-sm">~refactor</span>
+                  </label>
+                  
+                  <label class="flex items-center">
+                    <input type="checkbox" name="resource" value="hack" class="mr-2 text-blue-600">
+                    <span class="text-sm">~hack</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" name="workflow" value="meeting" class="mr-2 text-blue-600">
+                    <span class="text-sm">~meeting</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" name="workflow" value="review" class="mr-2 text-blue-600">
+                    <span class="text-sm">~review</span>
+                  </label>
+                </div>
+                <!--p class="text-sm text-gray-600 mb-4">
+                  Use these for navigating your development flow—planning, decision-making, and handling obstacles.
+              </p-->
+              </div>
+              
+              <!-- External & Resource Tags -->
+              <div class="mb-6">
+                <!--h4 class="text-md font-semibold mb-3 text-gray-700">🌐 External & Resource click the word</h4-->
+                <div class="flex flex-wrap gap-2 mb-3">
+                  <label class="flex items-center">
+                    <input type="checkbox" name="resource" value="insight" class="mr-2 text-blue-600">
+                    <span class="text-sm">~insight</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" name="resource" value="resource" class="mr-2 text-blue-600">
+                    <span class="text-sm">~resource</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" name="resource" value="howto" class="mr-2 text-blue-600">
+                    <span class="text-sm">~howto</span>
+                  </label>
+                 
+                  </label>
+                </div>
+                <!--p class="text-sm text-gray-600 mb-4">
+                  Ideal for logging clever tricks, external references, lessons learned, and internal reflections.
+              </p-->
+              </div>
+              
+              <!-- Emotional & Experience Tags -->
+              <div class="mb-6">
+                <h4 class="text-md font-semibold mb-3 text-gray-700">🎭 Emotional & Experience click the word</h4>
+                <div class="flex flex-wrap gap-2 mb-3">
+                                 </div>
+                <!--p class="text-sm text-gray-600">
                   Capture the highs, lows, and candid moments that make the journey memorable (and searchable).
-                </p>
+              </p-->
               </div>
             </div>
             
@@ -382,7 +574,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             
             <!-- Future Functionality Info -->
-            <div class="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div id='output' class="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
               <p class="text-blue-800">
                 <strong>Future functionality:</strong> The implementation of NOTES will use a database table. 
                 Eventually it will be a logging system to record bugs as well as reminders and a scratch pad for temporary 'sticky notes'
@@ -962,42 +1154,14 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
     
-  document.getElementById('save-notes').addEventListener('click', async () => {
-  const noteContent = document.getElementById('note-content').value || '';
-  const authorId = 'b63b1db0-3f43-43a2-8c7f-77da04812e8c'; // Replace with dynamic user ID if needed
-  const title = 'Quick note entry'; // You could source this from a form field
-
-  if (!noteContent.trim()) {
-    alert('🛑 Please enter some text before saving');
-    return;
-  }
-
-  try {
-    const { data, error } = await supabase
-      .from('notes')
-      .insert([
-        {
-          author_id: authorId,
-          audience_id: null,
-          reply_to_id: null,
-          title: title,
-          content: noteContent,
-          status: null
-        }
-      ]);
-
-    if (error) {
-      console.error('Insert error:', error);
-      alert('❌ Failed to save note. See console for details.');
-    } else {
-      alert('✅ Note successfully saved to database');
-      console.log('Insert response:', data);
-    }
-  } catch (err) {
-    console.error('Unexpected insert error:', err);
-    alert('⚠️ Something went wrong saving the note');
-  }
+document.getElementById('save-notes').addEventListener('click', async () => {
+  const content = document.getElementById('note-content').value;
+  const author_id = '4023236b-58d7-4c41-ba0f-45a7efc31847'; // Later fetch dynamically
+  const title = 'Note from UI';
+//order in db: author_id(required), audience_id, reply_to_id, title, content, status
+  await insertNote(window.supabaseClient, author_id, null,null,title, content);
 });
+
 
 
 
@@ -1012,7 +1176,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Initialize - show home page
-    document.getElementById('home-page').classList.remove('hidden');
+    document.getElementById('notes-page').classList.remove('hidden');
   </script>
 </body>
 </html>
+
+
+ 
