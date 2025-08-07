@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1eeply.0">
-  <title>13:48-7Aug  based on 11:46</title>
+  <title>14:56-7Aug  based on 11:46</title>
     <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -16,6 +16,91 @@
       output.textContent += message + '<break>';
       console.log(message);
     }
+
+// Read and display pages of notes. New functions 14:46 7 Aug 2025    
+let currentPage = 1;
+const pageSize = 10;
+
+// 2. read a page of notes & call the render function
+async function fetchNotes(page = 1) {
+  const start = (page - 1) * pageSize;
+  const end = start + pageSize - 1;
+
+  const { data, count, error } = await supabase
+    .from('notes')
+    .select('*', { count: 'exact' }) // Get total count for pagination
+    .order('sort_id', { ascending: true })
+    .range(start, end);
+
+  if (error) {
+    console.error('Error fetching notes:', error);
+    return;
+  }
+
+  renderNotes(data, count, page);
+}
+
+// 3    
+function renderNotes(notes, totalCount, page) {
+  const output = document.getElementById('output');
+  output.innerHTML = ''; // Clear previous content
+
+  const notesHtml = notes.map(note => {
+    const shortContent = note.content.length > 200
+      ? `${note.content.slice(0, 200)} <span class="text-blue-600 cursor-pointer" onclick="toggleContent(this)">[more]</span><span class="hidden">${note.content.slice(200)}</span>`
+      : note.content;
+
+    return `
+      <div class="mb-4 p-2 border-b border-blue-200">
+        <p><strong>ID:</strong> ${note.sort_id}</p>
+        <p><strong>Author:</strong> ${note.author_id.slice(0, 8)}</p>
+        <p><strong>Created:</strong> ${new Date(note.created_at).toLocaleString()}</p>
+        <p><strong>Content:</strong> ${shortContent}</p>
+      </div>
+    `;
+  }).join('');
+
+  const totalPages = Math.ceil(totalCount / pageSize);
+
+  const controls = `
+    <div class="flex items-center justify-between mt-4">
+      <button onclick="changePage(${page - 1})" ${page === 1 ? 'disabled' : ''}>[<-]</button>
+      <span>Page ${page} of ${totalPages}</span>
+      <button onclick="changePage(${page + 1})" ${page === totalPages ? 'disabled' : ''}>[->]</button>
+    </div>
+  `;
+
+  output.innerHTML = notesHtml + controls;
+}
+
+// 4. Store the count of what page we are on 
+function changePage(newPage) {
+  if (newPage < 1) return;
+  currentPage = newPage;
+  fetchNotes(currentPage);
+}
+    
+// 5. Handle 'more' / 'less' for long notes
+function toggleContent(el) {
+  const hiddenSpan = el.nextElementSibling;
+  if (hiddenSpan.classList.contains('hidden')) {
+    hiddenSpan.classList.remove('hidden');
+    el.textContent = '[less]';
+  } else {
+    hiddenSpan.classList.add('hidden');
+    el.textContent = '[more]';
+  }
+}
+
+// 6. Wait until the page is displayed, then call the function to fetch the page
+
+    document.addEventListener('DOMContentLoaded', () => {
+  fetchNotes(currentPage);
+});
+
+
+//----------end of new read & display page by page functions
+    
 
     async function diagnoseSupabase() {
       const supabaseUrl = 'https://kcdlbqotmuyyqvzzbxcn.supabase.co';
@@ -84,6 +169,8 @@
     }
 
 
+
+    
 //order in db: author_id(required), audience_id, reply_to_id, title, content, status
 async function insertNote(supabase, author_id,audience_id=null,reply_to_id=null, title = 'AutoTitle',content,status=null) {
  
