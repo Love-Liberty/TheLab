@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>10:28-7Aug</title>
+  <title>10:36-7Aug</title>
     <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -336,7 +336,7 @@ document.addEventListener('DOMContentLoaded', diagnoseSupabase);
             </div>
            */ 
             <!-- Importance Radio Buttons -->
-            <div class="mb-6">
+       /*     <div class="mb-6">
               <h3 class="text-lg font-semibold mb-3">Importance</h3>
               <div class="flex flex-col space-y-2">
                 <label class="flex items-center">
@@ -360,7 +360,7 @@ document.addEventListener('DOMContentLoaded', diagnoseSupabase);
                   1
                 </label>
               </div>
-            </div>
+            </div>  */
             
             <!-- Tagging Section -->
             <div class="mb-6">
@@ -370,12 +370,23 @@ document.addEventListener('DOMContentLoaded', diagnoseSupabase);
               <div class="mb-6">
                 <h4 class="text-md font-semibold mb-3 text-gray-700">📝 Workflow & Process Tags</h4>
                 <div class="flex flex-wrap gap-2 mb-3">
+                  
                   <label class="flex items-center">
                     <input type="checkbox" name="workflow" value="me" class="mr-2 text-blue-600">
                     <span class="text-sm">me</span>
                   </label>
- 
-                  
+                  <label class="flex items-center">
+                    <input type="checkbox" name="workflow" value="bug" class="mr-2 text-blue-600">
+                    <span class="text-sm">bug</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" name="workflow" value="else" class="mr-2 text-blue-600">
+                    <span class="text-sm">else</span>
+                  </label>                  
+                    <label class="flex items-center">
+                    <input type="checkbox" name="workflow" value="reply" class="mr-2 text-blue-600">
+                    <span class="text-sm">reply</span>
+                  </label>
                   
                   <label class="flex items-center">
                     <input type="checkbox" name="workflow" value="todo" class="mr-2 text-blue-600">
