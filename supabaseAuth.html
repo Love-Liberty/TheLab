@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Supabase Authentication</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 400px; 
+            margin: 0 auto; 
+            padding: 20px; 
+        }
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .auth-form input {
+            padding: 10px;
+            margin: 5px 0;
+        }
+        .auth-form button {
+            padding: 10px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #user-section, #auth-section {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="auth-section">
+        <h2>Authentication</h2>
+        <div class="auth-form">
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button onclick="signUp()">Sign Up</button>
+            <button onclick="signIn()">Sign In</button>
+            <button onclick="signInWithGoogle()">Sign In with Google</button>
+        </div>
+    </div>
+
+    <div id="user-section">
+        <h2>Welcome, <span id="user-email"></span>!</h2>
+        <button onclick="signOut()">Sign Out</button>
+    </div>
+
+    <script>
+        // Supabase Configuration
+        const supabaseUrl = 'https://kxdplsvojxgdskbbfonp.supabase.co';
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw';
+        
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+        // Authentication State Management
+        async function checkUser() {
+            const { data: { user } } = await supabase.auth.getUser();
+            
+            const authSection = document.getElementById('auth-section');
+            const userSection = document.getElementById('user-section');
+            
+            if (user) {
+                authSection.style.display = 'none';
+                userSection.style.display = 'block';
+                document.getElementById('user-email').textContent = user.email;
+            } else {
+                authSection.style.display = 'block';
+                userSection.style.display = 'none';
+            }
+        }
+
+        // Sign Up
+        async function signUp() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const { data, error } = await supabase.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    // Optional: Send email verification
+                    emailRedirectTo: window.location.origin
+                }
+            });
+
+            if (error) {
+                alert('Sign Up Error: ' + error.message);
+            } else {
+                alert('Check your email for verification!');
+                checkUser();
+            }
+        }
+
+        // Sign In
+        async function signIn() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+
+            if (error) {
+                alert('Sign In Error: ' + error.message);
+            } else {
+                checkUser();
+            }
+        }
+
+        // Google Sign In
+        async function signInWithGoogle() {
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.origin
+                }
+            });
+
+            if (error) {
+                alert('Google Sign In Error: ' + error.message);
+            }
+        }
+
+        // Sign Out
+        async function signOut() {
+            const { error } = await supabase.auth.signOut();
+            checkUser();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Listen for auth state changes
+            supabase.auth.onAuthStateChange((event, session) => {
+                checkUser();
+            });
+
+            // Initial user check
+            checkUser();
+        });
+    </script>
+</body>
+</html>
