@@ -1,8 +1,9 @@
 // Initialize Supabase client
 const supabase = window.supabase.createClient(
-    'YOUR_SUPABASE_URL', 
-    'YOUR_SUPABASE_ANON_KEY'
-);
+'https://kcdlbqotmuyyqvzzbxcn.supabase.co', 
+'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw'
+);      
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const resetForm = document.getElementById('reset-form');
