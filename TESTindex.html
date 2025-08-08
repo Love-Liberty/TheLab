@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>16:35-8Aug  based on 11:46</title>
+  <title>16:37-8Aug  based on 11:46</title>
     <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -543,28 +543,23 @@ document.addEventListener('DOMContentLoaded', () => {
 </div>
               
               <!-- Resource Tags -->
-              <div class="mb-6">
-                <!--h4 class="text-md font-semibold mb-3 text-gray-700">🌐 External & Resource click the word</h4-->
-                <div class="flex flex-wrap gap-2 mb-3">
-                  <label class="flex items-center">
-                    <input type="checkbox" name="resource" value="insight" class="mr-2 text-blue-600">
-                    <span class="text-sm">~insight</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="resource" value="resource" class="mr-2 text-blue-600">
-                    <span class="text-sm">~resource</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="resource" value="howto" class="mr-2 text-blue-600">
-                    <span class="text-sm">~howto</span>
-                  </label>
-                 
-                  </label>
-                </div>
-                <!--p class="text-sm text-gray-600 mb-4">
-                  Ideal for logging clever tricks, external references, lessons learned, and internal reflections.
-              </p-->
-              </div>
+        <div class="mb-6" id="TagSection021">
+  <h5 class="text-md font-semibold mb-3 text-gray-700">📚 Resource Tags</h5>
+  <div class="flex flex-wrap gap-2 mb-3">
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection022">
+      <input type="checkbox" id="tag-resource-insight" name="resource" value="insight" class="mr-2 text-blue-600">
+      <label for="tag-resource-insight">~insight</label>
+    </div>
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection023">
+      <input type="checkbox" id="tag-resource-resource" name="resource" value="resource" class="mr-2 text-blue-600">
+      <label for="tag-resource-resource">~resource</label>
+    </div>
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection024">
+      <input type="checkbox" id="tag-resource-howto" name="resource" value="howto" class="mr-2 text-blue-600">
+      <label for="tag-resource-howto">~howto</label>
+    </div>
+  </div>
+</div>
               
               <!-- Emotional & Experience Tags -->
               <div class="mb-6">
