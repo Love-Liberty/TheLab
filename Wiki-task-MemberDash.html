@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>T&M System Assign Task: Persons, Bridging, Tracking</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      line-height: 1.6;
+      color: #222;
+    }
+    h1, h2 {
+      color: #004080;
+    }
+    code {
+      background: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    blockquote {
+      border-left: 3px solid #ccc;
+      padding-left: 1rem;
+      color: #555;
+      margin: 1rem 0;
+    }
+    .section {
+      margin-bottom: 2rem;
+    }
+
+  .relationship-flow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem auto;
+    gap: 1rem;
+  }
+
+  .flow-box {
+    padding: 0.75rem 1.25rem;
+    background-color: #f0f8ff;
+    border: 2px solid #004080;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+    min-width: 120px;
+    color: #004080;
+  }
+
+  .arrow {
+    font-size: 1.5rem;
+    color: #666;
+  }
+
+  .task-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1rem;
+    border: 2px solid #004080;
+    border-radius: 8px;
+    background-color: #e6f0ff;
+  }
+
+  .task-header {
+    font-weight: bold;
+    color: #004080;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .meta-label {
+    font-size: 0.75rem;
+    color: #666;
+    margin-bottom: 0.25rem;
+  }
+
+  .step-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .step-box {
+    flex: 1;
+    min-width: 100px;
+    background-color: #f9fcff;
+    border: 1.5px solid #004080;
+    border-radius: 6px;
+    padding: 0.5rem;
+    text-align: center;
+  }
+
+  .step-title {
+    font-weight: bold;
+    color: #004080;
+    margin-bottom: 0.25rem;
+  }
+
+  .meta-label-small {
+    font-size: 0.65rem;
+    color: #888;
+  }
+
+  .step-box.ghost {
+    background-color: #f0f0f0;
+    border-style: dashed;
+    color: #999;
+  }
+
+
+
+
+
+</style>
+    
+</head>
+<body>
+
+<div>
+
+
+
+    
+  <h3>Component Purpose</h3>
+  <p>The <code>MemberDashboard</code> component serves as the primary landing page for a logged-in user. It provides a comprehensive overview of the user's profile, key statistics related to their progress, a list of their active tasks, and a collection of quick actions.</p>
+
+  <h3>Key Functionality</h3>
+  <ul>
+    <li>
+      <h4>User Authentication and Profile Display</h4>
+      <p>It uses an authentication context to retrieve and display the user's profile details, including their name, email, avatar, join date, and last login time. This information is presented in a dedicated section on the left side of the dashboard. It also includes an "Edit Profile" button.</p>
+    </li>
+    <li>
+      <h4>Dynamic Statistics and Data Fetching</h4>
+      <p>The component fetches real-time data from a database (Supabase) to show the user's active and available tasks. It presents these stats in a series of cards alongside mock data for completed tasks and learning hours, providing a quick, visual summary of their performance.</p>
+    </li>
+    <li>
+      <h4>Task Management Overview</h4>
+      <p>The dashboard displays a list of the user's assigned tasks (currently using mock data). Each task entry shows its name, a description, and a progress bar indicating the current stage. A sub-section for each task details the name and description of the current stage, with buttons to navigate between stages.</p>
+    </li>
+    <li>
+      <h4>Quick Actions and Navigation</h4>
+      <p>A "Quick Actions" section provides a set of buttons for common user actions, such as inviting a friend, copying a recruitment link, checking rewards, and contacting support. This section streamlines the user experience by offering shortcuts to important features.</p>
+    </li>
+  </ul>
+</div>
+
+</body>
+
+
+
+<div class="task-container">
+  <div class="task-header">Task</div>
+  <div class="meta-label">name</div>
+  <div class="meta-label">description</div>
+
+  <div class="step-group">
+    <div class="step-box">
+      <div class="step-title">Abandoned</div>
+      <div class="meta-label-small">name</div>
+      <div class="meta-label-small">description</div>
+    </div>
+    <div class="step-box">
+      <div class="step-title">Completed</div>
+      <div class="meta-label-small">name</div>
+      <div class="meta-label-small">description</div>
+    </div>
+    <div class="step-box">
+      <div class="step-title">Step 3</div>
+      <div class="meta-label-small">name</div>
+      <div class="meta-label-small">description</div>
+    </div>
+    <div class="step-box ghost">
+      <div class="step-title">More Steps</div>
+      <div class="meta-label-small">name</div>
+      <div class="meta-label-small">description</div>
+    </div>
+  </div>
+</div>
+
+
+    
+        
+
+
+<div class="task-container">
+  <div class="task-header">Profile</div>
+  <div class="meta-label">name</div>
+  <div class="meta-label">email</div>
+
+  <div class="step-group">
+    <div class="step-box">
+      <div class="step-title">Author</div>
+      <div class="meta-label-small">Created a task</div>
+      <div class="meta-label-small">date done</div>
+    </div>
+    <div class="step-box ghost">
+      <div class="step-title">Student</div>
+      <div class="meta-label-small">name</div>
+      <div class="meta-label-small">Task Name</div>
+<div class="meta-label-small">Step Number</div>        
+    </div>
+          <div class="step-box ghost">
+      <div class="step-title">Manager</div>
+      <div class="meta-label-small">name</div>
+      <div class="meta-label-small"></div>
+              <div class="meta-label-small">Task name</div>
+    </div>
+
+  </div>
+</div>
+
+    
+      
+
+
+  <div class="relationship-flow">
+    <div class="flow-box">Task tracking within T&M</div>
+    <div> not directly connected to </div>
+    <div class="flow-box">The real task</div>
+  </div>
+<p>      <h2>Recap</h2></p>
+
+    
+          
+
+  <div class="section">
+    <h2>Roles and Context</h2>
+    <ul>
+      <li><strong>Author</strong>: Emerges when a profile creates a task.</li>
+      <li><strong>Student</strong>: Defined by a task assignment.</li>
+      <li><strong>Manager</strong>: Assigned during task creation or via assignment metadata.</li>
+    </ul>
+    <p>Roles are ephemeral and contextual — not inherent to the profile itself.</p>
+  </div>
+
+
+  </body>
+
+  <footer>
+    <p><em>4 August 2025.</em></p>
+  </footer>
+</body>
+</html>

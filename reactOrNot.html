@@ -1,0 +1,974 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Lab</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .transform-scale-75 {
+      transform: scale(0.75);
+    }
+    .origin-top-left {
+      transform-origin: top left;
+    }
+    .prose {
+      max-width: none;
+    }
+    .prose p {
+      margin-bottom: 1em;
+    }
+    .prose ul {
+      margin-bottom: 1em;
+      padding-left: 1.5em;
+    }
+    .prose li {
+      margin-bottom: 0.5em;
+    }
+    .prose h4 {
+      margin: 1em 0 0.5em 0;
+      font-size: 1.125em;
+    }
+  </style>
+</head>
+<body class="flex h-screen bg-gray-50">
+  <div id="root"></div>
+
+  <script>
+    // App component
+    function App() {
+      const [activePage, setActivePage] = React.useState('home');
+      const [noteContent, setNoteContent] = React.useState('');
+      const [noteType, setNoteType] = React.useState('bug');
+      const [importance, setImportance] = React.useState('3');
+      const [noteTags, setNoteTags] = React.useState([]);
+      
+      // Initialize card data for each page separately so they can be independently edited
+      const [linksCardData, setLinksCardData] = React.useState(Array.from({ length: 15 }, (_, i) => ({
+        id: `links-${i + 1}`,
+        name: `A${(i % 5) + 1}`,
+        section: String.fromCharCode(65 + Math.floor(i / 5)),
+        content: `Link ${(i % 5) + 1}`
+      })));
+      
+      const [scriptsCardData, setScriptsCardData] = React.useState(Array.from({ length: 15 }, (_, i) => ({
+        id: `scripts-${i + 1}`,
+        name: `A${(i % 5) + 1}`,
+        section: String.fromCharCode(65 + Math.floor(i / 5)),
+        content: `Script ${(i % 5) + 1}`
+      })));
+      
+      // Data page links and card data
+      const initialDataLinks = [
+        { name: 'React Documentation', url: 'https://react.dev/learn' },
+        { name: 'W3Schools React Intro', url: 'https://www.w3schools.com/react/react_intro.asp' },
+        { name: 'TailwindCSS v2 Docs', url: 'https://v2.tailwindcss.com/docs' },
+        { name: 'CommonMark Markdown Help', url: 'https://commonmark.org/help/' },
+        { name: 'CodePen', url: 'https://codepen.io' },
+        { name: 'Raphaël JS Library', url: 'https://raphael.org' },
+        { name: 'Bing Images', url: 'https://www.bing.com/images' },
+        { name: 'Microsoft Copilot', url: 'https://copilot.microsoft.com/' },
+        { name: 'Google Gemini', url: 'https://gemini.google.com/app' },
+        { name: 'GitHub', url: 'https://github.com' },
+      ];
+      
+      const [dataCardData, setDataCardData] = React.useState(Array.from({ length: 15 }, (_, i) => {
+        const linkIndex = i % initialDataLinks.length;
+        return {
+          id: `data-${i + 1}`,
+          name: `A${(i % 5) + 1}`,
+          section: String.fromCharCode(65 + Math.floor(i / 5)),
+          ...initialDataLinks[linkIndex]
+        };
+      }));
+      
+      // State for editing
+      const [editingCard, setEditingCard] = React.useState(null);
+      const [editName, setEditName] = React.useState('');
+      const [editUrl, setEditUrl] = React.useState('');
+      const [currentPage, setCurrentPage] = React.useState('');
+      
+      const menuItems = [
+        { id: 'home', label: 'Home', tooltip: 'Display of error messages or output from scripts' },
+        { id: 'notes', label: 'Notes', tooltip: 'Where to type & store text without formatting' },
+        { id: 'links', label: 'Links', tooltip: 'Where to find your scripts, wisdom & email' },
+        { id: 'data', label: 'Data', tooltip: 'Lists of any files you regard as not executable' },
+        { id: 'scripts', label: 'Scripts', tooltip: 'Lists of files you regard as executable' },
+        { id: 'plan', label: 'Plan', tooltip: 'What we are aiming to do, heaven helps us' }
+      ];
+      
+      // Handle card editing
+      const handleCardClick = (card, pageType) => {
+        setEditingCard(card.id);
+        setEditName(card.name);
+        setEditUrl(card.url || '');
+        setCurrentPage(pageType);
+      };
+      
+      // Save edited card
+      const handleSaveEdit = () => {
+        if (!editingCard) return;
+        
+        // Update the appropriate card data based on current page
+        if (currentPage === 'data') {
+          setDataCardData(prev => prev.map(card => 
+            card.id === editingCard 
+              ? { ...card, name: editName, url: editUrl }
+              : card
+          ));
+        } else if (currentPage === 'links') {
+          setLinksCardData(prev => prev.map(card => 
+            card.id === editingCard 
+              ? { ...card, name: editName, content: editName }
+              : card
+          ));
+        } else if (currentPage === 'scripts') {
+          setScriptsCardData(prev => prev.map(card => 
+            card.id === editingCard 
+              ? { ...card, name: editName, content: editName }
+              : card
+          ));
+        }
+        
+        // Show alert about database save (future implementation)
+        alert(`Card updated! In future, this will save to the 'external_links' database table.`);
+        
+        // Reset editing state
+        setEditingCard(null);
+        setEditName('');
+        setEditUrl('');
+      };
+      
+      // Cancel editing
+      const handleCancelEdit = () => {
+        setEditingCard(null);
+        setEditName('');
+        setEditUrl('');
+      };
+      
+      // Render edit form when a card is being edited
+      const renderEditForm = () => {
+        if (!editingCard) return null;
+        return React.createElement('div', {
+          className: 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'
+        },
+          React.createElement('div', {
+            className: 'bg-white p-6 rounded-lg shadow-xl max-w-md w-full'
+          },
+            React.createElement('h3', {
+              className: 'text-lg font-semibold mb-4'
+            }, 'Edit Card'),
+            
+            React.createElement('div', {
+              className: 'space-y-4'
+            },
+              React.createElement('div', null,
+                React.createElement('label', {
+                  className: 'block text-sm font-medium text-gray-700 mb-1'
+                }, 'Name'),
+                React.createElement('input', {
+                  type: 'text',
+                  value: editName,
+                  onChange: (e) => setEditName(e.target.value),
+                  className: 'w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                })
+              ),
+              
+              (currentPage === 'data') && React.createElement('div', null,
+                React.createElement('label', {
+                  className: 'block text-sm font-medium text-gray-700 mb-1'
+                }, 'URL'),
+                React.createElement('input', {
+                  type: 'url',
+                  value: editUrl,
+                  onChange: (e) => setEditUrl(e.target.value),
+                  className: 'w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                })
+              )
+            ),
+            
+            React.createElement('div', {
+              className: 'flex justify-end space-x-3 mt-6'
+            },
+              React.createElement('button', {
+                onClick: handleCancelEdit,
+                className: 'px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50'
+              }, 'Cancel'),
+              
+              React.createElement('button', {
+                onClick: handleSaveEdit,
+                className: 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700'
+              }, 'Save')
+            )
+          )
+        );
+      };
+      
+      const handleClearNotes = () => {
+        if (window.confirm('Are you sure you want to clear all notes?')) {
+          setNoteContent('');
+        }
+      };
+      
+      const handleSaveNotes = () => {
+        alert('Notes saved (Stage 1 - no actual saving)');
+      };
+      
+      const toggleTag = (tag) => {
+        setNoteTags(prev => 
+          prev.includes(tag) 
+            ? prev.filter(t => t !== tag)
+            : [...prev, tag]
+        );
+      };
+      
+      const renderHomePage = () => {
+        return React.createElement('div', {
+          className: 'space-y-6'
+        },
+          // Instructions Section
+          React.createElement('div', {
+            className: 'bg-white p-6 rounded-lg shadow-sm border border-gray-200'
+          },
+            React.createElement('div', {
+              className: 'flex items-center mb-4'
+            },
+              React.createElement('h2', {
+                className: 'text-2xl font-bold text-gray-800'
+              }, 'Instructions'),
+              React.createElement('span', {
+                className: 'ml-2 text-sm text-gray-500'
+              }, 'They said it was easy')
+            ),
+            
+            React.createElement('div', {
+              className: 'prose max-w-none text-gray-700'
+            },
+              React.createElement('p', null,
+                React.createElement('strong', null, 'To use The Lab you need to have an account at GitHub'),
+                ' ',
+                React.createElement('a', {
+                  href: 'https://github.com',
+                  target: '_blank',
+                  rel: 'noopener noreferrer',
+                  className: 'text-blue-600 hover:text-blue-800 underline'
+                }, '[Learn how]')
+              ),
+              
+              React.createElement('p', null,
+                React.createElement('strong', null, 'You also need an account at Supabase'),
+                ' ',
+                React.createElement('a', {
+                  href: 'https://supabase.com',
+                  target: '_blank',
+                  rel: 'noopener noreferrer',
+                  className: 'text-blue-600 hover:text-blue-800 underline'
+                }, '[Learn how]')
+              ),
+              
+              React.createElement('p', null,
+                React.createElement('strong', null, 'Both need to be connected to your account at Lovable'),
+                ' ',
+                React.createElement('a', {
+                  href: 'https://lovable.ai',
+                  target: '_blank',
+                  rel: 'noopener noreferrer',
+                  className: 'text-blue-600 hover:text-blue-800 underline'
+                }, '[Learn how]')
+              ),
+              
+              React.createElement('p', null, 'In addition you need to know where to put pages and how to get them recognised by Lovable. If you put them in the wrong places… don’t.'),
+              
+              React.createElement('p', null, 'Here are some initial instructions…'),
+              
+              React.createElement('h4', {
+                className: 'text-lg font-semibold mt-4'
+              }, 'How to include a new webpage:'),
+              
+              React.createElement('ul', {
+                className: 'list-disc pl-5 space-y-1'
+              },
+                React.createElement('li', null, 'Create your HTML file in the appropriate folder (usually /pages or /src)'),
+                React.createElement('li', null, 'Edit the navigation configuration file to include your new page'),
+                React.createElement('li', null, 'Add the route to your routing configuration'),
+                React.createElement('li', null, 'Commit and push to your GitHub repository'),
+                React.createElement('li', null, 'Lovable will automatically recognize and deploy your new page')
+              ),
+              
+              React.createElement('h4', {
+                className: 'text-lg font-semibold mt-4'
+              }, 'Adding a new script:'),
+              
+              React.createElement('ul', {
+                className: 'list-disc pl-5 space-y-1'
+              },
+                React.createElement('li', null, 'Scripts should be placed in the /scripts or /src/utils folder'),
+                React.createElement('li', null, 'Ensure your script follows the required format (JavaScript/TypeScript)'),
+                React.createElement('li', null, 'Reference your script in the appropriate HTML or component file'),
+                React.createElement('li', null, 'Test locally before committing'),
+                React.createElement('li', null, 'Push to GitHub for automatic deployment')
+              )
+            )
+          ),
+          
+          // Dynamic Web Pages Section
+          React.createElement('div', {
+            className: 'bg-white p-6 rounded-lg shadow-sm border border-gray-200'
+          },
+            React.createElement('div', {
+              className: 'flex items-center mb-4'
+            },
+              React.createElement('h2', {
+                className: 'text-2xl font-bold text-gray-800'
+              }, 'Dynamic Web Pages'),
+              React.createElement('span', {
+                className: 'ml-2 text-sm text-gray-500'
+              }, 'They change, they click')
+            ),
+            
+            React.createElement('div', {
+              className: 'text-center text-gray-400 py-8'
+            },
+              React.createElement('div', {
+                className: 'text-4xl mb-2'
+              }, '🖱️'),
+              React.createElement('p', {
+                className: 'text-lg'
+              }, 'Awaiting implementation')
+            )
+          ),
+          
+          // Static Web Pages Section
+          React.createElement('div', {
+            className: 'bg-white p-6 rounded-lg shadow-sm border border-gray-200'
+          },
+            React.createElement('div', {
+              className: 'flex items-center mb-4'
+            },
+              React.createElement('h2', {
+                className: 'text-2xl font-bold text-gray-800'
+              }, 'Static Web Pages'),
+              React.createElement('span', {
+                className: 'ml-2 text-sm text-gray-500'
+              }, 'Text, pics, that do nothing')
+            ),
+            
+            React.createElement('div', {
+              className: 'text-center text-gray-400 py-8'
+            },
+              React.createElement('div', {
+                className: 'text-4xl mb-2'
+              }, '📄'),
+              React.createElement('p', {
+                className: 'text-lg'
+              }, 'Awaiting implementation')
+            )
+          ),
+          
+          // Backend Section
+          React.createElement('div', {
+            className: 'bg-white p-6 rounded-lg shadow-sm border border-gray-200'
+          },
+            React.createElement('div', {
+              className: 'flex items-center mb-4'
+            },
+              React.createElement('h2', {
+                className: 'text-2xl font-bold text-gray-800'
+              }, 'Backend'),
+              React.createElement('span', {
+                className: 'ml-2 text-sm text-gray-500'
+              }, 'Code under test')
+            ),
+            
+            React.createElement('div', {
+              className: 'text-center text-gray-400 py-8'
+            },
+              React.createElement('div', {
+                className: 'text-4xl mb-2'
+              }, '⚙️'),
+              React.createElement('p', {
+                className: 'text-lg'
+              }, 'Awaiting implementation')
+            )
+          ),
+          
+          // Notes Section
+          React.createElement('div', {
+            className: 'bg-white p-6 rounded-lg shadow-sm border border-gray-200'
+          },
+            React.createElement('div', {
+              className: 'flex items-center mb-4'
+            },
+              React.createElement('h2', {
+                className: 'text-2xl font-bold text-gray-800'
+              }, 'Notes'),
+              React.createElement('span', {
+                className: 'ml-2 text-sm text-gray-500'
+              }, 'reminders or log of horrible errors')
+            ),
+            
+            React.createElement('div', {
+              className: 'text-center text-gray-400 py-8'
+            },
+              React.createElement('div', {
+                className: 'text-4xl mb-2'
+              }, '📝'),
+              React.createElement('p', {
+                className: 'text-lg'
+              }, 'Awaiting implementation')
+            )
+          )
+        );
+      };
+      
+      const renderNotesPage = () => {
+        return React.createElement('div', {
+          className: 'space-y-6'
+        },
+          React.createElement('div', {
+            className: 'bg-white p-6 rounded-lg shadow-sm border border-gray-200'
+          },
+            React.createElement('h2', {
+              className: 'text-2xl font-bold text-gray-800 mb-6'
+            }, 'Notes'),
+            
+            // Note Input
+            React.createElement('div', {
+              className: 'mb-6'
+            },
+              React.createElement('textarea', {
+                value: noteContent,
+                onChange: (e) => setNoteContent(e.target.value),
+                placeholder: 'Enter your notes here... (Stage 1 - no actual saving)',
+                className: 'w-full h-32 p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+              })
+            ),
+            
+            // Note Type Radio Buttons
+            React.createElement('div', {
+              className: 'mb-6'
+            },
+              React.createElement('h3', {
+                className: 'text-lg font-semibold mb-3'
+              }, 'Note Type'),
+              
+              React.createElement('div', {
+                className: 'flex space-x-4'
+              },
+                [
+                  { value: 'me', label: 'Me' },
+                  { value: 'bug', label: 'Bug' },
+                  { value: 'else', label: 'Else' },
+                  { value: 'reply', label: 'Reply' }
+                ].map(option => 
+                  React.createElement('label', {
+                    key: option.value,
+                    className: 'flex items-center'
+                  },
+                    React.createElement('input', {
+                      type: 'radio',
+                      name: 'note_type',
+                      value: option.value,
+                      checked: noteType === option.value,
+                      onChange: (e) => setNoteType(e.target.value),
+                      className: 'mr-2 text-blue-600'
+                    }),
+                    option.label
+                  )
+                )
+              )
+            ),
+            
+            // Importance Radio Buttons
+            React.createElement('div', {
+              className: 'mb-6'
+            },
+              React.createElement('h3', {
+                className: 'text-lg font-semibold mb-3'
+              }, 'Importance'),
+              
+              React.createElement('div', {
+                className: 'flex flex-col space-y-2'
+              },
+                [5, 4, 3, 2, 1].map(level => 
+                  React.createElement('label', {
+                    key: level,
+                    className: 'flex items-center'
+                  },
+                    React.createElement('input', {
+                      type: 'radio',
+                      name: 'importance',
+                      value: level,
+                      checked: importance === level.toString(),
+                      onChange: (e) => setImportance(e.target.value),
+                      className: 'mr-2 text-blue-600'
+                    }),
+                    level
+                  )
+                )
+              )
+            ),
+            
+            // Tagging Section
+            React.createElement('div', {
+              className: 'mb-6'
+            },
+              React.createElement('h3', {
+                className: 'text-lg font-semibold mb-3'
+              }, 'Tag the note for easier retrieval'),
+              
+              // Workflow & Process Tags
+              React.createElement('div', {
+                className: 'mb-6'
+              },
+                React.createElement('h4', {
+                  className: 'text-md font-semibold mb-3 text-gray-700'
+                }, '📝 Workflow & Process Tags'),
+                
+                React.createElement('div', {
+                  className: 'flex flex-wrap gap-2 mb-3'
+                },
+                  ['todo', 'idea', 'note', 'blocker', 'refactor', 'meeting', 'review'].map(tag => 
+                    React.createElement('label', {
+                      key: tag,
+                      className: 'flex items-center'
+                    },
+                      React.createElement('input', {
+                        type: 'checkbox',
+                        name: 'workflow',
+                        value: tag,
+                        checked: noteTags.includes(tag),
+                        onChange: () => toggleTag(tag),
+                        className: 'mr-2 text-blue-600'
+                      }),
+                      React.createElement('span', {
+                        className: 'text-sm'
+                      }, tag)
+                    )
+                  )
+                ),
+                
+                React.createElement('p', {
+                  className: 'text-sm text-gray-600 mb-4'
+                }, 'Use these for navigating your development flow—planning, decision-making, and handling obstacles.')
+              ),
+              
+              // External & Resource Tags
+              React.createElement('div', {
+                className: 'mb-6'
+              },
+                React.createElement('h4', {
+                  className: 'text-md font-semibold mb-3 text-gray-700'
+                }, '🌐 External & Resource Tags'),
+                
+                React.createElement('div', {
+                  className: 'flex flex-wrap gap-2 mb-3'
+                },
+                  ['insight', 'resource', 'hack', 'howto', 'diary'].map(tag => 
+                    React.createElement('label', {
+                      key: tag,
+                      className: 'flex items-center'
+                    },
+                      React.createElement('input', {
+                        type: 'checkbox',
+                        name: 'resource',
+                        value: tag,
+                        checked: noteTags.includes(tag),
+                        onChange: () => toggleTag(tag),
+                        className: 'mr-2 text-blue-600'
+                      }),
+                      React.createElement('span', {
+                        className: 'text-sm'
+                      }, tag)
+                    )
+                  )
+                ),
+                
+                React.createElement('p', {
+                  className: 'text-sm text-gray-600 mb-4'
+                }, 'Ideal for logging clever tricks, external references, lessons learned, and internal reflections.')
+              ),
+              
+              // Emotional & Experience Tags
+              React.createElement('div', {
+                className: 'mb-6'
+              },
+                React.createElement('h4', {
+                  className: 'text-md font-semibold mb-3 text-gray-700'
+                }, '🎭 Emotional & Experience Tags'),
+                
+                React.createElement('div', {
+                  className: 'flex flex-wrap gap-2 mb-3'
+                },
+                  ['disaster', 'triumph', 'rant'].map(tag => 
+                    React.createElement('label', {
+                      key: tag,
+                      className: 'flex items-center'
+                    },
+                      React.createElement('input', {
+                        type: 'checkbox',
+                        name: 'emotion',
+                        value: tag,
+                        checked: noteTags.includes(tag),
+                        onChange: () => toggleTag(tag),
+                        className: 'mr-2 text-blue-600'
+                      }),
+                      React.createElement('span', {
+                        className: 'text-sm'
+                      }, tag)
+                    )
+                  )
+                ),
+                
+                React.createElement('p', {
+                  className: 'text-sm text-gray-600'
+                }, 'Capture the highs, lows, and candid moments that make the journey memorable (and searchable).')
+              )
+            ),
+            
+            // Buttons
+            React.createElement('div', {
+              className: 'flex space-x-4'
+            },
+              React.createElement('button', {
+                onClick: handleClearNotes,
+                className: 'px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors'
+              }, 'Clear all'),
+              
+              React.createElement('button', {
+                onClick: handleSaveNotes,
+                className: 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors'
+              }, 'Save/Send')
+            ),
+            
+            // Future Functionality Info
+            React.createElement('div', {
+              className: 'mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg'
+            },
+              React.createElement('p', {
+                className: 'text-blue-800'
+              },
+                React.createElement('strong', null, 'Future functionality:'),
+                ' The implementation of NOTES will use a database table. ',
+                'Eventually it will be a logging system to record bugs as well as reminders and a scratch pad for temporary \'sticky notes\''
+              )
+            )
+          )
+        );
+      };
+      
+      const renderLinksPage = () => {
+        return React.createElement('div', {
+          className: 'space-y-6'
+        },
+          React.createElement('div', {
+            className: 'bg-white p-6 rounded-lg shadow-sm border border-gray-200'
+          },
+            React.createElement('h2', {
+              className: 'text-2xl font-bold text-gray-800 mb-2'
+            }, 'Links'),
+            
+            React.createElement('p', {
+              className: 'text-gray-600 mb-6'
+            }, 'This is where links to run various scripts will be located.'),
+            
+            ['A', 'B', 'C'].map(section => 
+              React.createElement('div', {
+                key: section,
+                className: 'mb-8'
+              },
+                React.createElement('h3', {
+                  className: 'text-xl font-semibold text-gray-700 mb-4'
+                }, section),
+                
+                React.createElement('div', {
+                  className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3'
+                },
+                  linksCardData
+                    .filter(card => card.section === section)
+                    .map(card => 
+                      React.createElement('div', {
+                        key: card.id,
+                        onClick: () => handleCardClick(card, 'links'),
+                        className: 'bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left'
+                      },
+                        React.createElement('div', {
+                          className: 'text-xl mb-1'
+                        }, '📄'),
+                        React.createElement('p', {
+                          className: 'font-medium text-sm'
+                        }, card.name),
+                        React.createElement('p', {
+                          className: 'text-xs text-gray-500 mt-1'
+                        }, card.content)
+                      )
+                    )
+                )
+              )
+            )
+          )
+        );
+      };
+      
+      const renderDataPage = () => {
+        return React.createElement('div', {
+          className: 'space-y-6'
+        },
+          React.createElement('div', {
+            className: 'bg-white p-6 rounded-lg shadow-sm border border-gray-200'
+          },
+            React.createElement('h2', {
+              className: 'text-2xl font-bold text-gray-800 mb-2'
+            }, 'Data'),
+            
+            React.createElement('p', {
+              className: 'text-gray-600 mb-6'
+            }, 'This will be where lists will be of files that the user regards as not executables, such as instructions, and design ideas.'),
+            
+            ['A', 'B', 'C'].map(section => 
+              React.createElement('div', {
+                key: section,
+                className: 'mb-8'
+              },
+                React.createElement('h3', {
+                  className: 'text-xl font-semibold text-gray-700 mb-4'
+                }, section),
+                
+                React.createElement('div', {
+                  className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3'
+                },
+                  dataCardData
+                    .filter(card => card.section === section)
+                    .map(card => 
+                      React.createElement('div', {
+                        key: card.id,
+                        onClick: () => handleCardClick(card, 'data'),
+                        className: 'bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left'
+                      },
+                        React.createElement('div', {
+                          className: 'text-xl mb-1'
+                        }, '📄'),
+                        React.createElement('p', {
+                          className: 'font-medium text-sm'
+                        }, card.name),
+                        React.createElement('p', {
+                          className: 'text-xs text-gray-500 mt-1 truncate'
+                        }, card.url)
+                      )
+                    )
+                )
+              )
+            )
+          )
+        );
+      };
+      
+      const renderScriptsPage = () => {
+        return React.createElement('div', {
+          className: 'space-y-6'
+        },
+          React.createElement('div', {
+            className: 'bg-white p-6 rounded-lg shadow-sm border border-gray-200'
+          },
+            React.createElement('h2', {
+              className: 'text-2xl font-bold text-gray-800 mb-2'
+            }, 'Scripts'),
+            
+            React.createElement('p', {
+              className: 'text-gray-600 mb-6'
+            }, 'This is where lists will be of files the user regards as executable files that have been added to the sandbox.'),
+            
+            ['A', 'B', 'C'].map(section => 
+              React.createElement('div', {
+                key: section,
+                className: 'mb-8'
+              },
+                React.createElement('h3', {
+                  className: 'text-xl font-semibold text-gray-700 mb-4'
+                }, section),
+                
+                React.createElement('div', {
+                  className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3'
+                },
+                  scriptsCardData
+                    .filter(card => card.section === section)
+                    .map(card => 
+                      React.createElement('div', {
+                        key: card.id,
+                        onClick: () => handleCardClick(card, 'scripts'),
+                        className: 'bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left'
+                      },
+                        React.createElement('div', {
+                          className: 'text-xl mb-1'
+                        }, '📄'),
+                        React.createElement('p', {
+                          className: 'font-medium text-sm'
+                        }, card.name),
+                        React.createElement('p', {
+                          className: 'text-xs text-gray-500 mt-1'
+                        }, card.content)
+                      )
+                    )
+                )
+              )
+            )
+          )
+        );
+      };
+      
+      const renderPlanPage = () => {
+        return React.createElement('div', {
+          className: 'space-y-6'
+        },
+          React.createElement('div', {
+            className: 'bg-white p-6 rounded-lg shadow-sm border border-gray-200'
+          },
+            React.createElement('h2', {
+              className: 'text-2xl font-bold text-gray-800 mb-2'
+            }, 'Plan'),
+            
+            React.createElement('p', {
+              className: 'text-gray-600 mb-6'
+            }, 'Where hopes die'),
+            
+            React.createElement('div', {
+              className: 'space-y-8'
+            },
+              React.createElement('div', null,
+                React.createElement('h3', {
+                  className: 'text-xl font-semibold text-gray-700 mb-4'
+                }, 'Stage 2'),
+                
+                React.createElement('ul', {
+                  className: 'list-disc pl-5 space-y-2 text-gray-700'
+                },
+                  React.createElement('li', null, 'Connect The Lab with Github repository'),
+                  React.createElement('li', null, 'Connect The Lab with Supabase'),
+                  React.createElement('li', null, 'Enable editable links on card components'),
+                  React.createElement('li', null, 'Implement step by step instructions published on The Lab web pages'),
+                  React.createElement('li', null, 'Test creating additional static and dynamic pages edited at Github and committed to the project'),
+                  React.createElement('li', null, 'Create the initial database tables & any needed webpages to interact with them')
+                )
+              ),
+              
+              React.createElement('div', null,
+                React.createElement('h3', {
+                  className: 'text-xl font-semibold text-gray-700 mb-4'
+                }, 'Stage 3'),
+                
+                React.createElement('ul', {
+                  className: 'list-disc pl-5 space-y-2 text-gray-700'
+                },
+                  React.createElement('li', null, 'Connect the notes page to a database table & program basic functionality'),
+                  React.createElement('li', null, 'Store Notes in Supabase database'),
+                  React.createElement('li', null, 'Log user progress or bugs'),
+                  React.createElement('li', null, 'Build a first test project by making the Notes page functional'),
+                  React.createElement('li', null, 'Use this to create step by step instructions on how to create a working database+webpage')
+                )
+              ),
+              
+              React.createElement('div', null,
+                React.createElement('h3', {
+                  className: 'text-xl font-semibold text-gray-700 mb-4'
+                }, 'Stage 4'),
+                
+                React.createElement('ul', {
+                  className: 'list-disc pl-5 space-y-2 text-gray-700'
+                },
+                  React.createElement('li', null, 'Create a \'profiles\' TABLE and a simple sign-in form for invited test users'),
+                  React.createElement('li', null, 'Publish the web app but only allow invited users to have access to the messaging system')
+                )
+              ),
+              
+              React.createElement('div', null,
+                React.createElement('h3', {
+                  className: 'text-xl font-semibold text-gray-700 mb-4'
+                }, 'Stage 5'),
+                
+                React.createElement('ul', {
+                  className: 'list-disc pl-5 space-y-2 text-gray-700'
+                },
+                  React.createElement('li', null, 'Build an instructions database and dynamic page production based on a store of tagged code snippets, how to lists, advice and instructions')
+                )
+              )
+            )
+          )
+        );
+      };
+      
+      const renderContent = () => {
+        switch (activePage) {
+          case 'home':
+            return renderHomePage();
+          case 'notes':
+            return renderNotesPage();
+          case 'links':
+            return renderLinksPage();
+          case 'data':
+            return renderDataPage();
+          case 'scripts':
+            return renderScriptsPage();
+          case 'plan':
+            return renderPlanPage();
+          default:
+            return renderHomePage();
+        }
+      };
+      
+      return React.createElement('div', {
+        className: 'flex h-screen bg-gray-50'
+      },
+        // Side Panel
+        React.createElement('div', {
+          className: 'w-1/4 bg-white border-r border-gray-200 p-6'
+        },
+          React.createElement('h1', {
+            className: 'text-2xl font-bold text-gray-800 mb-8'
+          }, 'The Lab'),
+          
+          React.createElement('nav', {
+            className: 'space-y-2'
+          },
+            menuItems.map(item => 
+              React.createElement('button', {
+                key: item.id,
+                onClick: () => setActivePage(item.id),
+                className: `w-full text-left px-4 py-3 rounded-lg transition-colors ${
+                  activePage === item.id
+                    ? 'bg-blue-100 text-blue-800 border-l-4 border-blue-500'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`,
+                title: item.tooltip
+              }, item.label)
+            )
+          )
+        ),
+        
+        // Main Panel
+        React.createElement('div', {
+          className: 'w-3/4 bg-amber-50 p-8'
+        },
+          React.createElement('div', {
+            className: 'max-w-4xl mx-auto'
+          },
+            renderContent()
+          )
+        ),
+        
+        // Edit Modal
+        renderEditForm()
+      );
+    }
+    
+    // Render the app
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(React.createElement(App));
+  </script>
+
+  <!-- Load React -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+</body>
+</html>
+```
