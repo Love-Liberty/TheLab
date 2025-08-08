@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>16:08-8Aug  based on 11:46</title>
+  <title>16:12-8Aug  based on 11:46</title>
     <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -474,28 +474,27 @@ document.addEventListener('DOMContentLoaded', () => {
             <!-- More Tagging Section -->
       
                   
-              <!-- Events Tags -->
-              <div class="mb-6">
-                <!--h4 class="text-md font-semibold mb-3 text-gray-700">📝 Workflow: click the word</h4-->
-                <div class="flex flex-wrap gap-2 mb-3">
-                  
-                  <label class="flex items-center">
-                    <input type="checkbox" name="events" value="diary" class="mr-2 text-blue-600">
-                    <span class="text-sm">~diary</span>
-                  </label>  
-                  <label class="flex items-center">
-                    <input type="checkbox" name="events" value="disaster" class="mr-2 text-blue-600">
-                    <span class="text-sm">~disaster</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="events" value="triumph" class="mr-2 text-blue-600">
-                    <span class="text-sm">~triumph</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="events" value="rant" class="mr-2 text-blue-600">
-                    <span class="text-sm">~rant</span>
-                  </label>
-                </div></div>
+       <div class="mb-6" id="TagSection006">
+  <h4 class="text-md font-semibold mb-3 text-gray-700">📝 Events Tags</h4>
+  <div class="flex flex-wrap gap-2 mb-3">
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection007">
+      <input type="checkbox" id="tag-events-diary" name="events" value="diary" class="mr-2 text-blue-600">
+      <label for="tag-events-diary">~diary</label>
+    </div>
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection008">
+      <input type="checkbox" id="tag-events-disaster" name="events" value="disaster" class="mr-2 text-blue-600">
+      <label for="tag-events-disaster">~disaster</label>
+    </div>
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection009">
+      <input type="checkbox" id="tag-events-triumph" name="events" value="triumph" class="mr-2 text-blue-600">
+      <label for="tag-events-triumph">~triumph</label>
+    </div>
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection010">
+      <input type="checkbox" id="tag-events-rant" name="events" value="rant" class="mr-2 text-blue-600">
+      <label for="tag-events-rant">~rant</label>
+    </div>
+  </div>
+</div>
 
 <!-- process Tags -->
         <div class="mb-6">
