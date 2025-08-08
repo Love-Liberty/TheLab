@@ -1,0 +1,165 @@
+<body>
+  <b>Comms</b>
+  <ul>
+    <li>Cid : bigint, NO</li>
+    <li>CDate : timestamp with time zone, NO</li>
+    <li>CFrom : uuid, YES</li>
+    <li>CTo : uuid, YES</li>
+    <li>CReply : bigint, YES</li>
+    <li>CText : text, YES</li>
+  </ul>
+
+  <b>app_event_labels</b>
+  <ul>
+    <li>id : bigint, NO</li>
+    <li>code : text, NO</li>
+    <li>name : text, YES</li>
+    <li>description : text, YES</li>
+  </ul>
+
+  <b>app_event_log</b>
+  <ul>
+    <li>id : bigint, NO</li>
+    <li>event_label_id : bigint, NO <em>(Foreign key to app_event_labels.id)</em></li>
+    <li>actor_id : uuid, YES <em>(Foreign key to profiles.id)</em></li>
+    <li>affected_id : uuid, YES</li>
+    <li>created_at : timestamp with time zone, NO</li>
+  </ul>
+
+  <b>profiles</b>
+  <ul>
+    <li>id : uuid, NO</li>
+    <li>username : character varying, YES</li>
+    <li>full_name : text, YES</li>
+    <li>website : text, YES</li>
+    <li>avatar_url : text, YES</li>
+    <li>updated_at : timestamp with time zone, YES</li>
+    <li>email : text, NO</li>
+    <li>phone : text, YES</li>
+    <li>created_at : timestamp with time zone, YES</li>
+    <li>notes : text, YES</li>
+  </ul>
+
+  <b>role_permissions</b>
+  <ul>
+    <li>id : bigint, NO</li>
+    <li>role : USER-DEFINED, NO</li>
+    <li>permission : USER-DEFINED, NO</li>
+  </ul>
+
+  <b>task_assignments</b>
+  <ul>
+    <li>id : uuid, NO</li>
+    <li>task_header_id : uuid, NO <em>(Foreign key to task_headers.id)</em></li>
+    <li>student_id : uuid, NO</li>
+    <li>manager_id : uuid, YES</li>
+    <li>assigned_at : timestamp with time zone, NO</li>
+    <li>completed_at : timestamp with time zone, YES</li>
+    <li>abandoned_at : timestamp with time zone, YES</li>
+    <li>step_id : uuid, NO <em>(Foreign key to task_steps.id)</em></li>
+  </ul>
+
+  <b>task_headers</b>
+  <ul>
+    <li>id : uuid, NO</li>
+    <li>name : text, NO</li>
+    <li>description : text, YES</li>
+    <li>external_url : text, YES</li>
+    <li>created_at : timestamp with time zone, NO</li>
+    <li>author_id : uuid, NO</li>
+  </ul>
+
+  <b>task_steps</b>
+  <ul>
+    <li>id : uuid, NO</li>
+    <li>task_header_id : uuid, NO <em>(Foreign key to task_headers.id)</em></li>
+    <li>name : text, NO</li>
+    <li>description : text, YES</li>
+    <li>step_order : integer, NO</li>
+    <li>created_at : timestamp with time zone, NO</li>
+    <li>author_id : uuid, YES</li>
+    <li>external_url : text, YES</li>
+  </ul>
+
+  <b>user_roles</b>
+  <ul>
+    <li>id : bigint, NO</li>
+    <li>user_id : uuid, NO</li>
+    <li>role : USER-DEFINED, NO</li>
+  </ul>
+</body>
+
+
+
+
+
+
+
+
+constraint_name,table_name,column_name,foreign_table_name,foreign_column_name
+task_stages_task_header_id_fkey,task_steps,task_header_id,task_headers,id
+task_assignments_task_header_id_fkey,task_assignments,task_header_id,task_headers,id
+task_assignments_step_id_fkey,task_assignments,step_id,task_steps,id
+app_event_log_actor_id_fkey,app_event_log,actor_id,profiles,id
+app_event_log_event_label_id_fkey,app_event_log,event_label_id,app_event_labels,id
+
+
+
+
+
+
+
+table_name,column_name,data_type,is_nullable
+Comms,Cid,bigint,NO
+Comms,CDate,timestamp with time zone,NO
+Comms,CFrom,uuid,YES
+Comms,CTo,uuid,YES
+Comms,CReply,bigint,YES
+Comms,CText,text,YES
+app_event_labels,id,bigint,NO
+app_event_labels,code,text,NO
+app_event_labels,name,text,YES
+app_event_labels,description,text,YES
+app_event_log,id,bigint,NO
+app_event_log,event_label_id,bigint,NO
+app_event_log,actor_id,uuid,YES
+app_event_log,affected_id,uuid,YES
+app_event_log,created_at,timestamp with time zone,NO
+profiles,id,uuid,NO
+profiles,username,character varying,YES
+profiles,full_name,text,YES
+profiles,website,text,YES
+profiles,avatar_url,text,YES
+profiles,updated_at,timestamp with time zone,YES
+profiles,email,text,NO
+profiles,phone,text,YES
+profiles,created_at,timestamp with time zone,YES
+profiles,notes,text,YES
+role_permissions,id,bigint,NO
+role_permissions,role,USER-DEFINED,NO
+role_permissions,permission,USER-DEFINED,NO
+task_assignments,id,uuid,NO
+task_assignments,task_header_id,uuid,NO
+task_assignments,student_id,uuid,NO
+task_assignments,manager_id,uuid,YES
+task_assignments,assigned_at,timestamp with time zone,NO
+task_assignments,completed_at,timestamp with time zone,YES
+task_assignments,abandoned_at,timestamp with time zone,YES
+task_assignments,step_id,uuid,NO
+task_headers,id,uuid,NO
+task_headers,name,text,NO
+task_headers,description,text,YES
+task_headers,external_url,text,YES
+task_headers,created_at,timestamp with time zone,NO
+task_headers,author_id,uuid,NO
+task_steps,id,uuid,NO
+task_steps,task_header_id,uuid,NO
+task_steps,name,text,NO
+task_steps,description,text,YES
+task_steps,step_order,integer,NO
+task_steps,created_at,timestamp with time zone,NO
+task_steps,author_id,uuid,YES
+task_steps,external_url,text,YES
+user_roles,id,bigint,NO
+user_roles,user_id,uuid,NO
+user_roles,role,USER-DEFINED,NO
