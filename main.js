@@ -250,31 +250,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlField = document.getElementById('url-field');
     
     // Page navigation
-    document.querySelectorAll('[data-page]').forEach(button => {
-      button.addEventListener('click', (e) => {
-        // Remove active class from all buttons
-        document.querySelectorAll('[data-page]').forEach(btn => {
-          btn.classList.remove('active-page', 'bg-blue-100', 'text-blue-800', 'border-l-4', 'border-blue-500');
-          btn.classList.add('text-gray-700');
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all menu buttons
+    const menuButtons = document.querySelectorAll('[data-page]');
+    const pageSections = document.querySelectorAll('.page-content');
+    
+    // Add click event listeners to all menu buttons
+    menuButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            const targetPage = e.target.getAttribute('data-page');
+            
+            // Remove active class from all buttons
+            menuButtons.forEach(btn => {
+                btn.classList.remove('active-page', 'bg-blue-100', 'text-blue-800', 'border-l-4', 'border-blue-500');
+                btn.classList.add('text-gray-700');
+            });
+            
+            // Add active class to clicked button
+            e.target.classList.add('active-page', 'bg-blue-100', 'text-blue-800', 'border-l-4', 'border-blue-500');
+            e.target.classList.remove('text-gray-700');
+            
+            // Hide all page sections
+            pageSections.forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show the selected page
+            document.getElementById(`${targetPage}-page`).classList.remove('hidden');
         });
-        
-        // Add active class to clicked button
-        e.target.classList.add('active-page', 'bg-blue-100', 'text-blue-800', 'border-l-4', 'border-blue-500');
-        e.target.classList.remove('text-gray-700');
-        
-        // Hide all pages
-        document.querySelectorAll('.page-content').forEach(page => {
-          page.classList.add('hidden');
-        });
-        
-        // Show selected page
-        const pageId = e.target.getAttribute('data-page') + '-page';
-        document.getElementById(pageId).classList.remove('hidden');
-        
-        // Update active page
-        activePage = e.target.getAttribute('data-page');
-      });
     });
+    
+    // Initialize - show home page by default
+    document.getElementById('home-page').classList.remove('hidden');
+    document.querySelector('[data-page="home"]').classList.add('active-page', 'bg-blue-100', 'text-blue-800', 'border-l-4', 'border-blue-500');
+    
+    // Rest of your JavaScript code for other functionality
+    // (card editing, modal, etc.)
+});
     
     // Card editing functionality
     document.querySelectorAll('[data-card-id]').forEach(card => {
