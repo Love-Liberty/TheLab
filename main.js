@@ -315,10 +315,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-
+//Need to delay some actions until the page exists
 document.addEventListener('DOMContentLoaded', function() {
-
-
+//inside a function need to grab those parts...
+ const modal = document.getElementById('edit-modal');
+    const cancelEditBtn = document.getElementById('cancel-edit');
+    
 
     // Modal buttons
     document.getElementById('cancel-edit').addEventListener('click', () => {
