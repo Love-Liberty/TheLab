@@ -155,39 +155,46 @@ inputGroups.forEach(group => {
         fetchNotes(currentPage);
     };
 
-    /**
-     * Inserts a new note into the Supabase database.
-     * @param {Object} supabase The Supabase client instance.
-     * @param {string} author_id The ID of the note's author.
-     * @param {string} audience_id The ID of the intended audience (optional).
-     * @param {string} reply_to_id The ID of the note this is a reply to (optional).
-     * @param {string} title The title of the note (defaults to 'AutoTitle').
-     * @param {string} content The main content of the note.
-     * @param {string} status The status of the note (optional).
-     */
-    async function insertNote(supabase, author_id, audience_id = null, reply_to_id = null, title = 'AutoTitle', content, status = null) {
-        try {
-            const { data, error } = await supabase
-                .from('notes')
-                .insert([{
-                    author_id: author_id,
-                    audience_id: audience_id,
-                    reply_to_id: reply_to_id,
-                    title: title,
-                    content: content,
-                    status: status
-                }]);
+/**
+ * Inserts a new note into the Supabase 'notes' table and returns the new ID.
+ *
+ * @param {object} supabase - The Supabase client instance.
+ * @param {string} author_id - The ID of the author.
+ * @param {string|null} [audience_id=null] - The ID of the audience.
+ * @param {string|null} [reply_to_id=null] - The ID of the note this is a reply to.
+ * @param {string} [title='AutoTitle'] - The title of the note.
+ * @param {string} content - The content of the note.
+ * @param {string|null} [status=null] - The status of the note.
+ * @returns {Promise<string|null>} A promise that resolves to the new note's ID, or null if an error occurred.
+ */
+async function insertNote(supabase, author_id, audience_id = null, reply_to_id = null, title = 'AutoTitle', content, status = null) {
+    try {
+        const { data, error } = await supabase
+            .from('notes')
+            .insert([{
+                author_id: author_id,
+                audience_id: audience_id,
+                reply_to_id: reply_to_id,
+                title: title,
+                content: content,
+                status: status
+            }])
+            .select(); // Add .select() to get the inserted data back
 
-            if (error) {
-                log(`✗ Insert error:\n${JSON.stringify(error, null, 2)}`);
-            } else {
-                log('✓ Note successfully inserted into database');
-                log(`Inserted ID: ${data[0].id}`);
-            }
-        } catch (err) {
-            log(`✗ Unexpected insert error:\n${err.message}`);
+        if (error) {
+            console.error(`✗ Insert error:\n${JSON.stringify(error, null, 2)}`);
+            return null; // Return null on error
+        } else {
+            console.log('✓ Note successfully inserted into database');
+            const newNoteId = data[0].id;
+            console.log(`Inserted ID: ${newNoteId}`);
+            return newNoteId; // Return the new ID
         }
+    } catch (err) {
+        console.error(`✗ Unexpected insert error:\n${err.message}`);
+        return null; // Return null on unexpected error
     }
+}
 
     /**
      * Performs a diagnostic check on the Supabase connection and client.
