@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupGroupListener(group);
   });
   // Next step: insert note, get note ID, validate tags, write to notes_categorised
-});
+
 
 
 // end of checkbox trial    
