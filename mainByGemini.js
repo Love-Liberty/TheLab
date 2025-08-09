@@ -8,7 +8,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
 //trial of reading checkboxes
-
+console.log('addListeners21:53');
 // An array of all the input group names we want to listen for.
   const inputGroups = ['main', 'importance', 'events', 'process', 'business', 'resource'];
 
@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   };
+};
 
   // Call the setup function for each group in our array.
   inputGroups.forEach(group => {
