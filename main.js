@@ -313,7 +313,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     });
-    
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+
+
+
     // Modal buttons
     document.getElementById('cancel-edit').addEventListener('click', () => {
       modal.classList.remove('show');
@@ -408,4 +414,6 @@ document.getElementById('save-notes').addEventListener('click', async () => {
     
     // Initialize - show home page
     document.getElementById('notes-page').classList.remove('hidden');
+
+ });
 //  </script>
