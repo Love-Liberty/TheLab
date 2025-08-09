@@ -88,34 +88,75 @@ function toggleContent(el) {
 }
 
 // 6. Diagnose Supabase connection
-async function diagnoseSupabase() {
-        const supabaseUrl = 'https://kcdlbqotmuyyqvzzbxcn.supabase.co';
-      const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw';  
-  try {
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-    window.supabaseClient = supabase;
-    
-    log('✓ Supabase client created');
-    log('Attempting to read from database...');
-    
-    const { data, error } = await supabase
-      .from('notes')
-      .select('count(*)', { count: 'exact' })
-      .limit(1);
+    async function diagnoseSupabase() {
+      const supabaseUrl = 'https://kcdlbqotmuyyqvzzbxcn.supabase.co';
+      const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw';
+
+      log('Starting Supabase Diagnostic...');
+      log(`Supabase URL: ${supabaseUrl}`);
       
-    if (error) {
-      log('✗ Database read failed:');
-      log(JSON.stringify(error, null, 2));
-    } else {
-      log('✓ Successfully read from database');
-      log(`Records found: ${data.length}`);
+      try {
+        // Explicit client creation using the library's method
+        const { createClient } = window.supabase;
+        
+        if (typeof createClient !== 'function') {
+          throw new Error('createClient is not a function');
+        }
+
+        log('✓ Supabase createClient method found');
+
+        const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+          auth: {
+            persistSession: false
+          }
+        });
+            
+// Make the client globally accessible
+ window.supabaseClient = supabase;
+    log('✓ Supabase client created and assigned globally');
+//  } catch (erro) {
+  //  log('✗ Error during Supabase setup: ${erro.message}');}
+    
+
+    
+  // access globally with const supabase = window.globalSupabase; or window.globalSupabase
+          
+
+        log('✓ Supabase client created successfully');
+
+        // Verify the client has the 'from' method
+        if (typeof supabase.from !== 'function') {
+          throw new Error('supabase.from is not a function');
+        }
+
+        log('✓ Supabase client methods verified');
+
+        // Test database connection
+        const { data, error } = await supabase
+          .from('notes')
+          .select('*')
+          ; //order in db: author_id(required), audience_id, reply_to_id, title, content, status. Below is a test write. Commented out 10:00 7 Aug
+//await insertNote(supabase,'0023236b-58d7-4c41-ba0f-45a7efc31847',null,null,'Title 7 aug from indexTest.html','Content:Testing writing from form');
+//Input form write to db is on line 1059
+
+        if (error) {
+          log('✗ Database read error:');
+          log(JSON.stringify(error, null, 2));
+        } else {
+          log('✓ Successfully read from database');
+          log(`Records found: ${data.length}`);
+        }
+
+      } catch (err) {
+        log('✗ Diagnostic failed:');
+        log(err.message);
+        log(JSON.stringify(err, null, 2));
+      }
+      // 6. Wait until the page is displayed, then call the function to fetch the page
+
+//  document.addEventListener('DOMContentLoaded', () => {fetchNotes(currentPage);
+
     }
-  } catch (err) {
-    log('✗ Diagnostic failed:');
-    log(err.message);
-    log(JSON.stringify(err, null, 2));
-  }
-}
 
 // 7. Insert a new note into the database
 async function insertNote(supabase, author_id, audience_id=null, reply_to_id=null, title = 'AutoTitle', content, status=null) {
