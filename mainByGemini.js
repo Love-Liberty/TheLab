@@ -7,6 +7,35 @@
  */
 document.addEventListener('DOMContentLoaded', () => {
 
+//trial of reading checkboxes
+
+document.getElementById('save-notes').addEventListener('click', async () => {
+  const noteText = document.getElementById('note-content').value.trim();
+  const selectedInputs = document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
+
+  if (!noteText) {
+    alert('Please enter a note.');
+    return;
+  } 
+  
+  const selectedTags = Array.from(selectedInputs).map(input => ({
+    group: input.name,
+    value: input.value
+  }));
+
+  console.log('Note:', noteText);
+  console.log('Selected Tags:', selectedTags);
+
+  // Next step: insert note, get note ID, validate tags, write to notes_categorised
+});
+
+
+// end of checkbox trial    
+
+
+
+
+    
     // Global variables for pagination
     let currentPage = 1;
     const pageSize = 10;
