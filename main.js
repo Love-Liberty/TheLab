@@ -1,4 +1,4 @@
- <script>
+ //<script>
     function log(message) {
       const output = document.getElementById('output');
       output.textContent += message;
@@ -196,9 +196,9 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchNotes(currentPage);
   });
 });
-</script>    
+//</script>    
 
-  <script>
+ // <script>
     // Initialize state
     let activePage = 'home';
     let editingCard = null;
@@ -408,4 +408,4 @@ document.getElementById('save-notes').addEventListener('click', async () => {
     
     // Initialize - show home page
     document.getElementById('notes-page').classList.remove('hidden');
-  </script>
+//  </script>
