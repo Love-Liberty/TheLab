@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //trial of reading checkboxes
 
-document.getElementById('save-notes').addEventListener('click', async () => {
+document.getElementById('importance').addEventListener('click', async () => {
   const noteText = document.getElementById('importance').value;
   const selectedInputs = document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
 
