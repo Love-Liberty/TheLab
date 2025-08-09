@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>18:29-7Aug  based on 11:46</title>
+  <title>20:02-8Aug  based on 11:46</title>
     <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -400,168 +400,176 @@ document.addEventListener('DOMContentLoaded', () => {
         <div id="notes-page" class="page-content hidden">
           <div class="flex w-full h-full">
         <!--not needed as menu shows page name  <h2 class="text-2xl font-bold text-gray-800 mb-6">Notes</h2-->
-     <!-- Tagging above the note input -->
-      
-                    <div class="mb-6" >
-                <h4 class="text-md font-semibold mb-3 text-gray-700">🌐 Main click the word</h4>
-                <div class="flex flex-wrap gap-2 mb-3">
-                 <label class="flex items-center">
-                    <input type="checkbox" name="main" value="bug" checked class="mr-2 text-blue-600">
-                    <span class="text-sm">~bug</span>
-                  </label>
-                  <input type="checkbox" name="main" value="me" class="mr-2 text-blue-600">
-                    <span class="text-sm">~me</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="main" value="else" class="mr-2 text-blue-600">
-                    <span class="text-sm">~else</span>
-                  </label>                  
-                    <label class="flex items-center">
-                    <input type="checkbox" name="main" value="reply" class="mr-2 text-blue-600">
-                    <span class="text-sm">~reply</span>
-                  </label>
-                </div>
+                      <!-- Tagging above the note input -->
+     <!-- Main Tags --> 
+
+<!--15:44 8 Aug revised design--><div class="mb-6" id="TagSection001">
+  <h4 class="text-md font-semibold mb-3 text-gray-700">🌐 Main click the word</h4>
+  <div class="flex flex-wrap gap-2 mb-3">
+
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection002">
+      <input type="checkbox" name="main" value="bug" checked class="mr-2 text-blue-600">
+      <label for="tag-main-bug">bug</label>
+    </div>
+
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection003">
+      <input type="checkbox" name="main" value="me" class="mr-2 text-blue-600">
+      <label for="tag-main-me">me</label>
+    </div>
+
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection004">
+      <input type="checkbox" name="main" value="else" class="mr-2 text-blue-600">
+      <label for="tag-main-else">else</label>
+    </div>
+
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection005">
+      <input type="checkbox" name="main" value="reply" class="mr-2 text-blue-600">
+      <label for="tag-main-reply">reply</label>
+    </div>
+
+  </div>
+</div>
+         
+              
 
 <!-- Importance Tags -->
-              <div class="mb-6">
-                <h4 class="text-md font-semibold mb-3 text-gray-700">📶 Important?</h4>
-                <div class="flex flex-wrap gap-2 mb-3">
-                 <label class="flex items-center">
-                    <input type="radio" name="importance" value="1" class="mr-2 text-blue-600">
-                    <span class="text-sm">1</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="radio" name="importance" value="2" class="mr-2 text-blue-600">
-                    <span class="text-sm">2</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="radio" name="importance" value="3" checked class="mr-2 text-blue-600">
-                    <span class="text-sm">3</span>
-                  </label>                  
-                    <label class="flex items-center">
-                    <input type="radio" name="importance" value="4" class="mr-2 text-blue-600">
-                    <span class="text-sm">4</span>
-                  </label>
+<div class="mb-6" id="TagSection025">
+  <h4 class="text-md font-semibold mb-3 text-gray-700">📶 Important?</h4>
+  <div class="flex flex-wrap gap-2 mb-3">
 
-                  </label>                  
-                    <label class="flex items-center">
-                    <input type="radio" name="importance" value="5" class="mr-2 text-blue-600">
-                    <span class="text-sm">5</span>
-                  </label>
-                </div></div></div>
+    <div class="text-sm flex items-center" id="TagSection026">
+      <input type="radio" id="importance-1" name="importance" value="1" class="mr-2 text-blue-600">
+      <label for="importance-1">1</label>
+    </div>
 
-            <h1>Is this in flex?</h1>
-                    </div>
+    <div class="text-sm flex items-center" id="TagSection027">
+      <input type="radio" id="importance-2" name="importance" value="2" class="mr-2 text-blue-600">
+      <label for="importance-2">2</label>
+    </div>
+
+    <div class="text-sm flex items-center" id="TagSection028">
+      <input type="radio" id="importance-3" name="importance" value="3" checked class="mr-2 text-blue-600">
+      <label for="importance-3">3</label>
+    </div>
+
+    <div class="text-sm flex items-center" id="TagSection029">
+      <input type="radio" id="importance-4" name="importance" value="4" class="mr-2 text-blue-600">
+      <label for="importance-4">4</label>
+    </div>
+
+    <div class="text-sm flex items-center" id="TagSection030">
+      <input type="radio" id="importance-5" name="importance" value="5" class="mr-2 text-blue-600">
+      <label for="importance-5">5</label>
+    </div>
+
+  </div>
+</div> <!--Closes div class="mb-6" -->
+            </div><!--closes flex-->
           
-          </div>
-
+          <!-- /div><!-- closes the div that is hidden. This is why the below appears on home page--> 
+          
             
-            <!-- Note Input -->
+            <!-- Note Content Input -->
             <div class="mb-6">
               <textarea id="note-content" 
-                        placeholder="Enter your notes here... (Stage 2 - Saves to database-checkboxes not implemented)" 
+                        placeholder="Enter your notes here & press [Save/send]... (The check boxes are not yet implemented) The saved notes can be seen by scrolling down." 
                         class="w-full h-32 p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
             </div>
                    
-            <!-- Tagging Section -->
+            <!-- More Tagging Section -->
       
-                  
-              <!-- Workflow Tags -->
-              <div class="mb-6">
-                <!--h4 class="text-md font-semibold mb-3 text-gray-700">📝 Workflow: click the word</h4-->
-                <div class="flex flex-wrap gap-2 mb-3">
-                  
-                  <label class="flex items-center">
-                    <input type="checkbox" name="resource" value="diary" class="mr-2 text-blue-600">
-                    <span class="text-sm">~diary</span>
-                  </label>  
-                  <label class="flex items-center">
-                    <input type="checkbox" name="emotion" value="~disaster" class="mr-2 text-blue-600">
-                    <span class="text-sm">disaster</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="emotion" value="triumph" class="mr-2 text-blue-600">
-                    <span class="text-sm">~triumph</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="emotion" value="rant" class="mr-2 text-blue-600">
-                    <span class="text-sm">~rant</span>
-                  </label>
-                </div>
-                    <div class="flex flex-wrap gap-2 mb-3">
-                  <label class="flex items-center">
-                    <input type="checkbox" name="workflow" value="todo" class="mr-2 text-blue-600">
-                    <span class="text-sm">~todo</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="workflow" value="idea" class="mr-2 text-blue-600">
-                    <span class="text-sm">~idea</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="workflow" value="note" class="mr-2 text-blue-600">
-                    <span class="text-sm">~note</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="workflow" value="blocker" class="mr-2 text-blue-600">
-                    <span class="text-sm">~block</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="workflow" value="refactor" class="mr-2 text-blue-600">
-                    <span class="text-sm">~refactor</span>
-                  </label>
-                  
-                  <label class="flex items-center">
-                    <input type="checkbox" name="resource" value="hack" class="mr-2 text-blue-600">
-                    <span class="text-sm">~hack</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="workflow" value="meeting" class="mr-2 text-blue-600">
-                    <span class="text-sm">~meeting</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="workflow" value="review" class="mr-2 text-blue-600">
-                    <span class="text-sm">~review</span>
-                  </label>
-                </div>
-                <!--p class="text-sm text-gray-600 mb-4">
-                  Use these for navigating your development flow—planning, decision-making, and handling obstacles.
-              </p-->
-              </div>
+     <!--event tags-->             
+       <div class="mb-6" id="TagSection006">
+  <div class="flex flex-wrap gap-2 mb-3">
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection007">📝
+      <input type="checkbox" id="tag-events-diary" name="events" value="diary" class="mr-2 text-blue-600">
+      <label for="tag-events-diary">diary</label>
+    </div>
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection008">
+      <input type="checkbox" id="tag-events-disaster" name="events" value="disaster" class="mr-2 text-blue-600">
+      <label for="tag-events-disaster">disaster</label>
+    </div>
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection009">
+      <input type="checkbox" id="tag-events-triumph" name="events" value="triumph" class="mr-2 text-blue-600">
+      <label for="tag-events-triumph">triumph</label>
+    </div>
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection010">
+      <input type="checkbox" id="tag-events-rant" name="events" value="rant" class="mr-2 text-blue-600">
+      <label for="tag-events-rant">rant</label>
+    </div>
+  </div>
+</div>
+
+<!-- process Tags -->
+        <div class="mb-6" id="TagSection011">
+  <div class="flex flex-wrap gap-2 mb-3">
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection012">🔄
+      <input type="checkbox" id="tag-process-todo" name="process" value="todo" class="mr-2 text-blue-600">
+      <label for="tag-process-todo">to do</label>
+    </div>
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection013">
+      <input type="checkbox" id="tag-process-idea" name="process" value="idea" class="mr-2 text-blue-600">
+      <label for="tag-process-idea">idea</label>
+    </div>
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection014">
+      <input type="checkbox" id="tag-process-note" name="process" value="note" class="mr-2 text-blue-600">
+      <label for="tag-process-note">note</label>
+    </div>
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection015">
+      <input type="checkbox" id="tag-process-blocker" name="process" value="blocker" class="mr-2 text-blue-600">
+      <label for="tag-process-blocker">block</label>
+    </div>
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection016">
+      <input type="checkbox" id="tag-process-refactor" name="process" value="refactor" class="mr-2 text-blue-600">
+      <label for="tag-process-refactor">refactor</label>
+    </div>
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection017">
+      <input type="checkbox" id="tag-process-hack" name="process" value="hack" class="mr-2 text-blue-600">
+      <label for="tag-process-hack">hack</label>
+    </div>
+  </div>
+</div>
+
+<!-- business Tags -->     
+<div class="mb-6" id="TagSection018">
+  <div class="flex flex-wrap gap-2 mb-3">
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection019">💼
+      <input type="checkbox" id="tag-business-meeting" name="business" value="meeting" class="mr-2 text-blue-600">
+      <label for="tag-business-meeting">meeting</label>
+    </div>
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection020">
+      <input type="checkbox" id="tag-business-review" name="business" value="review" class="mr-2 text-blue-600">
+      <label for="tag-business-review">review</label>
+    </div>
+  </div>
+</div>
               
-              <!-- External & Resource Tags -->
-              <div class="mb-6">
-                <!--h4 class="text-md font-semibold mb-3 text-gray-700">🌐 External & Resource click the word</h4-->
-                <div class="flex flex-wrap gap-2 mb-3">
-                  <label class="flex items-center">
-                    <input type="checkbox" name="resource" value="insight" class="mr-2 text-blue-600">
-                    <span class="text-sm">~insight</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="resource" value="resource" class="mr-2 text-blue-600">
-                    <span class="text-sm">~resource</span>
-                  </label>
-                  <label class="flex items-center">
-                    <input type="checkbox" name="resource" value="howto" class="mr-2 text-blue-600">
-                    <span class="text-sm">~howto</span>
-                  </label>
-                 
-                  </label>
-                </div>
-                <!--p class="text-sm text-gray-600 mb-4">
-                  Ideal for logging clever tricks, external references, lessons learned, and internal reflections.
-              </p-->
-              </div>
+              <!-- Resource Tags -->
+        <div class="mb-6" id="TagSection021">
+
+  <div class="flex flex-wrap gap-2 mb-3">
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection022">📚
+      <input type="checkbox" id="tag-resource-insight" name="resource" value="insight" class="mr-2 text-blue-600">
+      <label for="tag-resource-insight">insight</label>
+    </div>
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection023">
+      <input type="checkbox" id="tag-resource-resource" name="resource" value="resource" class="mr-2 text-blue-600">
+      <label for="tag-resource-resource">resource</label>
+    </div>
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection024">
+      <input type="checkbox" id="tag-resource-howto" name="resource" value="howto" class="mr-2 text-blue-600">
+      <label for="tag-resource-howto">howto</label>
+    </div>
+  </div>
+</div>
               
               <!-- Emotional & Experience Tags -->
               <div class="mb-6">
-                <h4 class="text-md font-semibold mb-3 text-gray-700">🎭 Emotional & Experience click the word</h4>
+                <h4 class="text-md font-semibold mb-3 text-gray-700">🎭 Emotion & Experience click words</h4>
                 <div class="flex flex-wrap gap-2 mb-3">
                                  </div>
-                <!--p class="text-sm text-gray-600">
-                  Capture the highs, lows, and candid moments that make the journey memorable (and searchable).
-              </p-->
               </div>
-            </div>
+            </div><!-- end of input section -->
             
             <!-- Buttons -->
             <div class="flex space-x-4">
@@ -1156,11 +1164,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
 document.getElementById('save-notes').addEventListener('click', async () => {
   const content = document.getElementById('note-content').value;
+   if(content!="" ){
   const author_id = '4023236b-58d7-4c41-ba0f-45a7efc31847'; // Later fetch dynamically
   const title = 'Note from UI';
 //order in db: author_id(required), audience_id, reply_to_id, title, content, status
+//only insert if there is something to insert
   await insertNote(window.supabaseClient, author_id, null,null,title, content);
-});
+    };
+   });
 
 
 
