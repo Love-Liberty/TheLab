@@ -9,23 +9,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //trial of reading checkboxes
 
-document.getElementById('importance').addEventListener('click', async () => {
-  const noteText = document.getElementById('importance').value;
-  const selectedInputs = document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
+// An array of all the input group names we want to listen for.
+  const inputGroups = ['main', 'importance', 'events', 'process', 'business', 'resource'];
 
-  if (!noteText) {
-    alert('Please enter a note.');
-    return;
-  } 
-  
-  const selectedTags = Array.from(selectedInputs).map(input => ({
-    group: input.name,
-    value: input.value
-  }));
+  /**
+   * This function sets up a change event listener for a given group of inputs.
+   * It takes the group name as an argument and attaches a listener to each
+   * input element that has that name.
+   *
+   * @param {string} groupName - The 'name' attribute of the input group.
+   */
+  const setupGroupListener = (groupName) => {
+    // Select all inputs (both radio buttons and checkboxes) that have the
+    // specified group name.
+    const inputs = document.querySelectorAll(`input[name="${groupName}"]`);
 
-  console.log('Note:', noteText);
-  console.log('Selected Tags:', selectedTags);
+    // Loop through each input in the group and add a listener.
+    inputs.forEach(input => {
+      input.addEventListener('change', (event) => {
+        // Log the group name and the value of the selected input to the console.
+        console.log(`Input from group '${groupName}' changed. Selected value:`, event.target.value);
+      });
+    });
+  };
 
+  // Call the setup function for each group in our array.
+  inputGroups.forEach(group => {
+    setupGroupListener(group);
+  });
   // Next step: insert note, get note ID, validate tags, write to notes_categorised
 });
 
