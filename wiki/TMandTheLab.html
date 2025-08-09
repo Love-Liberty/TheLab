@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T&M and The Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .section-title {
+            @apply text-3xl font-bold border-b-4 border-indigo-600 pb-2 mb-6;
+        }
+        .subsection-title {
+            @apply text-xl font-semibold mb-2 mt-4;
+        }
+        .schema-container {
+            @apply bg-gray-100 p-4 rounded-lg shadow-sm mb-6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container bg-white p-8 rounded-xl shadow-lg mt-8">
+        <h1 class="text-4xl font-extrabold text-center mb-10 text-indigo-800">T&M and The Lab </h1>
+        <p class="text-lg text-gray-700 mb-8">
+            This document outlines the architectural strategy and key components of the **Task & Management (T&M)** and **The Lab** projects. It details the modular design philosophy, our approach to competitive differentiation, and the technical implementation of core features.
+        </p>
+
+        <!-- Project Overview Section -->
+        <div class="mb-8">
+            <h2 class="section-title">1. Project Overview & Competitive Analysis</h2>
+            <p class="text-lg mb-4">
+                The T&M and The Lab projects represent a cohesive, modular ecosystem designed to overcome the limitations of traditional monolithic software. Instead of creating a single, all-in-one platform, our approach is to develop specialized applications that communicate via a robust **Application Programming Interface (API)**. This strategy provides significant advantages over competing software by enhancing **maintainability**, **scalability**, and **feature-specific optimization**.
+            </p>
+            <p class="text-lg">
+                The API serves as the public contract for these services, ensuring that components can be updated or replaced independently without disrupting the entire system. This allows for rapid iteration and a resilient architecture, a key differentiator from tightly-coupled, legacy systems that are often rigid and difficult to extend.
+            </p>
+        </div>
+
+        <hr class="my-8 border-gray-300">
+
+        <!-- T&M Platform Section -->
+        <div class="mb-8">
+            <h2 class="section-title">2. The Task & Management (T&M) Platform</h2>
+            <p class="text-lg mb-4">
+                The T&M platform is the central hub for task and project management. It is being developed using modern web technologies, specifically **React, Tailwind CSS, and Vite**, to ensure a high-performance and maintainable user interface.
+            </p>
+
+            <div class="schema-container">
+                <h3 class="subsection-title">T&M Database Schema</h3>
+                <p class="text-sm text-gray-500 mb-4">The following tables and relationships define the core data structure of the T&M application.</p>
+
+                <b>Comms</b>
+                <ul>
+                    <li>Cid : bigint, NO</li>
+                    <li>CDate : timestamp with time zone, NO</li>
+                    <li>CFrom : uuid, YES</li>
+                    <li>CTo : uuid, YES</li>
+                    <li>CReply : bigint, YES</li>
+                    <li>CText : text, YES</li>
+                </ul>
+
+                <b>app_event_labels</b>
+                <ul>
+                    <li>id : bigint, NO</li>
+                    <li>code : text, NO</li>
+                    <li>name : text, YES</li>
+                    <li>description : text, YES</li>
+                </ul>
+
+                <b>app_event_log</b>
+                <ul>
+                    <li>id : bigint, NO</li>
+                    <li>event_label_id : bigint, NO <em>(Foreign key to app_event_labels.id)</em></li>
+                    <li>actor_id : uuid, YES <em>(Foreign key to profiles.id)</em></li>
+                    <li>affected_id : uuid, YES</li>
+                    <li>created_at : timestamp with time zone, NO</li>
+                </ul>
+
+                <b>profiles</b>
+                <ul>
+                    <li>id : uuid, NO</li>
+                    <li>username : character varying, YES</li>
+                    <li>full_name : text, YES</li>
+                    <li>website : text, YES</li>
+                    <li>avatar_url : text, YES</li>
+                    <li>updated_at : timestamp with time zone, YES</li>
+                    <li>email : text, NO</li>
+                    <li>phone : text, YES</li>
+                    <li>created_at : timestamp with time zone, YES</li>
+                    <li>notes : text, YES</li>
+                </ul>
+
+                <b>role_permissions</b>
+                <ul>
+                    <li>id : bigint, NO</li>
+                    <li>role : USER-DEFINED, NO</li>
+                    <li>permission : USER-DEFINED, NO</li>
+                </ul>
+
+                <b>task_assignments</b>
+                <ul>
+                    <li>id : uuid, NO</li>
+                    <li>task_header_id : uuid, NO <em>(Foreign key to task_headers.id)</em></li>
+                    <li>student_id : uuid, NO</li>
+                    <li>manager_id : uuid, YES</li>
+                    <li>assigned_at : timestamp with time zone, NO</li>
+                    <li>completed_at : timestamp with time zone, YES</li>
+                    <li>abandoned_at : timestamp with time zone, YES</li>
+                    <li>step_id : uuid, NO <em>(Foreign key to task_steps.id)</em></li>
+                </ul>
+
+                <b>task_headers</b>
+                <ul>
+                    <li>id : uuid, NO</li>
+                    <li>name : text, NO</li>
+                    <li>description : text, YES</li>
+                    <li>external_url : text, YES</li>
+                    <li>created_at : timestamp with time zone, NO</li>
+                    <li>author_id : uuid, NO</li>
+                </ul>
+
+                <b>task_steps</b>
+                <ul>
+                    <li>id : uuid, NO</li>
+                    <li>task_header_id : uuid, NO <em>(Foreign key to task_headers.id)</em></li>
+                    <li>name : text, NO</li>
+                    <li>description : text, YES</li>
+                    <li>step_order : integer, NO</li>
+                    <li>created_at : timestamp with time zone, NO</li>
+                    <li>author_id : uuid, YES</li>
+                    <li>external_url : text, YES</li>
+                </ul>
+
+                <b>user_roles</b>
+                <ul>
+                    <li>id : bigint, NO</li>
+                    <li>user_id : uuid, NO</li>
+                    <li>role : USER-DEFINED, NO</li>
+                </ul>
+            </div>
+        </div>
+
+        <hr class="my-8 border-gray-300">
+
+        <!-- The Lab Section -->
+        <div class="mb-8">
+            <h2 class="section-title">3. The Lab: A Case Study in Agile Refactoring</h2>
+            <p class="text-lg mb-4">
+                The Lab began as a rapid prototype, initially implemented as a single HTML and JavaScript file. The codebase, while functional, became monolithic and difficult to manage. During development, a UI anomaly emerged where multiple "pages" could be displayed side-by-side, a feature that proved highly valuable for user productivity. This "accidental feature" allows users to simultaneously view instructions, reference materials, or other contextual information alongside their active work area.
+            </p>
+            <p class="text-lg">
+                The ongoing refactoring of The Lab is focused on deliberately engineering this side-by-side view into a core feature while simultaneously modularizing the codebase. The monolithic JavaScript file is being broken down into focused modules for **page management**, **data handling**, and **business logic**. This ensures the code is clean, maintainable, and scalable without sacrificing a key usability advantage.
+            </p>
+        </div>
+
+        <hr class="my-8 border-gray-300">
+
+        <!-- Single Tenancy Section -->
+        <div class="mb-8">
+            <h2 class="section-title">4. Architectural Strategy: Supporting Single Tenancy</h2>
+            <p class="text-lg">
+                The project's architecture is designed to support a **single-tenancy** model, where each client organization has a dedicated and isolated instance of the application and its data. This model is a critical requirement for many enterprise-level clients due to its enhanced data security and strict compliance with privacy standards. The T&M database schema, with its use of unique identifiers for all core entities, is well-structured to facilitate this approach, allowing for clear data separation and robust access controls.
+            </p>
+        </div>
+
+    </div>
+</body>
+</html>
