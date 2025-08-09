@@ -28,8 +28,8 @@ const setupGroupListener = (groupName) => {
   // Loop through each input in the group and add a listener.
   inputs.forEach(input => {
     input.addEventListener('change', (event) => {
-      // Log the group name and the value of the selected input to the console.
-      console.log(`Input from group '${groupName}' changed. Selected value:`, event.target.value);
+      // Corrected line: Now we log the 'checked' state and the 'value'
+      console.log(`Input from group '${groupName}' changed. Value:`, event.target.value, `, Checked:`, event.target.checked);
     });
   });
 };
@@ -41,7 +41,7 @@ inputGroups.forEach(group => {
 });
 // Next step: insert note, get note ID, validate tags, write to notes_categorised
 
-}); // <-- The missing '});'
+
 // end of checkbox trial
 
 
