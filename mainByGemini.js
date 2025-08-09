@@ -32,7 +32,7 @@ console.log('addListeners21:53');
       });
     });
   };
-};
+
 
   // Call the setup function for each group in our array.
   inputGroups.forEach(group => {
