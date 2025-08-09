@@ -2,11 +2,11 @@ document.getElementById('save-notes').addEventListener('click', async () => {
   const noteText = document.getElementById('note-content').value.trim();
   const selectedInputs = document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
 
-  if (!noteText && selectedInputs.length === 0) {
-    alert('Please enter a note or select at least one tag.');
+  if (!noteText) {
+    alert('Please enter a note.');
     return;
-  }
-
+  } 
+  
   const selectedTags = Array.from(selectedInputs).map(input => ({
     group: input.name,
     value: input.value
