@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comparisons & competitors</title>
+    <title>Competitive Analysis: T&M and The Lab</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -29,17 +29,19 @@
 </head>
 <body>
     <div class="container bg-white p-8 rounded-xl shadow-lg mt-8">
-        <h1 class="text-4xl font-extrabold text-center mb-10 text-indigo-800">Comparisons & competitors</h1>
-        <p class="prose mb-8"> T&M combined with The Lab: What's it like and who are the competitors? So far we haven't found a direct competitor. That may mean that we have invented a new class or it maybe that there is no market for what we have invented. Have we just invented something like the spreadsheet, a product that people did not know they needed, or are we fantasising? Here is a review of some of the software that has similarities, overlaps or shared philosophy.       </p>
+        <h1 class="text-4xl font-extrabold text-center mb-10 text-indigo-800">Competitive Analysis: T&M and The Lab</h1>
+        <p class="prose mb-8">
+            This document provides a refined analysis of competing software, highlighting the unique value proposition and architectural strategy of the <i>T&M</i> and <i>The Lab</i> projects.
+        </p>
 
         <!-- Monday.com Section -->
         <div class="mb-8">
             <h2 class="section-title">1. Monday.com: Task vs. Organizational Management</h2>
             <p class="prose mb-4">
-                While a powerful competitor, **Monday.com** is fundamentally an application for managing a wide range of specific, routine business tasks. Its core use case revolves around tracking projects and workflows to convert a lead into a customer, for example. It is a highly effective, customizable tool for project management.
+                While a powerful competitor, <i>Monday.com</i> is fundamentally an application for managing a wide range of specific, routine business tasks. Its core use case revolves around tracking projects and workflows to convert a lead into a customer, for example. It is a highly effective, customizable tool for project management.
             </p>
             <p class="prose">
-                The **T&M** platform, by contrast, is designed for a more foundational purpose: **creating a business organization and automating routine tasks by breaking them down into low-skill micro-jobs.** It is not just about tracking a workflow but about building the organizational structure that supports and executes it. This distinction—managing an organization versus managing a project—is a key strategic difference.
+                The <i>T&M</i> platform, by contrast, is designed for a more foundational purpose: <i>creating a business organization and automating routine tasks by breaking them down into low-skill micro-jobs.</i> It is not just about tracking a workflow but about building the organizational structure that supports and executes it. This distinction—managing an organization versus managing a project—is a key strategic difference.
             </p>
         </div>
 
@@ -49,7 +51,7 @@
         <div class="mb-8">
             <h2 class="section-title">2. NationBuilder: Hierarchy and Group Dynamics</h2>
             <p class="prose mb-4">
-                **NationBuilder** shares a similar orientation with T&M towards self-managed, voluntary groups. However, the crucial difference lies in the emphasis on **hierarchy and the management of groups, shared interests, and the relationships between tasks.**
+                <i>NationBuilder</i> shares a similar orientation with T&M towards self-managed, voluntary groups. However, the crucial difference lies in the emphasis on <i>hierarchy and the management of groups, shared interests, and the relationships between tasks.</i>
             </p>
             <p class="prose mb-4">
                 NationBuilder's design assumes that users will manage many of these relationships externally (e.g., tracking tags in a separate spreadsheet). In our architecture, these relationships are central to the database design. The T&M platform builds the hierarchy and task relationships directly into its data model, making it a more comprehensive tool for managing the internal structure and dynamics of a team or organization.
@@ -62,7 +64,7 @@
         <div class="mb-8">
             <h2 class="section-title">3. Memberful: Subscription vs. Task Management</h2>
             <p class="prose mb-4">
-                The distinction with **Memberful** and similar subscription-based platforms is straightforward: they specialize in **membership subscriptions and paid events** without providing robust task or organizational management features.
+                The distinction with <i>Memberful</i> and similar subscription-based platforms is straightforward: they specialize in <i>membership subscriptions and paid events</i> without providing robust task or organizational management features.
             </p>
             <p class="prose">
                 Their core function is to handle the financial and administrative aspects of membership. Our T&M platform is a task-oriented system. However, given their specialized functionality, if an API were available, we would consider delegating these specific subscription tasks to a platform like Memberful to maintain a modular architecture and avoid redundant development. This highlights our project's commitment to building a focused core that can integrate with specialized external services rather than attempting to be an all-in-one solution.
