@@ -154,7 +154,30 @@ inputGroups.forEach(group => {
         currentPage = newPage;
         fetchNotes(currentPage);
     };
+//--------------------new tag writing functions  11:40 10 Aug 2025
+function createTagArray(){
+ console.log('createTagArray()');
+  //code to collect the tag data in an array & return it
+ return []; //placeholder
+}
+ 
+  
+async function insertTags(tagsArray){
+ console.log('insertTags()');
+//code to write tags to table(rowId,tagsArray)
+  
+ return true;//placeholder
+}
+//(supabaseClient, authorId, null1, null2, title, noteContent, null3)
+async function insertNoteAndTags(supabaseClient, authorId, null, null, 'AutoTitle', noteContent, null){
+ console.log('insertNoteAnsTags()');
+  const tagsArray=createTagArray();
+    const rowId = await insertNote(supabaseClient, authorId, null, null, 'AutoTitle', noteContent, null);
+  await insertTags(rowId, tagsArray);
+ return true;} //placeholder
 
+  
+  
 /**
  * Inserts a new note into the Supabase 'notes' table and returns the new ID.
  *
@@ -274,7 +297,8 @@ async function insertNote(supabase, author_id, audience_id = null, reply_to_id =
             if (noteContent.trim() !== '') {
                 // Placeholder for a real author_id
                 const authorId = '0023236b-58d7-4c41-ba0f-45a7efc31847';
-                await insertNote(supabaseClient, authorId, null, null, 'AutoTitle', noteContent, null);
+            //    await insertNote(supabaseClient, authorId, null, null, 'AutoTitle', noteContent, null);
+                await insertNoteAndTags(supabaseClient, authorId, null, null, 'AutoTitle', noteContent, null);
             } else {
                 log('Note content cannot be empty.');
             }
