@@ -155,10 +155,31 @@ inputGroups.forEach(group => {
         fetchNotes(currentPage);
     };
 //--------------------new tag writing functions  11:40 10 Aug 2025
-function createTagArray(){
- console.log('createTagArray()');
-  //code to collect the tag data in an array & return it
- return []; //placeholder
+// This function collects tag data and returns it as an array.
+// It reads the current status of all relevant checkboxes without using event listeners.
+function createTagArray() {
+    console.log('createTagArray()');    
+    const tagsArray = [];
+                             // These are the groups of tags we want to process.
+    const inputGroups = ['main', 'importance', 'events', 'process', 'business', 'resource'];
+    
+                            // Loop through each group name.
+    for (const group of inputGroups) {
+                           // Find all checkboxes with a 'name' that matches the current group.
+                           // The querySelectorAll method returns a list of all matching elements.
+        const checkboxes = document.querySelectorAll(`input[name="${group}"][type="checkbox"]`);
+                           // Now, loop through each checkbox we found in this group.
+        for (const checkbox of checkboxes) {
+                          // The 'checked' property of a checkbox is true if it's selected, false otherwise.
+            if (checkbox.checked) {
+                         // If the checkbox is checked, add its 'value' to our tagsArray.
+                tagsArray.push(checkbox.value);
+            }
+        }
+    }    
+    // Log the final array so we can see what was collected.
+    console.log('Tags collected:', tagsArray);
+    return tagsArray;
 }
  
   
