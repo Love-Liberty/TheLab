@@ -197,6 +197,7 @@ async function handleNoteClick(event) {
 }
 
 async function saveNoteStatus(noteId, newStatus) {
+   const supabase = supabaseClient;
     const { data, error } = await supabase
         .from('notes')
         .update({ status: newStatus })
