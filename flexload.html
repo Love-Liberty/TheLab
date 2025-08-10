@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Lab</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<style>
+  .side-panel {
+    width: 10%;
+  }
+  .main-container {
+    display: flex;
+    width: 90%;
+  }
+  .page-panel {
+    min-width: 45%;
+    transition: all 0.3s ease;
+  }
+  .notes-panel {
+    min-width: 45%;
+    transition: all 0.3s ease;
+  }
+</style>
+<body class="flex h-screen bg-gray-50">
+  <div id="app" class="flex w-full h-full">
+    <!-- Side Panel (10%) -->
+    <div class="side-panel bg-white border-r border-gray-200 p-6">
+      <h1 class="text-2xl font-bold text-gray-800 mb-8">The Lab</h1>
+      <nav class="space-y-2">
+        <button class="w-full text-left px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100" 
+                data-page="home" title="Display of error messages or output from scripts">
+          Home
+        </button>
+        <button class="w-full text-left px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100 active-page" 
+                data-page="notes" title="Where to type & store text without formatting">
+          Notes
+        </button>
+        <button class="w-full text-left px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100" 
+                data-page="links" title="Where to find your scripts, wisdom & email">
+          Links
+        </button>
+        <button class="w-full text-left px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100" 
+                data-page="data" title="Lists of any files you regard as not executable">
+          Data
+        </button>
+        <button class="w-full text-left px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100" 
+                data-page="scripts" title="Lists of files you regard as executable">
+          Scripts
+        </button>
+        <button class="w-full text-left px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100" 
+                data-page="plan" title="What we are aiming to do, heaven helps us">
+          Plan
+        </button>
+      </nav>
+    </div>
+    
+    <!-- Main Panel - Fixed Notes + Dynamic Page -->
+    <div class="main-container" id="main-container">
+      <!-- Notes Panel (always visible) -->
+  <!--    <div class="notes-panel bg-amber-50 p-8" id="notes-panel">  -->
+        <!-- Notes content will be loaded here -->
+     <!-- </div>  -->
+      
+      <!-- Dynamic Page Panel (right side) -->
+      <div class="page-panel bg-amber-50 p-8" id="dynamic-page">
+        <!-- Content will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const notesPanel = document.getElementById('notes-panel');
+      const dynamicPage = document.getElementById('dynamic-page');
+      const navButtons = document.querySelectorAll('nav button');
+      
+      // Load Notes page first (always visible)
+      loadPage('notes', notesPanel);
+      
+      // Load initial page in dynamic panel
+      loadPage('notes', dynamicPage);
+      
+      // Set up navigation
+      navButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const pageName = this.getAttribute('data-page');
+          
+          // Remove active state from all buttons
+          navButtons.forEach(btn => btn.classList.remove('active-page'));
+          // Add active state to clicked button
+          this.classList.add('active-page');
+          
+          // Only load non-Notes pages in the dynamic panel
+          if (pageName !== 'notes') {
+            loadPage(pageName, dynamicPage);
+          }
+        });
+      });
+      
+      // Function to load a page into a specific container
+      async function loadPage(pageName, container) {
+        try {
+          // Don't reload if it's already the current page
+          if (container.dataset.currentPage === pageName) {
+            return;
+          }
+          
+          // Fetch page content
+          const response = await fetch(`pages/${pageName}.html`);
+          if (!response.ok) {
+            throw new Error(`Failed to load ${pageName} page`);
+          }
+          
+          const content = await response.text();
+          
+          // Clear container and add new content
+          container.innerHTML = content;
+          container.dataset.currentPage = pageName;
+          
+        } catch (error) {
+          console.error('Error loading page:', error);
+          container.innerHTML = `
+            <div class="text-red-700">
+              <h3 class="text-lg font-bold">Error</h3>
+              <p>Failed to load ${pageName} page.</p>
+            </div>
+          `;
+        }
+      }
+    });
+  </script>
+</body>
+</html>
