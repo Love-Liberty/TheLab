@@ -300,7 +300,7 @@ async function insertNote(supabase, author_id, audience_id = null, reply_to_id =
             //    await insertNote(supabaseClient, authorId, null, null, 'AutoTitle', noteContent, null);
                 await insertNoteAndTags(supabaseClient, authorId, null, null, 'AutoTitle', noteContent, null);
             } else {
-                log('Note content cannot be empty.');
+                log('The Note has no content, so not saved.');
             }
         });
     }
