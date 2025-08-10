@@ -110,17 +110,7 @@ inputGroups.forEach(group => {
         }
         renderNotes(data, count, page);
     }
-//new for clickables
-    // Status mapping and cycle logic
-        const statusMap = {
-            6: { label: 'Pending (Complete)', icon: '❓', color: 'text-green-500' },
-            9: { label: 'Completed', icon: '✅', color: 'text-green-500' },
-            7: { label: 'Pending (Abandon)', icon: '❓', color: 'text-red-500' },
-            8: { label: 'Abandoned', icon: '❌', color: 'text-red-500' },
-        };
-        const statusCycle = [6, 9, 7, 8];
 
-//end of new for clicka
 
   
     /**
