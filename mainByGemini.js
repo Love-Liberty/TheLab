@@ -230,7 +230,7 @@ async function insertTags(supabase, noteId, tagsArray) {
         }
         
         const tagsToInsert = validTags.map(tag => ({
-            note_Id: noteId,
+            note_id: noteId,
             note_category: tag
         }));
         
