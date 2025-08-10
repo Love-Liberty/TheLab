@@ -169,10 +169,10 @@ async function insertTags(tagsArray){
  return true;//placeholder
 }
 //(supabaseClient, authorId, null1, null2, title, noteContent, null3)
-async function insertNoteAndTags(supabaseClient, authorId, null, null, 'AutoTitle', noteContent, null){
+async function insertNoteAndTags(supabase, author_id, audience_id = null, reply_to_id = null, title = 'AutoTitle', content, status = null){
  console.log('insertNoteAnsTags()');
   const tagsArray=createTagArray();
-    const rowId = await insertNote(supabaseClient, authorId, null, null, 'AutoTitle', noteContent, null);
+    const rowId = await insertNote(supabase, author_id, audience_id, reply_to_id, title, content, status);
   await insertTags(rowId, tagsArray);
  return true;} //placeholder
 
