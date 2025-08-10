@@ -210,7 +210,7 @@ async function saveNoteStatus(noteId, newStatus) {
 }
 
 
-
+window.handleNoteClick = handleNoteClick;
 
 
 
