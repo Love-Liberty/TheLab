@@ -235,7 +235,7 @@ async function insertTags(supabase, noteId, tagsArray) {
         }));
         
         const { data, error } = await supabase
-            .from('tags')
+            .from('notes_categorised')
             .insert(tagsToInsert)
             .select();
         
