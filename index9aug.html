@@ -71,11 +71,11 @@
     <div class="w-1/8 bg-white border-r border-gray-200 p-6">
       <h1 class="text-2xl font-bold text-gray-800 mb-8">The Lab</h1>
       <nav class="space-y-2">
-        <button class="w-full text-left px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100 active-page" 
+        <button class="w-full text-left px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100 " 
                 data-page="home" title="Display of error messages or output from scripts">
           Home
         </button>
-        <button class="w-full text-left px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100" 
+        <button class="w-full text-left px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100 active-page" 
                 data-page="notes" title="Where to type & store text without formatting">
           Notes
         </button>
@@ -101,7 +101,7 @@
     <div class="w-3/4 bg-amber-50 p-8">
       <div class="max-w-4xl mx-auto">
         <!-- Home Page Content -->
-        <div id="home-page" class="page-content">
+        <div id="home-page" class="page-content hidden">
           <div class="space-y-6">
             <!-- Instructions Section -->
             <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
@@ -171,8 +171,8 @@
             </div>
           </div>
         </div>
-        <!-- Notes Page Content -->
-        <div id="notes-page" class="page-content hidden">
+        <!-- Notes Page Content   removed 'hidden' from this div  21.05 10 aug-->
+        <div id="notes-page" class="page-content "> 
           <div class="flex w-full h-full">
             <!--not needed as menu shows page name  <h2 class="text-2xl font-bold text-gray-800 mb-6">Notes</h2-->
             <!-- Tagging above the note input -->
