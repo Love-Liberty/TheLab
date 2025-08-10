@@ -231,7 +231,7 @@ async function insertTags(supabase, noteId, tagsArray) {
         
         const tagsToInsert = validTags.map(tag => ({
             noteId: noteId,
-            category_name: tag
+            note_category: tag
         }));
         
         const { data, error } = await supabase
