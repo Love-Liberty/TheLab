@@ -3,299 +3,79 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>20:02-8Aug  based on 11:46</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <title>22:40-10Aug based on 11:46</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
-
-
-  
-  <script>
-    function log(message) {
-      const output = document.getElementById('output');
-      output.textContent += message;
-      console.log(message);
-    }
-
-// Read and display pages of notes. New functions 14:46 7 Aug 2025    
-let currentPage = 1;
-const pageSize = 10;
-
-// 2. read a page of notes & call the render function
-async function fetchNotes(page = 1) {
-  const supabase = window.supabaseClient; // ✅ Pull from global
-
-  if (!supabase || typeof supabase.from !== 'function') {
-    console.error('Supabase client not initialized');
-    return;
-  }
-
-  const start = (page - 1) * pageSize;
-  const end = start + pageSize - 1;
-
-  const { data, count, error } = await supabase
-    .from('notes')
-    .select('*', { count: 'exact' })
-    .order('sort_int', { ascending: false })
-    .range(start, end);
-
-  if (error) {
-    console.error('Error fetching notes:', error);
-    return;
-  }
-
-  renderNotes(data, count, page);
-}
-
-// 3    Display a page of notes in the 'output' div
-function renderNotes(notes, totalCount, page) {
-  const output = document.getElementById('output');
- // output.innerHTML = ''; // Clear previous content
-
-  const notesHtml = notes.map(note => {
-    const shortContent = note.content.length > 200
-      ? `${note.content.slice(0, 200)} <span class="text-blue-600 cursor-pointer" onclick="toggleContent(this)">[more]</span><span class="hidden">${note.content.slice(200)}</span>`
-      : note.content;
-
-    return `
-      <div class="mb-4 p-2 border-b border-blue-200">
-        <p><strong>ID:</strong> ${note.sort_int}</p>
-        <p><strong>Author:</strong> ${note.author_id.slice(0, 8)}</p>
-        <p><strong>Created:</strong> ${new Date(note.created_at).toLocaleString()}</p>
-        <p><strong>Content:</strong> ${shortContent}</p>
-      </div>
-    `;
-  }).join('');
-
-  const totalPages = Math.ceil(totalCount / pageSize);
-
-  const controls = `
-    <div class="flex items-center justify-between mt-4">
-      <button onclick="changePage(${page - 1})" ${page === 1 ? 'disabled' : ''}>[<-]</button>
-      <span>Page ${page} of ${totalPages}</span>
-      <button onclick="changePage(${page + 1})" ${page === totalPages ? 'disabled' : ''}>[->]</button>
-    </div>
-  `;
-
-  output.innerHTML = notesHtml + controls;
-}
-
-// 4. Store the count of what page we are on 
-function changePage(newPage) {
-  if (newPage < 1) return;
-  currentPage = newPage;
-  fetchNotes(currentPage);
-}
-    
-// 5. Handle 'more' / 'less' for long notes
-function toggleContent(el) {
-  const hiddenSpan = el.nextElementSibling;
-  if (hiddenSpan.classList.contains('hidden')) {
-    hiddenSpan.classList.remove('hidden');
-    el.textContent = '[less]';
-  } else {
-    hiddenSpan.classList.add('hidden');
-    el.textContent = '[more]';
-  }
-}
-
-
-//});
-
-    
-
-//----------end of new read & display page by page functions
-    
-
-    async function diagnoseSupabase() {
-      const supabaseUrl = 'https://kcdlbqotmuyyqvzzbxcn.supabase.co';
-      const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw';
-
-      log('Starting Supabase Diagnostic...');
-      log(`Supabase URL: ${supabaseUrl}`);
-      
-      try {
-        // Explicit client creation using the library's method
-        const { createClient } = window.supabase;
-        
-        if (typeof createClient !== 'function') {
-          throw new Error('createClient is not a function');
-        }
-
-        log('✓ Supabase createClient method found');
-
-        const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-          auth: {
-            persistSession: false
-          }
-        });
-            
-// Make the client globally accessible
- window.supabaseClient = supabase;
-    log('✓ Supabase client created and assigned globally');
-//  } catch (erro) {
-  //  log('✗ Error during Supabase setup: ${erro.message}');}
-    
-
-    
-  // access globally with const supabase = window.globalSupabase; or window.globalSupabase
-          
-
-        log('✓ Supabase client created successfully');
-
-        // Verify the client has the 'from' method
-        if (typeof supabase.from !== 'function') {
-          throw new Error('supabase.from is not a function');
-        }
-
-        log('✓ Supabase client methods verified');
-
-        // Test database connection
-        const { data, error } = await supabase
-          .from('notes')
-          .select('*')
-          ; //order in db: author_id(required), audience_id, reply_to_id, title, content, status. Below is a test write. Commented out 10:00 7 Aug
-//await insertNote(supabase,'0023236b-58d7-4c41-ba0f-45a7efc31847',null,null,'Title 7 aug from indexTest.html','Content:Testing writing from form');
-//Input form write to db is on line 1059
-
-        if (error) {
-          log('✗ Database read error:');
-          log(JSON.stringify(error, null, 2));
-        } else {
-          log('✓ Successfully read from database');
-          log(`Records found: ${data.length}`);
-        }
-
-      } catch (err) {
-        log('✗ Diagnostic failed:');
-        log(err.message);
-        log(JSON.stringify(err, null, 2));
-      }
-      // 6. Wait until the page is displayed, then call the function to fetch the page
-
-//  document.addEventListener('DOMContentLoaded', () => {fetchNotes(currentPage);
-
-    }
-
-
-
-    
-//order in db: author_id(required), audience_id, reply_to_id, title, content, status
-async function insertNote(supabase, author_id,audience_id=null,reply_to_id=null, title = 'AutoTitle',content,status=null) {
  
-
-  try {
-    const { data, error } = await supabase
-      .from('notes')
-      .insert([
-        {
-          author_id: author_id,
-          audience_id: audience_id,
-          reply_to_id: reply_to_id,         
-          title: title,  
-          content: content,
-          status: status
-        }
-      ]);
-
-    if (error) {
-      log(`✗ Insert error:\n${JSON.stringify(error, null, 2)}`);
-    } else {
-      log('✓ Note successfully inserted into database');
-      log(`Inserted ID: ${data[0].id}`);
-    }
-  } catch (err) {
-    log(`✗ Unexpected insert error:\n${err.message}`);
-  }
-}
-
-
-    
-//document.addEventListener('DOMContentLoaded', diagnoseSupabase);
-document.addEventListener('DOMContentLoaded', () => {
-  diagnoseSupabase().then(() => {
-    fetchNotes(currentPage);
-  });
-});
-
-
-
-</script>    
-
-
-
-
-
-
-   <style>
-    .transform-scale-75 {
-      transform: scale(0.9);//this change from 0.75 to 0.9 had no effect
-    }
-    .origin-top-left {
-      transform-origin: top left;
-    }
-    .prose {
-      max-width: none;
-    }
-    .prose p {
-      margin-bottom: 1em;
-    }
-    .prose ul {
-      margin-bottom: 1em;
-      padding-left: 1.5em;
-    }
-    .prose li {
-      margin-bottom: 0.5em;
-    }
-    .prose h4 {
-      margin: 1em 0 0.5em 0;
-      font-size: 1.125em;
-    }
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 50;
-      align-items: center;
-      justify-content: center;
-    }
-    .modal.show {
-      display: flex;
-    }
-    .fade-enter {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-    .fade-enter-active {
-      opacity: 1;
-      transform: scale(1);
-      transition: opacity 200ms, transform 200ms;
-    }
-    .fade-exit {
-      opacity: 1;
-    }
-    .fade-exit-active {
-      opacity: 0;
-      transform: scale(0.95);
-      transition: opacity 200ms, transform 200ms;
-    }
-  </style>
 </head>
+<style>
+  .transform-scale-75 {
+    transform: scale(0.9);//this change from 0.75 to 0.9 had no effect
+  }
+  .origin-top-left {
+    transform-origin: top left;
+  }
+  .prose {
+    max-width: none;
+  }
+  .prose p {
+    margin-bottom: 1em;
+  }
+  .prose ul {
+    margin-bottom: 1em;
+    padding-left: 1.5em;
+  }
+  .prose li {
+    margin-bottom: 0.5em;
+  }
+  .prose h4 {
+    margin: 1em 0 0.5em 0;
+    font-size: 1.125em;
+  }
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 50;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal.show {
+    display: flex;
+  }
+  .fade-enter {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  .fade-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 200ms, transform 200ms;
+  }
+  .fade-exit {
+    opacity: 1;
+  }
+  .fade-exit-active {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 200ms, transform 200ms;
+  }
+</style>
 <body class="flex h-screen bg-gray-50">
   <div id="app" class="flex w-full h-full">
     <!-- Side Panel -->
     <div class="w-1/8 bg-white border-r border-gray-200 p-6">
       <h1 class="text-2xl font-bold text-gray-800 mb-8">The Lab</h1>
       <nav class="space-y-2">
-        <button class="w-full text-left px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100 active-page" 
+        <button class="w-full text-left px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100 " 
                 data-page="home" title="Display of error messages or output from scripts">
           Home
         </button>
-        <button class="w-full text-left px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100" 
+        <button class="w-full text-left px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100 active-page" 
                 data-page="notes" title="Where to type & store text without formatting">
           Notes
         </button>
@@ -317,22 +97,74 @@ document.addEventListener('DOMContentLoaded', () => {
         </button>
       </nav>
     </div>
-    
     <!-- Main Panel -->
     <div class="w-3/4 bg-amber-50 p-8">
       <div class="max-w-4xl mx-auto">
         <!-- Home Page Content -->
-        <div id="home-page" class="page-content">
+        <div id="home-page" class="page-content hidden">
           <div class="space-y-6">
             <!-- Instructions Section -->
             <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
               <div class="flex items-center mb-4">
-                <h2 class="text-2xl font-bold text-gray-800">Instructions</h2>
+                <div>
+                <h2 class="text-2xl font-bold text-gray-800">Welcome to The Lab</h2>
                 <span class="ml-2 text-sm text-gray-500">They said it was easy</span>
+<p>August 10th at 20:25 in the year 2025 we took status to 8. This is because for the first time our little note book app became able to mark notes with a status.
+</p>
+                <p>This may mean little to you, but a lot to us</p>
+              
+              <p>Nothing in computer programming is easy. Every little thing that is done can cause hours of puzzlement as arcane error codes dribble into the console.
+              </p>
+                <p>But you aren't here to read the moans of an ai assisted software developer. So what is this Lab thing all about?</p>
+                                </div>
               </div>
               <div class="prose max-w-none text-gray-700">
-                <p><strong>To use The Lab you need to have an account at GitHub</strong> <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline">[Learn how]</a></p>
-                <p><strong>You also need an account at Supabase</strong> <a href="https://supabase.com" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline">[Learn how]</a></p>
+              <p>The Lab is a minor part of a larger project, but the whole project is built in pieces in the belief that any piece could turn out to have its own value
+              <p> The lab is a place to keep your notes and also keep links to websites. The notes can be tagged and later found by searching for notes with specific tags. 
+                  The Lab begins with a default set of tags, but you can edit them to suit your interests or projects. If you are collecting info about cars you may want tags that
+                are specific to cars and you may want web links to car parts dealers or car showrooms or photos of cars. If you are writing about a war you
+                may want to store quotes and have tags specifying certain periods or places. You can edit your own tag list. And once the system knows it will prevent you mispelling them.
+                In that way you will be able to find the note because tags are standardised. </p>
+                <p>The default setting for the Lab is aimed at software developers. Why? Because we are the 
+                first users of the product and so that is how we have edited it.   </p>
+
+              </div>
+            </div>
+            <!-- Dynamic Web Pages Section -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <div class="flex items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800">Dynamic Web Pages</h2>
+                <span class="ml-2 text-sm text-gray-500">They change, they click</span>
+              </div>
+              <div class="text-center text-gray-400 py-8">
+                <div class="text-4xl mb-2">🖱️</div>
+                <p class="text-lg">Awaiting implementation</p>
+              </div>
+            </div>
+            <!-- Static Web Pages Section -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <div class="flex items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800">Static Web Pages</h2>
+                <span class="ml-2 text-sm text-gray-500">Text, pics, that do nothing</span>
+              </div>
+              <div class="text-center text-gray-400 py-8">
+                <div class="text-4xl mb-2">📄</div>
+                <p class="text-lg">Awaiting implementation</p>
+              </div>
+            </div>
+            <!-- Backend Section -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <div class="flex items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800">Backend</h2>
+                <span class="ml-2 text-sm text-gray-500">Code under test</span>
+              </div>
+              <div class="text-center text-gray-400 py-8">
+                <div class="text-4xl mb-2">⚙️</div>
+                  <p>The Lab has two main components:</p>
+                <ul class="list-disc pl-5 space-y-1">
+                  <li><strong>Frontend</strong> - The user interface you're looking at right now</li>
+                  <li><strong>Backend</strong> - The Supabase database that stores your data</li>
+                </ul>
                 <p><strong>Both need to be connected to your account at Lovable</strong> <a href="https://lovable.ai" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline">[Learn how]</a></p>
                 <p>In addition you need to know where to put pages and how to get them recognised by Lovable. If you put them in the wrong places… don’t.</p>
                 <p>Here are some initial instructions…</p>
@@ -354,843 +186,543 @@ document.addEventListener('DOMContentLoaded', () => {
                 </ul>
               </div>
             </div>
-            
-            <!-- Dynamic Web Pages Section -->
-            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-              <div class="flex items-center mb-4">
-                <h2 class="text-2xl font-bold text-gray-800">Dynamic Web Pages</h2>
-                <span class="ml-2 text-sm text-gray-500">They change, they click</span>
-              </div>
-              <div class="text-center text-gray-400 py-8">
-                <div class="text-4xl mb-2">🖱️</div>
-                <p class="text-lg">Awaiting implementation</p>
-              </div>
-            </div>
-            
-            <!-- Static Web Pages Section -->
-            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-              <div class="flex items-center mb-4">
-                <h2 class="text-2xl font-bold text-gray-800">Static Web Pages</h2>
-                <span class="ml-2 text-sm text-gray-500">Text, pics, that do nothing</span>
-              </div>
-              <div class="text-center text-gray-400 py-8">
-                <div class="text-4xl mb-2">📄</div>
-                <p class="text-lg">Awaiting implementation</p>
-              </div>
-            </div>
-            
-            <!-- Backend Section -->
-            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-              <div class="flex items-center mb-4">
-                <h2 class="text-2xl font-bold text-gray-800">Backend</h2>
-                <span class="ml-2 text-sm text-gray-500">Code under test</span>
-              </div>
-              <div class="text-center text-gray-400 py-8">
-                <div class="text-4xl mb-2">⚙️</div>
-                <p class="text-lg">Awaiting implementation</p>
-              </div>
-            </div>
-            
-            <!-- Notes Section was here-->
-
           </div>
         </div>
-        
-        <!-- Notes Page Content -->
-        <div id="notes-page" class="page-content hidden">
+        <!-- Notes Page Content   removed 'hidden' from this div  21.05 10 aug-->
+        <div id="notes-page" class="page-content "> 
           <div class="flex w-full h-full">
-        <!--not needed as menu shows page name  <h2 class="text-2xl font-bold text-gray-800 mb-6">Notes</h2-->
-                      <!-- Tagging above the note input -->
-     <!-- Main Tags --> 
-
-<!--15:44 8 Aug revised design--><div class="mb-6" id="TagSection001">
-  <h4 class="text-md font-semibold mb-3 text-gray-700">🌐 Main click the word</h4>
-  <div class="flex flex-wrap gap-2 mb-3">
-
-    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection002">
-      <input type="checkbox" name="main" value="bug" checked class="mr-2 text-blue-600">
-      <label for="tag-main-bug">bug</label>
-    </div>
-
-    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection003">
-      <input type="checkbox" name="main" value="me" class="mr-2 text-blue-600">
-      <label for="tag-main-me">me</label>
-    </div>
-
-    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection004">
-      <input type="checkbox" name="main" value="else" class="mr-2 text-blue-600">
-      <label for="tag-main-else">else</label>
-    </div>
-
-    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection005">
-      <input type="checkbox" name="main" value="reply" class="mr-2 text-blue-600">
-      <label for="tag-main-reply">reply</label>
-    </div>
-
-  </div>
-</div>
-         
-              
-
-<!-- Importance Tags -->
-<div class="mb-6" id="TagSection025">
-  <h4 class="text-md font-semibold mb-3 text-gray-700">📶 Important?</h4>
-  <div class="flex flex-wrap gap-2 mb-3">
-
-    <div class="text-sm flex items-center" id="TagSection026">
-      <input type="radio" id="importance-1" name="importance" value="1" class="mr-2 text-blue-600">
-      <label for="importance-1">1</label>
-    </div>
-
-    <div class="text-sm flex items-center" id="TagSection027">
-      <input type="radio" id="importance-2" name="importance" value="2" class="mr-2 text-blue-600">
-      <label for="importance-2">2</label>
-    </div>
-
-    <div class="text-sm flex items-center" id="TagSection028">
-      <input type="radio" id="importance-3" name="importance" value="3" checked class="mr-2 text-blue-600">
-      <label for="importance-3">3</label>
-    </div>
-
-    <div class="text-sm flex items-center" id="TagSection029">
-      <input type="radio" id="importance-4" name="importance" value="4" class="mr-2 text-blue-600">
-      <label for="importance-4">4</label>
-    </div>
-
-    <div class="text-sm flex items-center" id="TagSection030">
-      <input type="radio" id="importance-5" name="importance" value="5" class="mr-2 text-blue-600">
-      <label for="importance-5">5</label>
-    </div>
-
-  </div>
-</div> <!--Closes div class="mb-6" -->
-            </div><!--closes flex-->
-          
-          <!-- /div><!-- closes the div that is hidden. This is why the below appears on home page--> 
-          
-            
-            <!-- Note Content Input -->
-            <div class="mb-6">
-              <textarea id="note-content" 
-                        placeholder="Enter your notes here & press [Save/send]... (The check boxes are not yet implemented) The saved notes can be seen by scrolling down." 
-                        class="w-full h-32 p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
-            </div>
-                   
-            <!-- More Tagging Section -->
-      
-     <!--event tags-->             
-       <div class="mb-6" id="TagSection006">
-  <div class="flex flex-wrap gap-2 mb-3">
-    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection007">📝
-      <input type="checkbox" id="tag-events-diary" name="events" value="diary" class="mr-2 text-blue-600">
-      <label for="tag-events-diary">diary</label>
-    </div>
-    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection008">
-      <input type="checkbox" id="tag-events-disaster" name="events" value="disaster" class="mr-2 text-blue-600">
-      <label for="tag-events-disaster">disaster</label>
-    </div>
-    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection009">
-      <input type="checkbox" id="tag-events-triumph" name="events" value="triumph" class="mr-2 text-blue-600">
-      <label for="tag-events-triumph">triumph</label>
-    </div>
-    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection010">
-      <input type="checkbox" id="tag-events-rant" name="events" value="rant" class="mr-2 text-blue-600">
-      <label for="tag-events-rant">rant</label>
-    </div>
-  </div>
-</div>
-
-<!-- process Tags -->
-        <div class="mb-6" id="TagSection011">
-  <div class="flex flex-wrap gap-2 mb-3">
-    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection012">🔄
-      <input type="checkbox" id="tag-process-todo" name="process" value="todo" class="mr-2 text-blue-600">
-      <label for="tag-process-todo">to do</label>
-    </div>
-    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection013">
-      <input type="checkbox" id="tag-process-idea" name="process" value="idea" class="mr-2 text-blue-600">
-      <label for="tag-process-idea">idea</label>
-    </div>
-    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection014">
-      <input type="checkbox" id="tag-process-note" name="process" value="note" class="mr-2 text-blue-600">
-      <label for="tag-process-note">note</label>
-    </div>
-    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection015">
-      <input type="checkbox" id="tag-process-blocker" name="process" value="blocker" class="mr-2 text-blue-600">
-      <label for="tag-process-blocker">block</label>
-    </div>
-    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection016">
-      <input type="checkbox" id="tag-process-refactor" name="process" value="refactor" class="mr-2 text-blue-600">
-      <label for="tag-process-refactor">refactor</label>
-    </div>
-    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection017">
-      <input type="checkbox" id="tag-process-hack" name="process" value="hack" class="mr-2 text-blue-600">
-      <label for="tag-process-hack">hack</label>
-    </div>
-  </div>
-</div>
-
-<!-- business Tags -->     
-<div class="mb-6" id="TagSection018">
-  <div class="flex flex-wrap gap-2 mb-3">
-    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection019">💼
-      <input type="checkbox" id="tag-business-meeting" name="business" value="meeting" class="mr-2 text-blue-600">
-      <label for="tag-business-meeting">meeting</label>
-    </div>
-    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection020">
-      <input type="checkbox" id="tag-business-review" name="business" value="review" class="mr-2 text-blue-600">
-      <label for="tag-business-review">review</label>
-    </div>
-  </div>
-</div>
-              
-              <!-- Resource Tags -->
-        <div class="mb-6" id="TagSection021">
-
-  <div class="flex flex-wrap gap-2 mb-3">
-    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection022">📚
-      <input type="checkbox" id="tag-resource-insight" name="resource" value="insight" class="mr-2 text-blue-600">
-      <label for="tag-resource-insight">insight</label>
-    </div>
-    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection023">
-      <input type="checkbox" id="tag-resource-resource" name="resource" value="resource" class="mr-2 text-blue-600">
-      <label for="tag-resource-resource">resource</label>
-    </div>
-    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection024">
-      <input type="checkbox" id="tag-resource-howto" name="resource" value="howto" class="mr-2 text-blue-600">
-      <label for="tag-resource-howto">howto</label>
-    </div>
-  </div>
-</div>
-              
-              <!-- Emotional & Experience Tags -->
-              <div class="mb-6">
-                <h4 class="text-md font-semibold mb-3 text-gray-700">🎭 Emotion & Experience click words</h4>
-                <div class="flex flex-wrap gap-2 mb-3">
-                                 </div>
+            <!--not needed as menu shows page name  <h2 class="text-2xl font-bold text-gray-800 mb-6">Notes</h2-->
+            <!-- Tagging above the note input -->
+            <!-- Main Tags -->
+            <!--15:44 8 Aug revised design--><div class="mb-6" id="TagSection001">
+              <h4 class="text-md font-semibold mb-3 text-gray-700">🌐 Main click the word</h4>
+              <div class="flex flex-wrap gap-2 mb-3">
+                <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection002">
+                  <input type="checkbox" name="main" value="bug" checked class="mr-2 text-blue-600">
+                  <label for="tag-main-bug">bug</label>
+                </div>
+                <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection003">
+                  <input type="checkbox" name="main" value="me" class="mr-2 text-blue-600">
+                  <label for="tag-main-me">me</label>
+                </div>
+                <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection004">
+                  <input type="checkbox" name="main" value="else" class="mr-2 text-blue-600">
+                  <label for="tag-main-else">else</label>
+                </div>
+                <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection005">
+                  <input type="checkbox" name="main" value="reply" class="mr-2 text-blue-600">
+                  <label for="tag-main-reply">reply</label>
+                </div>
               </div>
-            </div><!-- end of input section -->
-            
-            <!-- Buttons -->
-            <div class="flex space-x-4">
-              <button id="clear-notes" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors">
-                Clear all
-              </button>
-              <button id="save-notes" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
-                Save/Send
-              </button>
             </div>
-            
-            <!-- Future Functionality Info -->
-            <div id='output' class="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <p class="text-blue-800">
-                <strong>Future functionality:</strong> The implementation of NOTES will use a database table. 
-                Eventually it will be a logging system to record bugs as well as reminders and a scratch pad for temporary 'sticky notes'
-              </p>
-            </div>
+            <!-- Importance Tags -->
+            <div class="mb-6" id="TagSection025">
+              <h4 class="text-md font-semibold mb-3 text-gray-700">📶 Important?</h4>
+              <div class="flex flex-wrap gap-2 mb-3">
+                <div class="text-sm flex items-center" id="TagSection026">
+                  <input type="radio" id="importance-1" name="importance" value="importance-1" class="mr-2 text-blue-600">
+                  <label for="importance-1">1</label>
+                </div>
+                <div class="text-sm flex items-center" id="TagSection027">
+                  <input type="radio" id="importance-2" name="importance" value="importance-2" class="mr-2 text-blue-600">
+                  <label for="importance-2">2</label>
+                </div>
+                <div class="text-sm flex items-center" id="TagSection028">
+                  <input type="radio" id="importance-3" name="importance" value="importance-3" checked class="mr-2 text-blue-600">
+                  <label for="importance-3">3</label>
+                </div>
+                <div class="text-sm flex items-center" id="TagSection029">
+                  <input type="radio" id="importance-4" name="importance" value="importance-4" class="mr-2 text-blue-600">
+                  <label for="importance-4">4</label>
+                </div>
+                <div class="text-sm flex items-center" id="TagSection030">
+                  <input type="radio" id="importance-5" name="importance" value="importance-5" class="mr-2 text-blue-600">
+                  <label for="importance-5">5</label>
+                </div>
+              </div>
+            </div> <!--Closes div class="mb-6" -->
+          </div><!--closes flex-->
+          </div><!-- closes the div that is hidden. This is why the below appears on home page--> 
+          <!-- Note Content Input -->
+          <div class="mb-6">
+            <textarea id="note-content" 
+                      placeholder="Enter your notes here & press [Save/send]... (Use the checkboxes to tag your note for later search & retrieval ) The saved notes can be seen by scrolling down. When you look at saved notes you can click them to mark them as pending, completed or abandonded." 
+                      class="w-full h-32 p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
           </div>
-        </div>
-        
-        <!-- Links Page Content -->
-        <div id="links-page" class="page-content hidden">
-          <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">Links</h2>
-            <p class="text-gray-600 mb-6">This is where links to run various scripts will be located.</p>
-            
-            <div id="links-content">
-              <div class="mb-8">
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">A</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-1">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A1</p>
-                    <p class="text-xs text-gray-500 mt-1">Link 1</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-2">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A2</p>
-                    <p class="text-xs text-gray-500 mt-1">Link 2</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-3">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A3</p>
-                    <p class="text-xs text-gray-500 mt-1">Link 3</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-4">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A4</p>
-                    <p class="text-xs text-gray-500 mt-1">Link 4</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-5">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A5</p>
-                    <p class="text-xs text-gray-500 mt-1">Link 5</p>
-                  </div>
-                </div>
+          <!-- More Tagging Section -->
+          <!--event tags-->             
+          <div class="mb-6" id="TagSection006">
+            <div class="flex flex-wrap gap-2 mb-3">
+              <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection007">📝
+                <input type="checkbox" id="tag-events-diary" name="events" value="diary" checked class="mr-2 text-blue-600">
+                <label for="tag-events-diary">diary</label>
               </div>
-              
-              <div class="mb-8">
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">B</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-6">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A1</p>
-                    <p class="text-xs text-gray-500 mt-1">Link 1</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-7">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A2</p>
-                    <p class="text-xs text-gray-500 mt-1">Link 2</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-8">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A3</p>
-                    <p class="text-xs text-gray-500 mt-1">Link 3</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-9">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A4</p>
-                    <p class="text-xs text-gray-500 mt-1">Link 4</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-10">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A5</p>
-                    <p class="text-xs text-gray-500 mt-1">Link 5</p>
-                  </div>
-                </div>
+              <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection008">
+                <input type="checkbox" id="tag-events-disaster" name="events" value="disaster" class="mr-2 text-blue-600">
+                <label for="tag-events-disaster">disaster</label>
               </div>
-              
-              <div class="mb-8">
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">C</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-11">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A1</p>
-                    <p class="text-xs text-gray-500 mt-1">Link 1</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-12">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A2</p>
-                    <p class="text-xs text-gray-500 mt-1">Link 2</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-13">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A3</p>
-                    <p class="text-xs text-gray-500 mt-1">Link 3</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-14">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A4</p>
-                    <p class="text-xs text-gray-500 mt-1">Link 4</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-15">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A5</p>
-                    <p class="text-xs text-gray-500 mt-1">Link 5</p>
-                  </div>
-                </div>
+              <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection009">
+                <input type="checkbox" id="tag-events-triumph" name="events" value="triumph" class="mr-2 text-blue-600">
+                <label for="tag-events-triumph">triumph</label>
+              </div>
+              <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection010">
+                <input type="checkbox" id="tag-events-rant" name="events" value="rant" class="mr-2 text-blue-600">
+                <label for="tag-events-rant">rant</label>
               </div>
             </div>
           </div>
-        </div>
-        
-        <!-- Data Page Content -->
-        <div id="data-page" class="page-content hidden">
-          <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">Data</h2>
-            <p class="text-gray-600 mb-6">This will be where lists will be of files that the user regards as not executables, such as instructions, and design ideas.</p>
-            
-            <div id="data-content">
-              <div class="mb-8">
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">A</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-1">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A1</p>
-                    <p class="text-xs text-gray-500 mt-1 truncate">https://react.dev/learn</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-2">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A2</p>
-                    <p class="text-xs text-gray-500 mt-1 truncate">https://www.w3schools.com/react/react_intro.asp</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-3">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A3</p>
-                    <p class="text-xs text-gray-500 mt-1 truncate">https://v2.tailwindcss.com/docs</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-4">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A4</p>
-                    <p class="text-xs text-gray-500 mt-1 truncate">https://commonmark.org/help/</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-5">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A5</p>
-                    <p class="text-xs text-gray-500 mt-1 truncate">https://codepen.io</p>
-                  </div>
-                </div>
+          <!-- process Tags -->
+          <div class="mb-6" id="TagSection011">
+            <div class="flex flex-wrap gap-2 mb-3">
+              <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection012">🔄
+                <input type="checkbox" id="tag-process-todo" name="process" value="to-do" class="mr-2 text-blue-600">
+                <label for="tag-process-todo">to do</label>
               </div>
-              
-              <div class="mb-8">
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">B</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-6">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A1</p>
-                    <p class="text-xs text-gray-500 mt-1 truncate">https://raphael.org</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-7">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A2</p>
-                    <p class="text-xs text-gray-500 mt-1 truncate">https://www.bing.com/images</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-8">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A3</p>
-                    <p class="text-xs text-gray-500 mt-1 truncate">https://copilot.microsoft.com/</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-9">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A4</p>
-                    <p class="text-xs text-gray-500 mt-1 truncate">https://gemini.google.com/app</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-10">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A5</p>
-                    <p class="text-xs text-gray-500 mt-1 truncate">https://github.com</p>
-                  </div>
-                </div>
+              <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection013">
+                <input type="checkbox" id="tag-process-idea" name="process" value="idea" class="mr-2 text-blue-600">
+                <label for="tag-process-idea">idea</label>
               </div>
-              
-              <div class="mb-8">
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">C</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-11">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A1</p>
-                    <p class="text-xs text-gray-500 mt-1 truncate">https://react.dev/learn</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-12">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A2</p>
-                    <p class="text-xs text-gray-500 mt-1 truncate">https://www.w3schools.com/react/react_intro.asp</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-13">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A3</p>
-                    <p class="text-xs text-gray-500 mt-1 truncate">https://v2.tailwindcss.com/docs</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-14">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A4</p>
-                    <p class="text-xs text-gray-500 mt-1 truncate">https://commonmark.org/help/</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-15">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A5</p>
-                    <p class="text-xs text-gray-500 mt-1 truncate">https://codepen.io</p>
-                  </div>
-                </div>
+              <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection014">
+                <input type="checkbox" id="tag-process-note" name="process" value="note" class="mr-2 text-blue-600">
+                <label for="tag-process-note">note</label>
+              </div>
+              <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection015">
+                <input type="checkbox" id="tag-process-blocker" name="process" value="blocker" class="mr-2 text-blue-600">
+                <label for="tag-process-blocker">block</label>
+              </div>
+              <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection016">
+                <input type="checkbox" id="tag-process-refactor" name="process" value="refactor" class="mr-2 text-blue-600">
+                <label for="tag-process-refactor">refactor</label>
+              </div>
+              <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection017">
+                <input type="checkbox" id="tag-process-hack" name="process" value="hack" class="mr-2 text-blue-600">
+                <label for="tag-process-hack">hack</label>
               </div>
             </div>
           </div>
-        </div>
-        
-        <!-- Scripts Page Content -->
-        <div id="scripts-page" class="page-content hidden">
-          <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">Scripts</h2>
-            <p class="text-gray-600 mb-6">This is where lists will be of files the user regards as executable files that have been added to the sandbox.</p>
-            
-            <div id="scripts-content">
-              <div class="mb-8">
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">A</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-1">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A1</p>
-                    <p class="text-xs text-gray-500 mt-1">Script 1</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-2">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A2</p>
-                    <p class="text-xs text-gray-500 mt-1">Script 2</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-3">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A3</p>
-                    <p class="text-xs text-gray-500 mt-1">Script 3</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-4">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A4</p>
-                    <p class="text-xs text-gray-500 mt-1">Script 4</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-5">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A5</p>
-                    <p class="text-xs text-gray-500 mt-1">Script 5</p>
-                  </div>
-                </div>
+          <!-- business Tags -->     
+          <div class="mb-6" id="TagSection018">
+            <div class="flex flex-wrap gap-2 mb-3">
+              <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection019">💼
+                <input type="checkbox" id="tag-business-meeting" name="business" value="meeting" class="mr-2 text-blue-600">
+                <label for="tag-business-meeting">meeting</label>
               </div>
-              
-              <div class="mb-8">
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">B</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-6">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A1</p>
-                    <p class="text-xs text-gray-500 mt-1">Script 1</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-7">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A2</p>
-                    <p class="text-xs text-gray-500 mt-1">Script 2</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-8">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A3</p>
-                    <p class="text-xs text-gray-500 mt-1">Script 3</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-9">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A4</p>
-                    <p class="text-xs text-gray-500 mt-1">Script 4</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-10">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A5</p>
-                    <p class="text-xs text-gray-500 mt-1">Script 5</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="mb-8">
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">C</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-11">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A1</p>
-                    <p class="text-xs text-gray-500 mt-1">Script 1</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-12">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A2</p>
-                    <p class="text-xs text-gray-500 mt-1">Script 2</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-13">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A3</p>
-                    <p class="text-xs text-gray-500 mt-1">Script 3</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-14">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A4</p>
-                    <p class="text-xs text-gray-500 mt-1">Script 4</p>
-                  </div>
-                  <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-15">
-                    <div class="text-xl mb-1">📄</div>
-                    <p class="font-medium text-sm">A5</p>
-                    <p class="text-xs text-gray-500 mt-1">Script 5</p>
-                  </div>
-                </div>
+              <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection020">
+                <input type="checkbox" id="tag-business-review" name="business" value="review" class="mr-2 text-blue-600">
+                <label for="tag-business-review">review</label>
               </div>
             </div>
           </div>
+          <!-- Resource Tags -->
+          <div class="mb-6" id="TagSection021">
+            <div class="flex flex-wrap gap-2 mb-3">
+              <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection022">📚
+                <input type="checkbox" id="tag-resource-insight" name="resource" value="insight" class="mr-2 text-blue-600">
+                <label for="tag-resource-insight">insight</label>
+              </div>
+              <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection023">
+                <input type="checkbox" id="tag-resource-resource" name="resource" value="resource" class="mr-2 text-blue-600">
+                <label for="tag-resource-resource">resource</label>
+              </div>
+              <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection024">
+                <input type="checkbox" id="tag-resource-howto" name="resource" value="how-to" class="mr-2 text-blue-600">
+                <label for="tag-resource-howto">how to</label>
+              </div>
+            </div>
+          </div>
+          <!-- Emotional & Experience Tags -->
+          <div class="mb-6">
+            <h4 class="text-md font-semibold mb-3 text-gray-700">🎭 Emotion & Experience click words</h4>
+            <div class="flex flex-wrap gap-2 mb-3">
+            </div>
+          </div>
+        </div><!-- end of input section -->
+        <!-- Buttons -->
+        <div class="flex space-x-4">
+          <button id="clear-notes" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors">
+            Clear all
+          </button>
+          <button id="save-notes" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+            Save/Send
+          </button>
         </div>
-        
-        <!-- Plan Page Content -->
-        <div id="plan-page" class="page-content hidden">
-          <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">Plan</h2>
-            <p class="text-gray-600 mb-6">Where hopes die</p>
-            <div class="space-y-8">
-              <div>
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">Stage 2</h3>
-                <ul class="list-disc pl-5 space-y-2 text-gray-700">
-                  <li>Connect The Lab with Github repository</li>
-                  <li>Connect The Lab with Supabase</li>
-                  <li>Enable editable links on card components</li>
-                  <li>Implement step by step instructions published on The Lab web pages</li>
-                  <li>Test creating additional static and dynamic pages edited at Github and committed to the project</li>
-                  <li>Create the initial database tables & any needed webpages to interact with them</li>
-                </ul>
+        <!-- Future Functionality Info -->
+        <div id='output' class="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <p class="text-blue-800">
+            <strong>Future functionality:</strong> The implementation of NOTES will use a database table. 
+            Eventually it will be a logging system to record bugs as well as reminders and a scratch pad for temporary 'sticky notes'
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Links Page Content -->
+    <div id="links-page" class="page-content hidden">
+      <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">Links</h2>
+        <p class="text-gray-600 mb-6">This is where links to run various scripts will be located.</p>
+        <div id="links-content">
+          <div class="mb-8">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">A</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-1">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A1</p>
+                <p class="text-xs text-gray-500 mt-1">Link 1</p>
               </div>
-              <div>
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">Stage 3</h3>
-                <ul class="list-disc pl-5 space-y-2 text-gray-700">
-                  <li>Connect the notes page to a database table & program basic functionality</li>
-                  <li>Store Notes in Supabase database</li>
-                  <li>Log user progress or bugs</li>
-                  <li>Build a first test project by making the Notes page functional</li>
-                  <li>Use this to create step by step instructions on how to create a working database+webpage</li>
-                </ul>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-2">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A2</p>
+                <p class="text-xs text-gray-500 mt-1">Link 2</p>
               </div>
-              <div>
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">Stage 4</h3>
-                <ul class="list-disc pl-5 space-y-2 text-gray-700">
-                  <li>Create a 'profiles' TABLE and a simple sign-in form for invited test users</li>
-                  <li>Publish the web app but only allow invited users to have access to the messaging system</li>
-                </ul>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-3">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A3</p>
+                <p class="text-xs text-gray-500 mt-1">Link 3</p>
               </div>
-              <div>
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">Stage 5</h3>
-                <ul class="list-disc pl-5 space-y-2 text-gray-700">
-                  <li>Build an instructions database and dynamic page production based on a store of tagged code snippets, how to lists, advice and instructions</li>
-                </ul>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-4">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A4</p>
+                <p class="text-xs text-gray-500 mt-1">Link 4</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-5">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A5</p>
+                <p class="text-xs text-gray-500 mt-1">Link 5</p>
+              </div>
+            </div>
+          </div>
+          <div class="mb-8">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">B</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-6">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A1</p>
+                <p class="text-xs text-gray-500 mt-1">Link 1</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-7">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A2</p>
+                <p class="text-xs text-gray-500 mt-1">Link 2</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-8">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A3</p>
+                <p class="text-xs text-gray-500 mt-1">Link 3</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-9">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A4</p>
+                <p class="text-xs text-gray-500 mt-1">Link 4</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-10">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A5</p>
+                <p class="text-xs text-gray-500 mt-1">Link 5</p>
+              </div>
+            </div>
+          </div>
+          <div class="mb-8">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">C</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-11">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A1</p>
+                <p class="text-xs text-gray-500 mt-1">Link 1</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-12">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A2</p>
+                <p class="text-xs text-gray-500 mt-1">Link 2</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-13">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A3</p>
+                <p class="text-xs text-gray-500 mt-1">Link 3</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-14">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A4</p>
+                <p class="text-xs text-gray-500 mt-1">Link 4</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="links-15">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A5</p>
+                <p class="text-xs text-gray-500 mt-1">Link 5</p>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    
-    <!-- Edit Modal -->
-    <div id="edit-modal" class="modal">
-      <div class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
-        <h3 class="text-lg font-semibold mb-4">Edit Card</h3>
-        <div class="space-y-4">
+    <!-- Data Page Content -->
+    <div id="data-page" class="page-content hidden">
+      <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">Data</h2>
+        <p class="text-gray-600 mb-6">This will be where lists will be of files that the user regards as not executables, such as instructions, and design ideas.</p>
+        <div id="data-content">
+          <div class="mb-8">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">A</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-1">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A1</p>
+                <p class="text-xs text-gray-500 mt-1 truncate">https://react.dev/learn</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-2">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A2</p>
+                <p class="text-xs text-gray-500 mt-1 truncate">https://www.w3schools.com/react/react_intro.asp</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-3">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A3</p>
+                <p class="text-xs text-gray-500 mt-1 truncate">https://v2.tailwindcss.com/docs</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-4">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A4</p>
+                <p class="text-xs text-gray-500 mt-1 truncate">https://commonmark.org/help/</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-5">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A5</p>
+                <p class="text-xs text-gray-500 mt-1 truncate">https://codepen.io</p>
+              </div>
+            </div>
+          </div>
+          <div class="mb-8">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">B</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-6">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A1</p>
+                <p class="text-xs text-gray-500 mt-1 truncate">https://raphael.org</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-7">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A2</p>
+                <p class="text-xs text-gray-500 mt-1 truncate">https://www.bing.com/images</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-8">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A3</p>
+                <p class="text-xs text-gray-500 mt-1 truncate">https://copilot.microsoft.com/</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-9">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A4</p>
+                <p class="text-xs text-gray-500 mt-1 truncate">https://gemini.google.com/app</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-10">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A5</p>
+                <p class="text-xs text-gray-500 mt-1 truncate">https://github.com</p>
+              </div>
+            </div>
+          </div>
+          <div class="mb-8">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">C</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-11">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A1</p>
+                <p class="text-xs text-gray-500 mt-1 truncate">https://react.dev/learn</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-12">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A2</p>
+                <p class="text-xs text-gray-500 mt-1 truncate">https://www.w3schools.com/react/react_intro.asp</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-13">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A3</p>
+                <p class="text-xs text-gray-500 mt-1 truncate">https://v2.tailwindcss.com/docs</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-14">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A4</p>
+                <p class="text-xs text-gray-500 mt-1 truncate">https://commonmark.org/help/</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="data-15">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A5</p>
+                <p class="text-xs text-gray-500 mt-1 truncate">https://codepen.io</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Scripts Page Content -->
+    <div id="scripts-page" class="page-content hidden">
+      <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">Scripts</h2>
+        <p class="text-gray-600 mb-6">This is where lists will be of files the user regards as executable files that have been added to the sandbox.</p>
+        <div id="scripts-content">
+          <div class="mb-8">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">A</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-1">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A1</p>
+                <p class="text-xs text-gray-500 mt-1">Script 1</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-2">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A2</p>
+                <p class="text-xs text-gray-500 mt-1">Script 2</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-3">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A3</p>
+                <p class="text-xs text-gray-500 mt-1">Script 3</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-4">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A4</p>
+                <p class="text-xs text-gray-500 mt-1">Script 4</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-5">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A5</p>
+                <p class="text-xs text-gray-500 mt-1">Script 5</p>
+              </div>
+            </div>
+          </div>
+          <div class="mb-8">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">B</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-6">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A1</p>
+                <p class="text-xs text-gray-500 mt-1">Script 1</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-7">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A2</p>
+                <p class="text-xs text-gray-500 mt-1">Script 2</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-8">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A3</p>
+                <p class="text-xs text-gray-500 mt-1">Script 3</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-9">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A4</p>
+                <p class="text-xs text-gray-500 mt-1">Script 4</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-10">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A5</p>
+                <p class="text-xs text-gray-500 mt-1">Script 5</p>
+              </div>
+            </div>
+          </div>
+          <div class="mb-8">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">C</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-11">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A1</p>
+                <p class="text-xs text-gray-500 mt-1">Script 1</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-12">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A2</p>
+                <p class="text-xs text-gray-500 mt-1">Script 2</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-13">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A3</p>
+                <p class="text-xs text-gray-500 mt-1">Script 3</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-14">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A4</p>
+                <p class="text-xs text-gray-500 mt-1">Script 4</p>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors text-center transform-scale-75 origin-top-left" data-card-id="scripts-15">
+                <div class="text-xl mb-1">📄</div>
+                <p class="font-medium text-sm">A5</p>
+                <p class="text-xs text-gray-500 mt-1">Script 5</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Plan Page Content -->
+    <div id="plan-page" class="page-content hidden">
+      <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">Plan</h2>
+        <p class="text-gray-600 mb-6">Where hopes die</p>
+        <div class="space-y-8">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-            <input type="text" id="edit-name" 
-                   class="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">Stage 2</h3>
+            <ul class="list-disc pl-5 space-y-2 text-gray-700">
+              <li>Connect The Lab with Github repository</li>
+              <li>Connect The Lab with Supabase</li>
+              <li>Enable editable links on card components</li>
+              <li>Implement step by step instructions published on The Lab web pages</li>
+              <li>Test creating additional static and dynamic pages edited at Github and committed to the project</li>
+              <li>Create the initial database tables & any needed webpages to interact with them</li>
+            </ul>
           </div>
-          <div id="url-field">
-            <label class="block text-sm font-medium text-gray-700 mb-1">URL</label>
-            <input type="url" id="edit-url" 
-                   class="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+          <div>
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">Stage 3</h3>
+            <ul class="list-disc pl-5 space-y-2 text-gray-700">
+              <li>Connect the notes page to a database table & program basic functionality</li>
+              <li>Store Notes in Supabase database</li>
+              <li>Log user progress or bugs</li>
+              <li>Build a first test project by making the Notes page functional</li>
+              <li>Use this to create step by step instructions on how to create a working database+webpage</li>
+            </ul>
           </div>
-        </div>
-        <div class="flex justify-end space-x-3 mt-6">
-          <button id="cancel-edit" class="px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50">
-            Cancel
-          </button>
-          <button id="save-edit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-            Save
-          </button>
+          <div>
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">Stage 4</h3>
+            <ul class="list-disc pl-5 space-y-2 text-gray-700">
+              <li>Create a 'profiles' TABLE and a simple sign-in form for invited test users</li>
+              <li>Publish the web app but only allow invited users to have access to the messaging system</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">Stage 5</h3>
+            <ul class="list-disc pl-5 space-y-2 text-gray-700">
+              <li>Build an instructions database and dynamic page production based on a store of tagged code snippets, how to lists, advice and instructions</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
-  <script>
-    // Initialize state
-    let activePage = 'home';
-    let editingCard = null;
-    let currentPageType = '';
-    
-    // Card data
-    const linksCardData = Array.from({ length: 15 }, (_, i) => ({
-      id: `links-${i + 1}`,
-      name: `A${(i % 5) + 1}`,
-      section: String.fromCharCode(65 + Math.floor(i / 5)),
-      content: `Link ${(i % 5) + 1}`
-    }));
-    
-    const scriptsCardData = Array.from({ length: 15 }, (_, i) => ({
-      id: `scripts-${i + 1}`,
-      name: `A${(i % 5) + 1}`,
-      section: String.fromCharCode(65 + Math.floor(i / 5)),
-      content: `Script ${(i % 5) + 1}`
-    }));
-    
-    const initialDataLinks = [
-      { name: 'React Documentation', url: 'https://react.dev/learn' },
-      { name: 'W3Schools React Intro', url: 'https://www.w3schools.com/react/react_intro.asp' },
-      { name: 'TailwindCSS v2 Docs', url: 'https://v2.tailwindcss.com/docs' },
-      { name: 'CommonMark Markdown Help', url: 'https://commonmark.org/help/' },
-      { name: 'CodePen', url: 'https://codepen.io' },
-      { name: 'Raphaël JS Library', url: 'https://raphael.org' },
-      { name: 'Bing Images', url: 'https://www.bing.com/images' },
-      { name: 'Microsoft Copilot', url: 'https://copilot.microsoft.com/' },
-      { name: 'Google Gemini', url: 'https://gemini.google.com/app' },
-      { name: 'GitHub', url: 'https://github.com' },
-    ];
-    
-    const dataCardData = Array.from({ length: 15 }, (_, i) => {
-      const linkIndex = i % initialDataLinks.length;
-      return {
-        id: `data-${i + 1}`,
-        name: `A${(i % 5) + 1}`,
-        section: String.fromCharCode(65 + Math.floor(i / 5)),
-        ...initialDataLinks[linkIndex]
-      };
-    });
-    
-    // DOM elements
-    const app = document.getElementById('app');
-    const modal = document.getElementById('edit-modal');
-    const editNameInput = document.getElementById('edit-name');
-    const editUrlInput = document.getElementById('edit-url');
-    const urlField = document.getElementById('url-field');
-    
-    // Page navigation
-    document.querySelectorAll('[data-page]').forEach(button => {
-      button.addEventListener('click', (e) => {
-        // Remove active class from all buttons
-        document.querySelectorAll('[data-page]').forEach(btn => {
-          btn.classList.remove('active-page', 'bg-blue-100', 'text-blue-800', 'border-l-4', 'border-blue-500');
-          btn.classList.add('text-gray-700');
-        });
-        
-        // Add active class to clicked button
-        e.target.classList.add('active-page', 'bg-blue-100', 'text-blue-800', 'border-l-4', 'border-blue-500');
-        e.target.classList.remove('text-gray-700');
-        
-        // Hide all pages
-        document.querySelectorAll('.page-content').forEach(page => {
-          page.classList.add('hidden');
-        });
-        
-        // Show selected page
-        const pageId = e.target.getAttribute('data-page') + '-page';
-        document.getElementById(pageId).classList.remove('hidden');
-        
-        // Update active page
-        activePage = e.target.getAttribute('data-page');
-      });
-    });
-    
-    // Card editing functionality
-    document.querySelectorAll('[data-card-id]').forEach(card => {
-      card.addEventListener('click', (e) => {
-        const cardId = e.currentTarget.getAttribute('data-card-id');
-        const pageType = cardId.split('-')[0]; // links, data, or scripts
-        
-        // Find the card data
-        let cardData;
-        if (pageType === 'links') {
-          cardData = linksCardData.find(c => c.id === cardId);
-        } else if (pageType === 'data') {
-          cardData = dataCardData.find(c => c.id === cardId);
-        } else if (pageType === 'scripts') {
-          cardData = scriptsCardData.find(c => c.id === cardId);
-        }
-        
-        if (cardData) {
-          // Set editing state
-          editingCard = cardId;
-          currentPageType = pageType;
-          
-          // Populate form
-          editNameInput.value = cardData.name;
-          editUrlInput.value = cardData.url || '';
-          
-          // Show/hide URL field based on page type
-          if (pageType === 'data') {
-            urlField.style.display = 'block';
-          } else {
-            urlField.style.display = 'none';
-          }
-          
-          // Show modal
-          modal.classList.add('show');
-        }
-      });
-    });
-    
-    // Modal buttons
-    document.getElementById('cancel-edit').addEventListener('click', () => {
-      modal.classList.remove('show');
-      editingCard = null;
-    });
-    
-    document.getElementById('save-edit').addEventListener('click', () => {
-      if (!editingCard) return;
-      
-      // Update the appropriate card data based on current page
-      if (currentPageType === 'data') {
-        const cardIndex = dataCardData.findIndex(card => card.id === editingCard);
-        if (cardIndex !== -1) {
-          dataCardData[cardIndex].name = editNameInput.value;
-          dataCardData[cardIndex].url = editUrlInput.value;
-          
-          // Update the DOM
-          const cardElement = document.querySelector(`[data-card-id="${editingCard}"]`);
-          if (cardElement) {
-            const nameElement = cardElement.querySelector('p.font-medium');
-            const urlElement = cardElement.querySelector('p.text-xs');
-            if (nameElement) nameElement.textContent = editNameInput.value;
-            if (urlElement) urlElement.textContent = editUrlInput.value;
-          }
-        }
-      } else if (currentPageType === 'links') {
-        const cardIndex = linksCardData.findIndex(card => card.id === editingCard);
-        if (cardIndex !== -1) {
-          linksCardData[cardIndex].name = editNameInput.value;
-          linksCardData[cardIndex].content = editNameInput.value;
-          
-          // Update the DOM
-          const cardElement = document.querySelector(`[data-card-id="${editingCard}"]`);
-          if (cardElement) {
-            const nameElement = cardElement.querySelector('p.font-medium');
-            const contentElement = cardElement.querySelector('p.text-xs');
-            if (nameElement) nameElement.textContent = editNameInput.value;
-            if (contentElement) contentElement.textContent = editNameInput.value;
-          }
-        }
-      } else if (currentPageType === 'scripts') {
-        const cardIndex = scriptsCardData.findIndex(card => card.id === editingCard);
-        if (cardIndex !== -1) {
-          scriptsCardData[cardIndex].name = editNameInput.value;
-          scriptsCardData[cardIndex].content = editNameInput.value;
-          
-          // Update the DOM
-          const cardElement = document.querySelector(`[data-card-id="${editingCard}"]`);
-          if (cardElement) {
-            const nameElement = cardElement.querySelector('p.font-medium');
-            const contentElement = cardElement.querySelector('p.text-xs');
-            if (nameElement) nameElement.textContent = editNameInput.value;
-            if (contentElement) contentElement.textContent = editNameInput.value;
-          }
-        }
-      }
-      
-      // Show alert about database save (future implementation)
-      alert(`Card updated! In future, this will save to the 'external_links' database table.`);
-      
-      // Hide modal
-      modal.classList.remove('show');
-      editingCard = null;
-    });
-    
-    // Notes functionality
-    document.getElementById('clear-notes').addEventListener('click', () => {
-      if (window.confirm('Are you sure you want to clear all notes?')) {
-        document.getElementById('note-content').value = '';
-      }
-    });
-    
-document.getElementById('save-notes').addEventListener('click', async () => {
-  const content = document.getElementById('note-content').value;
-   if(content!="" ){
-  const author_id = '4023236b-58d7-4c41-ba0f-45a7efc31847'; // Later fetch dynamically
-  const title = 'Note from UI';
-//order in db: author_id(required), audience_id, reply_to_id, title, content, status
-//only insert if there is something to insert
-  await insertNote(window.supabaseClient, author_id, null,null,title, content);
-    };
-   });
-
-
-
-
-    
-    
-    // Close modal when clicking outside
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.classList.remove('show');
-        editingCard = null;
-      }
-    });
-    
-    // Initialize - show home page
-    document.getElementById('notes-page').classList.remove('hidden');
-  </script>
+  <!-- Edit Modal -->
+  <div id="edit-modal" class="modal">
+    <div class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+      <h3 class="text-lg font-semibold mb-4">Edit Card</h3>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+          <input type="text" id="edit-name" 
+                 class="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+        </div>
+        <div id="url-field">
+          <label class="block text-sm font-medium text-gray-700 mb-1">URL</label>
+          <input type="url" id="edit-url" 
+                 class="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+        </div>
+      </div>
+      <div class="flex justify-end space-x-3 mt-6">
+        <button id="cancel-edit" class="px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50">
+          Cancel
+        </button>
+        <button id="save-edit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+<!--   <script src="./mainByQwen.js"></script-->
+  <script src="./mainByGemini.js"></script>
 </body>
 </html>
-
-
- 
