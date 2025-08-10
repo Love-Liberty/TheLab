@@ -177,6 +177,19 @@ function createTagArray() {
             }
         }
     }    
+
+                         // --- Handle the radio button group ---
+                         // For radio buttons, we only need to find the one that is checked.
+                         // The querySelector method finds the first matching element.
+    const importanceRadio = document.querySelector('input[name="importance"][type="radio"]:checked');
+    
+    // Check if a radio button was actually selected.
+    if (importanceRadio) {
+        // If it was, add its value to the tagsArray.
+        tagsArray.push(importanceRadio.value);
+    }
+
+  
     // Log the final array so we can see what was collected.
     console.log('Tags collected:', tagsArray);
     return tagsArray;
