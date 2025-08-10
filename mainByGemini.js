@@ -467,7 +467,7 @@ async function insertNote(supabase, author_id, audience_id = null, reply_to_id =
     }
 
     // Set up the initial page view and fetch notes
-    showPage('home-page');
+    showPage('notes-page');
     diagnoseSupabase().then(() => {
         fetchNotes(currentPage);
     });
