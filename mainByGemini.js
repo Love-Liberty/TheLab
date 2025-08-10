@@ -197,53 +197,43 @@ function createTagArray() {
  
   
 // This function inserts each tag from the tagsArray into the Supabase 'tags' table.
-// It first validates the tags against the 'notes_categories' table.
+// It now explicitly accepts the 'supabase' client as an argument.
 async function insertTags(supabase, noteId, tagsArray) {
     console.log('Validating and inserting tags for noteId:', noteId, 'Tags:', tagsArray);
 
-    // If there are no tags to insert, we can exit early.
     if (!tagsArray || tagsArray.length === 0) {
         console.log('No tags to insert.');
         return;
     }
 
     try {
-        // Step 1: Fetch all valid category IDs from the 'notes_categories' table.
-        // This is our source of truth for valid tags.
         const { data: validCategories, error: categoriesError } = await supabase
             .from('notes_categories')
             .select('category_name');
 
         if (categoriesError) {
             console.error('Error fetching valid categories:', categoriesError);
-            return; // Exit if we can't get the list of valid tags.
+            return;
         }
 
-        // Create a Set for efficient lookup of valid tag IDs.
-        const validTagIds = new Set(validCategories.map(cat => cat.category_name));
-        
-        // Step 2: Filter the user's tagsArray to keep only valid tags.
-        const validTags = tagsArray.filter(tag => validTagIds.has(tag));
+        const validCategoryNames = new Set(validCategories.map(cat => cat.category_name));
+        const validTags = tagsArray.filter(tag => validCategoryNames.has(tag));
+        const invalidTags = tagsArray.filter(tag => !validCategoryNames.has(tag));
 
-        // Step 3: Check for any invalid tags and log a warning.
-        const invalidTags = tagsArray.filter(tag => !validTagIds.has(tag));
         if (invalidTags.length > 0) {
             console.warn(`The following tags were invalid and will not be saved: ${invalidTags.join(', ')}`);
         }
 
-        // If there are no valid tags to insert after filtering, we're done.
         if (validTags.length === 0) {
             console.log('No valid tags to insert after validation.');
             return;
         }
         
-        // Step 4: Map the valid tags into the format required for the batch insert.
         const tagsToInsert = validTags.map(tag => ({
             noteId: noteId,
             category_name: tag
         }));
         
-        // Step 5: Perform the actual batch insertion with only the valid tags.
         const { data, error } = await supabase
             .from('tags')
             .insert(tagsToInsert)
