@@ -198,7 +198,7 @@ function createTagArray() {
   
 // This function inserts each tag from the tagsArray into the Supabase 'tags' table.
 // It first validates the tags against the 'notes_categories' table.
-async function insertTags(noteId, tagsArray) {
+async function insertTags(supabase, noteId, tagsArray) {
     console.log('Validating and inserting tags for noteId:', noteId, 'Tags:', tagsArray);
 
     // If there are no tags to insert, we can exit early.
@@ -264,7 +264,7 @@ async function insertNoteAndTags(supabase, author_id, audience_id = null, reply_
  console.log('insertNoteAnsTags()');
   const tagsArray=createTagArray();
     const rowId = await insertNote(supabase, author_id, audience_id, reply_to_id, title, content, status);
-  await insertTags(rowId, tagsArray);
+  await insertTags(supabase, rowId, tagsArray);
  return true;} //placeholder
 
   
