@@ -196,8 +196,8 @@ function createTagArray() {
 }
  
   
-// This function inserts each tag from the tagsArray into the Supabase 'tags' table.
-// It now explicitly accepts the 'supabase' client as an argument.
+// This function inserts the category_name_id of each tag from the tagsArray
+// into the supabase 'notes_categorised' table
 async function insertTags(supabase, noteId, tagsArray) {
     console.log('Validating and inserting tags for noteId:', noteId, 'Tags:', tagsArray);
 
@@ -207,18 +207,23 @@ async function insertTags(supabase, noteId, tagsArray) {
     }
 
     try {
-        const { data: validCategories, error: categoriesError } = await supabase
+        // Step 1: Fetch both the ID and the category name from 'notes_categories'
+        const { data: categories, error: categoriesError } = await supabase
             .from('notes_categories')
-            .select('category_name');
+            .select('id, category_name');
 
         if (categoriesError) {
             console.error('Error fetching valid categories:', categoriesError);
             return;
         }
 
-        const validCategoryNames = new Set(validCategories.map(cat => cat.category_name));
-        const validTags = tagsArray.filter(tag => validCategoryNames.has(tag));
-        const invalidTags = tagsArray.filter(tag => !validCategoryNames.has(tag));
+        // Step 2: Create a Map for quick name-to-ID lookup
+        const categoryNameToIdMap = new Map(
+            categories.map(cat => [cat.category_name, cat.id])
+        );
+
+        const validTags = tagsArray.filter(tag => categoryNameToIdMap.has(tag));
+        const invalidTags = tagsArray.filter(tag => !categoryNameToIdMap.has(tag));
 
         if (invalidTags.length > 0) {
             console.warn(`The following tags were invalid and will not be saved: ${invalidTags.join(', ')}`);
@@ -229,13 +234,15 @@ async function insertTags(supabase, noteId, tagsArray) {
             return;
         }
         
+        // Step 3: Map the valid tag names to their corresponding IDs
+        // and create the array of objects to insert.
         const tagsToInsert = validTags.map(tag => ({
             note_id: noteId,
-            note_category: tag
+            note_category_id: categoryNameToIdMap.get(tag) // Use the ID here!
         }));
         
         const { data, error } = await supabase
-            .from('notes_categorised')
+            .from('notes_categorised') // Your corrected table name
             .insert(tagsToInsert)
             .select();
         
@@ -248,6 +255,7 @@ async function insertTags(supabase, noteId, tagsArray) {
         console.error('An unexpected error occurred during tag insertion:', err);
     }
 }
+
 
                      //(supabaseClient, authorId, null1, null2, title, noteContent, null3)
 async function insertNoteAndTags(supabase, author_id, audience_id = null, reply_to_id = null, title = 'AutoTitle', content, status = null){
