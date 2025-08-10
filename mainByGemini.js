@@ -111,177 +111,112 @@ inputGroups.forEach(group => {
         renderNotes(data, count, page);
     }
 
-
-  
     /**
      * Displays a page of notes in the 'output' div.
      * @param {Array<Object>} notes The array of notes to render.
      * @param {number} totalCount The total number of notes in the database.
      * @param {number} page The current page number.
      */
-    // Debounce timer map to hold timers for each note
-        const debounceTimers = new Map();
-        
-        // Status mapping and cycle logic
-        const statusMap = {
-            6: { label: 'Pending (Complete)', icon: '❓', color: 'text-green-500' },
-            9: { label: 'Completed', icon: '✅', color: 'text-green-500' },
-            7: { label: 'Pending (Abandon)', icon: '❓', color: 'text-red-500' },
-            8: { label: 'Abandoned', icon: '❌', color: 'text-red-500' },
-        };
-        const statusCycle = [6, 9, 7, 8];
+const statusCycle = { 6: 8, 8: 7, 7: 9, 9: 6 };
+const debounceTimers = new Map(); // Tracks debounce per note
 
-        /**
-         * Renders the notes and pagination controls to the DOM.
-         * This function is a replacement for your existing `renderNotes` function.
-         * @param {Array} notes The notes to render.
-         * @param {number} totalCount The total number of notes.
-         * @param {number} page The current page number.
-         */
-        function renderNotes(notes, totalCount, page) {
-            const output = document.getElementById('output');
-            const notesHtml = notes.map(note => {
-                // Get the current status from the note, defaulting to '6' if not set
-                const status = note.status || 6;
-                const statusInfo = statusMap[status];
+function getIconHTML(status) {
+    switch (status) {
+        case 6: return '<span class="text-green-600">?</span>';
+        case 8: return '<span class="text-green-600">✔</span>';
+        case 7: return '<span class="text-red-600">?</span>';
+        case 9: return '<span class="text-red-600">✘</span>';
+        default: return '';
+    }
+}
 
-                const shortContent = note.content.length > 200 ?
-                    `${note.content.slice(0, 200)} <span class="text-blue-600 cursor-pointer" onclick="toggleContent(this)">[more]</span><span class="hidden">${note.content.slice(200)}</span>` :
-                    note.content;
+  //new status code 19:43 10 Aug copilot
+  
+function renderNotes(notes, totalCount, page) {
+    const output = document.getElementById('output');
 
-                return `
-                    <div data-note-id="${note.id}" class="note-card mb-4">
-                        <div class="flex-shrink-0">
-                            <span
-                                class="status-icon ${statusInfo.color}"
-                                data-note-id="${note.id}"
-                                data-status="${status}"
-                                title="${statusInfo.label}"
-                            >
-                                ${statusInfo.icon}
-                            </span>
-                        </div>
-                        <div class="flex-grow">
-                            <p class="text-gray-600"><strong>ID:</strong> ${note.id.slice(0, 8)}</p>
-                            <p class="text-gray-600"><strong>Created:</strong> ${new Date(note.created_at).toLocaleString()}</p>
-                            <p class="text-gray-800 mt-2">${shortContent}</p>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+    const notesHtml = notes.map(note => {
+        const shortContent = note.content.length > 200
+            ? `${note.content.slice(0, 200)} <span class="text-blue-600 cursor-pointer" onclick="toggleContent(this)">[more]</span><span class="hidden">${note.content.slice(200)}</span>`
+            : note.content;
 
-            const totalPages = Math.ceil(totalCount / pageSize);
-            const controls = `
-                <div class="flex items-center justify-between mt-4">
-                    <button class="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:opacity-50" onclick="changePage(${page - 1})" ${page === 1 ? 'disabled' : ''}>Previous</button>
-                    <span>Page ${page} of ${totalPages}</span>
-                    <button class="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:opacity-50" onclick="changePage(${page + 1})" ${page === totalPages ? 'disabled' : ''}>Next</button>
-                </div>
-            `;
-            output.innerHTML = notesHtml + controls;
-            // Attach event listeners after rendering
-            initEventListeners();
-        }
-        
-        /**
-         * Initializes event listeners for the status icons using event delegation.
-         */
-        function initEventListeners() {
-            const outputContainer = document.getElementById('output');
-            // Remove previous event listener to prevent duplicates
-            outputContainer.removeEventListener('click', handleIconClick);
-            // Add a single event listener to the parent container
-            outputContainer.addEventListener('click', handleIconClick);
-        }
+        const iconHTML = getIconHTML(note.status);
+        const statusAttr = note.status ?? ''; // null-safe
 
-        /**
-         * The click handler for the event listener.
-         * @param {Event} event The click event.
-         */
-        function handleIconClick(event) {
-            const target = event.target.closest('.status-icon');
-            if (target) {
-                cycleNoteStatus(target);
-            }
-        }
+        return `
+            <div class="mb-4 p-2 border-b border-blue-200 relative note-block" 
+                 data-note-id="${note.id}" 
+                 data-status="${statusAttr}" 
+                 onclick="handleNoteClick(event)">
+                <div class="absolute top-2 right-2 status-icon">${iconHTML}</div>
+                <p><strong>ID:</strong> ${note.sort_int}</p>
+                <p><strong>Author:</strong> ${note.author_id.slice(0, 8)}</p>
+                <p><strong>Created:</strong> ${new Date(note.created_at).toLocaleString()}</p>
+                <p><strong>Content:</strong> ${shortContent}</p>
+            </div>
+        `;
+    }).join('');
 
-        /**
-         * Cycles the note's status and debounces the database write.
-         * @param {HTMLElement} icon The clicked icon element.
-         */
-        function cycleNoteStatus(icon) {
-            const noteId = icon.dataset.noteId;
-            const currentStatus = parseInt(icon.dataset.status, 10);
+    const totalPages = Math.ceil(totalCount / pageSize);
+    const controls = `
+        <div class="flex items-center justify-between mt-4">
+            <button onclick="changePage(${page - 1})" ${page === 1 ? 'disabled' : ''}>[<-]</button>
+            <span>Page ${page} of ${totalPages}</span>
+            <button onclick="changePage(${page + 1})" ${page === totalPages ? 'disabled' : ''}>[->]</button>
+        </div>
+    `;
 
-            // Find the next status in the cycle
-            const currentIndex = statusCycle.indexOf(currentStatus);
-            const nextIndex = (currentIndex + 1) % statusCycle.length;
-            const nextStatus = statusCycle[nextIndex];
+    output.innerHTML = notesHtml + controls;
+}
 
-            // Update the icon's display immediately
-            const nextStatusInfo = statusMap[nextStatus];
-            icon.textContent = nextStatusInfo.icon;
-            icon.className = `status-icon ${nextStatusInfo.color}`;
-            icon.dataset.status = nextStatus;
-            icon.title = nextStatusInfo.label;
+async function handleNoteClick(event) {
+    const noteBlock = event.currentTarget.closest('.note-block');
+    if (!noteBlock) return;
 
-            // Clear any existing timer for this note
-            if (debounceTimers.has(noteId)) {
-                clearTimeout(debounceTimers.get(noteId));
-            }
+    const noteId = noteBlock.dataset.noteId;
+    let currentStatus = parseInt(noteBlock.dataset.status);
+    if (isNaN(currentStatus)) currentStatus = 6; // default starting status
 
-            // Set a new timer to update the database after a delay
-            const timer = setTimeout(() => {
-                updateNoteStatusInDB(noteId, nextStatus);
-                debounceTimers.delete(noteId); // Clear the timer from the map
-            }, 2000); // 2-second delay
+    const nextStatus = statusCycle[currentStatus];
+    noteBlock.dataset.status = nextStatus;
 
-            debounceTimers.set(noteId, timer);
-        }
+    const iconDiv = noteBlock.querySelector('.status-icon');
+    if (iconDiv) iconDiv.innerHTML = getIconHTML(nextStatus);
 
-        /**
-         * Placeholder function to update the note status.
-         * Replace the contents of this function with your actual database update logic.
-         * @param {string} noteId The ID of the note to update.
-         * @param {number} newStatus The new status value.
-         */
-        function updateNoteStatusInDB(noteId, newStatus) {
-            console.log(`Database update: Note ${noteId} status changed to ${newStatus}.`);
-            // Add your actual database call here. For example:
-            // yourApi.updateNote(noteId, { status: newStatus });
-        }
-        
-        // Example to demonstrate the function
-        const mockNotes = [
-            { id: 'note123', sort_int: 1, author_id: 'user456', created_at: Date.now(), content: 'This is a sample note with some content that needs to be checked. It will be truncated for demonstration purposes. This is a very long note to test the [more] functionality. It just keeps going on and on and on and on to fill up space.' },
-            { id: 'note124', sort_int: 2, author_id: 'user456', created_at: Date.now(), content: 'This is a shorter note that does not need to be truncated.', status: 9 },
-            { id: 'note125', sort_int: 3, author_id: 'user456', created_at: Date.now(), content: 'Another note to test the debounce feature.', status: 7 }
-        ];
+    // Debounce save
+    if (debounceTimers.has(noteId)) {
+        clearTimeout(debounceTimers.get(noteId));
+    }
 
-        // This is a placeholder call. Your application should call `renderNotes` when your data is ready.
-        window.onload = () => renderNotes(mockNotes, 20, 1);
-        window.changePage = (page) => {
-            console.log(`Navigating to page ${page}.`);
-        };
-        window.toggleContent = (element) => {
-            const hiddenContent = element.nextElementSibling;
-            if (hiddenContent.classList.contains('hidden')) {
-                hiddenContent.classList.remove('hidden');
-                element.textContent = '[less]';
-            } else {
-                hiddenContent.classList.add('hidden');
-                element.textContent = '[more]';
-            }
-        };
-    /**
-     * Changes the current page and fetches the new notes.
-     * @param {number} newPage The new page number to navigate to.
-     */
-    window.changePage = (newPage) => {
-        if (newPage < 1) return;
-        currentPage = newPage;
-        fetchNotes(currentPage);
-    };
+    const timer = setTimeout(() => {
+        saveNoteStatus(noteId, nextStatus);
+        debounceTimers.delete(noteId);
+    }, 1500);
+
+    debounceTimers.set(noteId, timer);
+}
+
+async function saveNoteStatus(noteId, newStatus) {
+    const { data, error } = await supabase
+        .from('notes')
+        .update({ status: newStatus })
+        .eq('id', noteId);
+
+    if (error) {
+        console.error(`Failed to update status for note ${noteId}:`, error);
+    } else {
+        console.log(`Status for note ${noteId} updated to ${newStatus}`);
+    }
+}
+
+
+
+
+
+
+
+//end of new status 
+  
 //--------------------new tag writing functions  11:40 10 Aug 2025
 // This function collects tag data and returns it as an array.
 // It reads the current status of all relevant checkboxes without using event listeners.
