@@ -50,7 +50,7 @@ export async function fetchNotes(supabase, page = 1, pageSize = 10) {
   return { data, count };
 }
 
-function renderNotes(notes, totalCount, page) {
+export function renderNotes(notes, totalCount, page) {
   const output = document.getElementById('output');
 
   const notesHtml = notes.map(note => {
