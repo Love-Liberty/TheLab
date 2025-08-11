@@ -3,31 +3,26 @@ import { createSupabaseClient } from './client.js';
 const supabase = createSupabaseClient();
 
 /**
- * Fetches category IDs for a given array of category names.
- * Assumes category_name is globally unique.
- * @param {string[]} categoryNames
- * @returns {Promise<number[]>} Array of note_category_id values
+ * Fetches all categories from the database and returns a Map of name → id.
+ * @returns {Promise<Map<string, number>>}
  */
-export async function getCategoryIds(categoryNames) {
+export async function readCategoryMap() {
   const { data, error } = await supabase
     .from('notes_categories')
-    .select('id, category_name')
-    .in('category_name', categoryNames);
+    .select('id, category_name');
 
   if (error) {
-    console.error('Error fetching category IDs:', error);
-    return [];
+    console.error('❌ Error fetching categories:', error);
+    return new Map();
   }
 
-  const nameToId = new Map(data.map(cat => [cat.category_name, cat.id]));
-  return categoryNames.map(name => nameToId.get(name)).filter(Boolean);
+  return new Map(data.map(cat => [cat.category_name, cat.id]));
 }
 
 /**
  * Links a note to one or more category IDs in notes_categorised.
- * @param {string} noteId - UUID of the note
- * @param {number[]} categoryIds - Array of note_category_id values
- * @returns {Promise<void>}
+ * @param {string} noteId
+ * @param {number[]} categoryIds
  */
 export async function linkNoteToCategories(noteId, categoryIds) {
   if (!noteId || categoryIds.length === 0) return;
@@ -45,16 +40,34 @@ export async function linkNoteToCategories(noteId, categoryIds) {
     });
 
   if (error) {
-    console.error('Error linking note to categories:', error);
+    console.error('❌ Error linking note to categories:', error);
   }
 }
 
+export async function readReverseCategoryMap() {
+  const { data, error } = await supabase
+    .from('notes_categories')
+    .select('id, category_name');
+
+  if (error) {
+    console.error('❌ Error fetching categories:', error);
+    return new Map();
+  }
+
+  return new Map(data.map(cat => [cat.id, cat.category_name]));
+}
+
+
 /**
- * Convenience function: tag a note using category names.
+ * Tags a note using category names by looking up their IDs.
  * @param {string} noteId
  * @param {string[]} categoryNames
  */
 export async function tagNoteByNames(noteId, categoryNames) {
-  const categoryIds = await getCategoryIds(categoryNames);
+  const categoryMap = await readCategoryMap();
+  const categoryIds = categoryNames
+    .map(name => categoryMap.get(name))
+    .filter(Boolean);
+
   await linkNoteToCategories(noteId, categoryIds);
 }
