@@ -70,10 +70,12 @@
       const notesPanel = document.getElementById('notes-panel');
       const mainContainer = document.getElementById('main-container');
       const navButtons = document.querySelectorAll('nav button');
-      
+
+      document.addEventListener('DOMContentLoaded', async function(){
       // Load Notes page initially (full width)
-      loadPage('notes');
-      
+      await loadPage('notes');
+        console.log('notes-page had loaded);
+      }
       // Set up navigation
       navButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -130,9 +132,9 @@
           // Clear container and add new content
           container.innerHTML = content;
           container.dataset.currentPage = pageName;
-       if(pageName==="notes"){
+ //      if(pageName==="notes"){
 //         setUpNOtesInteractivity();
-       }   
+//       }   
         } catch (error) {
           console.error('Error loading page:', error);
           container.innerHTML = `
