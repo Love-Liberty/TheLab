@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Notes Test Harness</title>
+  <title>17:10aud11-Notes Test Harness</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 <body>
@@ -37,7 +37,7 @@
       log('Inserting test note...');
       const authorId = '47742c9f-9afd-40b3-816a-f83fcd72b905'; // Replace with a valid UUID
       
-      const newId = await insertNote(supabase, authorId, null, null, 'Test Note', 'This is a test note.', 6);
+      const newId = await insertNote(supabase, authorId, null, null, 'Harness test', 'This is sent from the Noyes Test Harness using the new notes.js file.', 6);
       if (newId) {
         log(`✓ Inserted note with ID: ${newId}`);
       } else {
