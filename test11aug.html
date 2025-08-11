@@ -53,7 +53,7 @@
         return;
       }
       log(`Updating note ${testNoteId} to status ${newStatus}...`);
-const { data, error } = await saveNoteStatus(testNoteId, newStatus);
+const { data, error } = await saveNoteStatus(supabase,testNoteId, newStatus);
 
 
 if (error) {
