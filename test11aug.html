@@ -17,9 +17,12 @@
 
   <pre id="output" style="margin-top: 1em; background: #f0f0f0; padding: 1em;"></pre>
 
+
+
+  
   <script type="module">
     import { createSupabaseClient } from './db/client.js';
-    import { fetchNotes, insertNote, saveNoteStatus } from './db/notes.js';
+    import { fetchNotes, insertNote, renderNotes, saveNoteStatus } from './db/notes.js';
 
    
     const supabase = createSupabaseClient();
@@ -50,6 +53,9 @@ await tagNoteByNames(noteId, tags);
       const { data, count } = await fetchNotes(supabase, 1);
       log(`Fetched ${data.length} notes (Total: ${count})`);
       data.forEach(note => log(`- ${note.id}: ${note.title}`));
+
+//renderNotes();
+      
     });
 
     document.getElementById('test-insert').addEventListener('click', async () => {
