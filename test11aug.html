@@ -20,34 +20,22 @@
   <script type="module">
     import { createSupabaseClient } from './db/client.js';
     import { fetchNotes, insertNote, saveNoteStatus } from './db/notes.js';
-    import { upsertTags, linkTagsToNote } from './db/tags.js';
 
+   
     const supabase = createSupabaseClient();
     const output = document.getElementById('output');
 
 //new tag test
+ //?? Possible code
+ //   import { readCategoryMap, readReverseCategoryMap, tagNoteByNames, tagNoteByIds } from './db/tags.js';
 
-    import { tagNoteByNames } from './db/categories.js'; // adjust path if needed
+   
+import { tagNoteByNames } from './db/tags.js';
 
-document.getElementById('test-categories').addEventListener('click', async () => {
-  const noteId = prompt('Enter note ID to categorize:');
-  const input = prompt('Enter comma-separated category names:');
-  if (!noteId || !input) {
-    log('✗ Invalid input');
-    return;
-  }
+const noteId = '439ebcbb-5d58-441b-a0f3-942a90d2da7f';
+const tags = ['refactor', 'design', 'accessibility'];
 
-  const categoryNames = input.split(',').map(name => name.trim()).filter(Boolean);
-  log(`Tagging note ${noteId} with categories: ${categoryNames.join(', ')}`);
-
-  try {
-    await tagNoteByNames(noteId, categoryNames);
-    log(`✓ Categories linked to note ${noteId}`);
-  } catch (err) {
-    log(`✗ Category tagging failed: ${err.message}`);
-  }
-});
-
+await tagNoteByNames(noteId, tags);
 
 
 
