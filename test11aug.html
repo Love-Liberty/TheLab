@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Notes Test Harness</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+</head>
+<body>
+  <h1>🧪 Supabase Notes Test</h1>
+
+  <button id="test-fetch">Fetch Notes</button>
+  <button id="test-insert">Insert Note</button>
+  <button id="test-update">Update Status</button>
+
+  <pre id="output" style="margin-top: 1em; background: #f0f0f0; padding: 1em;"></pre>
+
+  <script type="module">
+    import { createSupabaseClient } from './db/client.js';
+    import { fetchNotes, insertNote, saveNoteStatus } from './db/notes.js';
+
+    const supabase = createSupabaseClient();
+    const output = document.getElementById('output');
+
+    function log(message) {
+      output.textContent += message + '\n';
+      console.log(message);
+    }
+
+    document.getElementById('test-fetch').addEventListener('click', async () => {
+      log('Fetching notes...');
+      const { data, count } = await fetchNotes(supabase, 1);
+      log(`Fetched ${data.length} notes (Total: ${count})`);
+      data.forEach(note => log(`- ${note.id}: ${note.title}`));
+    });
+
+    document.getElementById('test-insert').addEventListener('click', async () => {
+      log('Inserting test note...');
+      const authorId = '0023236b-58d7-4c41-ba0f-45a7efc31847'; // Replace with a valid UUID
+      const newId = await insertNote(supabase, authorId, null, null, 'Test Note', 'This is a test note.', 6);
+      if (newId) {
+        log(`✓ Inserted note with ID: ${newId}`);
+      } else {
+        log('✗ Insert failed');
+      }
+    });
+
+    document.getElementById('test-update').addEventListener('click', async () => {
+      const testNoteId = prompt('Enter note ID to update status:');
+      const newStatus = parseInt(prompt('Enter new status (6, 7, 8, 9):'), 10);
+      if (!testNoteId || isNaN(newStatus)) {
+        log('✗ Invalid input');
+        return;
+      }
+      log(`Updating note ${testNoteId} to status ${newStatus}...`);
+      const result = await saveNoteStatus(supabase, testNoteId, newStatus);
+      if (result) {
+        log(`✓ Status updated`);
+      } else {
+        log('✗ Update failed');
+      }
+    });
+  </script>
+</body>
+</html>
