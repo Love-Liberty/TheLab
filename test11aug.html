@@ -33,7 +33,7 @@
  //   import { readCategoryMap, readReverseCategoryMap, tagNoteByNames, tagNoteByIds } from './db/tags.js';
 
    
-import { tagNoteByNames } from './db/tags.js';
+import { tagNoteByNames, upsertTags, linkTagsToNote } from './db/tags.js';
 
 const noteId = '439ebcbb-5d58-441b-a0f3-942a90d2da7f';
 const tags = ['refactor', 'design', 'accessibility'];
