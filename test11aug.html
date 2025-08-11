@@ -92,6 +92,28 @@ await tagNoteByNames(noteId, tags);
         return;
       }
 
+document.getElementById('test-categories').addEventListener('click', async () => {
+  const noteId = prompt('Enter note ID to tag:');
+  const categoriesInput = prompt('Enter comma-separated category names:');
+  if (!noteId || !categoriesInput) {
+    log('✗ Invalid input');
+    return;
+  }
+
+  const categoryNames = categoriesInput.split(',').map(c => c.trim()).filter(Boolean);
+  log(`Tagging note ${noteId} with categories: ${categoryNames.join(', ')}`);
+
+  try {
+    await tagNoteByNames(noteId, categoryNames);
+    log(`✓ Categories tagged successfully`);
+  } catch (err) {
+    log(`✗ Category tagging failed: ${err.message}`);
+  }
+});
+
+
+      
+
       const tagNames = tagsInput.split(',').map(t => t.trim()).filter(Boolean);
       log(`Applying tags to note ${noteId}: ${tagNames.join(', ')}`);
 
