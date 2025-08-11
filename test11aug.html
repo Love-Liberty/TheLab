@@ -23,6 +23,33 @@
     const supabase = createSupabaseClient();
     const output = document.getElementById('output');
 
+//new tag test
+
+    import { tagNoteByNames } from './db/categories.js'; // adjust path if needed
+
+document.getElementById('test-categories').addEventListener('click', async () => {
+  const noteId = prompt('Enter note ID to categorize:');
+  const input = prompt('Enter comma-separated category names:');
+  if (!noteId || !input) {
+    log('✗ Invalid input');
+    return;
+  }
+
+  const categoryNames = input.split(',').map(name => name.trim()).filter(Boolean);
+  log(`Tagging note ${noteId} with categories: ${categoryNames.join(', ')}`);
+
+  try {
+    await tagNoteByNames(noteId, categoryNames);
+    log(`✓ Categories linked to note ${noteId}`);
+  } catch (err) {
+    log(`✗ Category tagging failed: ${err.message}`);
+  }
+});
+
+
+
+
+    
     function log(message) {
       output.textContent += message + '\n';
       console.log(message);
