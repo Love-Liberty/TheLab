@@ -34,19 +34,19 @@
           Notes
         </button>
         <button class="w-full text-left px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100" 
-                data-page="home" title="Display of error messages or output from scripts">
-          Home
+                data-page="home" title="How to use Notes, the buttons, the purpose">
+          Instructions (home)
         </button>
         <button class="w-full text-left px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100" 
-                data-page="links" title="Where to find your scripts, wisdom & email">
+                data-page="links" title="Your web links. You can edit them to match your project or interests.">
           Links
         </button>
         <button class="w-full text-left px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100" 
-                data-page="data" title="Lists of any files you regard as not executable">
+                data-page="data" title="Another page of links, probably to information">
           Data
         </button>
         <button class="w-full text-left px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100" 
-                data-page="scripts" title="Lists of files you regard as executable">
+                data-page="scripts" title="More pages of links Probably to your own project">
           Scripts
         </button>
         <button class="w-full text-left px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100" 
@@ -130,7 +130,9 @@
           // Clear container and add new content
           container.innerHTML = content;
           container.dataset.currentPage = pageName;
-          
+       if(pageName==="notes"){
+//         setUpNOtesInteractivity();
+       }   
         } catch (error) {
           console.error('Error loading page:', error);
           container.innerHTML = `
