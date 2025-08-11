@@ -71,11 +71,13 @@
       const mainContainer = document.getElementById('main-container');
       const navButtons = document.querySelectorAll('nav button');
 
-      document.addEventListener('DOMContentLoaded', async function(){
+    //  document.addEventListener('DOMContentLoaded', async function(){
       // Load Notes page initially (full width)
-      await loadPage('notes');
-        console.log('notes-page had loaded');
-      });
+     loadPage('notes');
+    setTimeOut(()=>{
+          console.log('notes-page had loaded 0.5s ago');
+    },500);
+     // });
       // Set up navigation
       navButtons.forEach(button => {
         button.addEventListener('click', function() {
