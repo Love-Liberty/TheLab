@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>18:30-aud11-Notes Test Harness</title>
+  <title>19:32-aud11-Notes Test Harness</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 <body>
@@ -15,6 +15,20 @@
   <pre id="output" style="margin-top: 1em; background: #f0f0f0; padding: 1em;"></pre>
 
   <script type="module">
+//tags section added 19:37 11 Aug
+import { upsertTags, linkTagsToNote } from './db/tags.js';
+
+const tags = ['design', 'refactor', 'accessibility'];
+const insertedTags = await upsertTags(tags);
+console.log('Inserted tags:', insertedTags);
+
+const tagIds = insertedTags.map(t => t.id);
+await linkTagsToNote(note.id, tagIds);
+console.log('Tags linked to note:', note.id);
+
+//end of tags
+
+    
     import { createSupabaseClient } from './db/client.js';
     import { fetchNotes, insertNote, saveNoteStatus } from './db/notes.js';
 
