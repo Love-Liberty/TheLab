@@ -63,5 +63,6 @@ export async function saveNoteStatus(supabase, noteId, newStatus) {
     console.error(`Failed to update status for note ${noteId}:`, error);
   }
 
-  return data;
+  return { data, error };
 }
+
