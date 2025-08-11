@@ -35,7 +35,8 @@
 
     document.getElementById('test-insert').addEventListener('click', async () => {
       log('Inserting test note...');
-      const authorId = '0023236b-58d7-4c41-ba0f-45a7efc31847'; // Replace with a valid UUID
+      const authorId = '47742c9f-9afd-40b3-816a-f83fcd72b905'; // Replace with a valid UUID
+      
       const newId = await insertNote(supabase, authorId, null, null, 'Test Note', 'This is a test note.', 6);
       if (newId) {
         log(`✓ Inserted note with ID: ${newId}`);
