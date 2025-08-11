@@ -33,7 +33,7 @@
  //   import { readCategoryMap, readReverseCategoryMap, tagNoteByNames, tagNoteByIds } from './db/tags.js';
 
    
-import { tagNoteByNames, upsertTags, linkTagsToNote } from './db/tags.js';
+import { tagNoteByNames, upsertTags, linkNoteToCategories } from './db/tags.js';
 
 const noteId = '439ebcbb-5d58-441b-a0f3-942a90d2da7f';
 const tags = ['refactor', 'design', 'accessibility'];
@@ -128,7 +128,7 @@ document.getElementById('test-categories').addEventListener('click', async () =>
         log(`✓ Tags upserted: ${insertedTags.map(t => `${t.name} (${t.id})`).join(', ')}`);
 
         const tagIds = insertedTags.map(t => t.id);
-        await linkTagsToNote(noteId, tagIds);
+        await linkNoteToCategories(noteId, tagIds);
         log(`✓ Tags linked to note ${noteId}`);
       } catch (err) {
         log(`✗ Tag application failed: ${err.message}`);
