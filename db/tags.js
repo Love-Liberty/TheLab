@@ -1,43 +1,60 @@
-
 import { createSupabaseClient } from './client.js';
 
 const supabase = createSupabaseClient();
 
 /**
- * Validates and deduplicates an array of tag strings.
+ * Fetches category IDs for a given array of category names.
+ * Assumes category_name is globally unique.
+ * @param {string[]} categoryNames
+ * @returns {Promise<number[]>} Array of note_category_id values
  */
-export function sanitizeTags(tags) {
-  return [...new Set(tags.map(tag => tag.trim()).filter(Boolean))];
-}
-
-/**
- * Inserts tags into the database if they don't already exist.
- */
-export async function upsertTags(tags) {
-  const cleaned = sanitizeTags(tags);
-  if (cleaned.length === 0) return [];
-
+export async function getCategoryIds(categoryNames) {
   const { data, error } = await supabase
-    .from('tags')
-    .upsert(
-      cleaned.map(name => ({ name })),
-      { onConflict: ['name'], ignoreDuplicates: true }
-    )
-    .select();
+    .from('notes_categories')
+    .select('id, category_name')
+    .in('category_name', categoryNames);
 
-  if (error) throw error;
-  return data;
+  if (error) {
+    console.error('Error fetching category IDs:', error);
+    return [];
+  }
+
+  const nameToId = new Map(data.map(cat => [cat.category_name, cat.id]));
+  return categoryNames.map(name => nameToId.get(name)).filter(Boolean);
 }
 
 /**
- * Links tags to a note via a join table.
+ * Links a note to one or more category IDs in notes_categorised.
+ * @param {string} noteId - UUID of the note
+ * @param {number[]} categoryIds - Array of note_category_id values
+ * @returns {Promise<void>}
  */
-export async function linkTagsToNote(noteId, tagIds) {
-  const rows = tagIds.map(tag_id => ({ note_id: noteId, tag_id }));
+export async function linkNoteToCategories(noteId, categoryIds) {
+  if (!noteId || categoryIds.length === 0) return;
+
+  const rows = categoryIds.map(catId => ({
+    note_id: noteId,
+    note_category_id: catId
+  }));
 
   const { error } = await supabase
-    .from('note_tags')
-    .upsert(rows, { onConflict: ['note_id', 'tag_id'], ignoreDuplicates: true });
+    .from('notes_categorised')
+    .upsert(rows, {
+      onConflict: ['note_id', 'note_category_id'],
+      ignoreDuplicates: true
+    });
 
-  if (error) throw error;
+  if (error) {
+    console.error('Error linking note to categories:', error);
+  }
+}
+
+/**
+ * Convenience function: tag a note using category names.
+ * @param {string} noteId
+ * @param {string[]} categoryNames
+ */
+export async function tagNoteByNames(noteId, categoryNames) {
+  const categoryIds = await getCategoryIds(categoryNames);
+  await linkNoteToCategories(noteId, categoryIds);
 }
