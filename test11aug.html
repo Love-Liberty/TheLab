@@ -11,26 +11,14 @@
   <button id="test-fetch">Fetch Notes</button>
   <button id="test-insert">Insert Note</button>
   <button id="test-update">Update Status</button>
+  <button id="test-tags">Apply Tags to Note</button>
 
   <pre id="output" style="margin-top: 1em; background: #f0f0f0; padding: 1em;"></pre>
 
   <script type="module">
-//tags section added 19:37 11 Aug
-import { upsertTags, linkTagsToNote } from './db/tags.js';
-
-const tags = ['design', 'refactor', 'accessibility'];
-const insertedTags = await upsertTags(tags);
-console.log('Inserted tags:', insertedTags);
-
-const tagIds = insertedTags.map(t => t.id);
-await linkTagsToNote(note.id, tagIds);
-console.log('Tags linked to note:', note.id);
-
-//end of tags
-
-    
     import { createSupabaseClient } from './db/client.js';
     import { fetchNotes, insertNote, saveNoteStatus } from './db/notes.js';
+    import { upsertTags, linkTagsToNote } from './db/tags.js';
 
     const supabase = createSupabaseClient();
     const output = document.getElementById('output');
@@ -51,7 +39,7 @@ console.log('Tags linked to note:', note.id);
       log('Inserting test note...');
       const authorId = '47742c9f-9afd-40b3-816a-f83fcd72b905'; // Replace with a valid UUID
       
-      const newId = await insertNote(supabase, authorId, null, null, 'Harness test', 'This is sent from the Noyes Test Harness using the new notes.js file.', 6);
+      const newId = await insertNote(supabase, authorId, null, null, 'Harness test', 'This is sent from the Notes Test Harness using the new notes.js file.', 6);
       if (newId) {
         log(`✓ Inserted note with ID: ${newId}`);
       } else {
@@ -67,17 +55,39 @@ console.log('Tags linked to note:', note.id);
         return;
       }
       log(`Updating note ${testNoteId} to status ${newStatus}...`);
-const { data, error } = await saveNoteStatus(supabase,testNoteId, newStatus);
+      const { data, error } = await saveNoteStatus(supabase, testNoteId, newStatus);
 
+      if (error) {
+        log('✗ Update failed');
+        log(JSON.stringify(error, null, 2));
+      } else {
+        log(`✓ Status updated`);
+        log(`Updated note: ${JSON.stringify(data, null, 2)}`);
+      }
+    });
 
-if (error) {
-  log('✗ Update failed');
-  log(JSON.stringify(error, null, 2));
-} else {
-  log(`✓ Status updated`);
-  log(`Updated note: ${JSON.stringify(data, null, 2)}`);
-}
+    // 🏷️ Tag application test
+    document.getElementById('test-tags').addEventListener('click', async () => {
+      const noteId = prompt('Enter note ID to tag:');
+      const tagsInput = prompt('Enter comma-separated tag names:');
+      if (!noteId || !tagsInput) {
+        log('✗ Invalid input');
+        return;
+      }
 
+      const tagNames = tagsInput.split(',').map(t => t.trim()).filter(Boolean);
+      log(`Applying tags to note ${noteId}: ${tagNames.join(', ')}`);
+
+      try {
+        const insertedTags = await upsertTags(tagNames);
+        log(`✓ Tags upserted: ${insertedTags.map(t => `${t.name} (${t.id})`).join(', ')}`);
+
+        const tagIds = insertedTags.map(t => t.id);
+        await linkTagsToNote(noteId, tagIds);
+        log(`✓ Tags linked to note ${noteId}`);
+      } catch (err) {
+        log(`✗ Tag application failed: ${err.message}`);
+      }
     });
   </script>
 </body>
