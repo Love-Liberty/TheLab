@@ -53,12 +53,19 @@
         return;
       }
       log(`Updating note ${testNoteId} to status ${newStatus}...`);
-      const result = await saveNoteStatus(supabase, testNoteId, newStatus);
-      if (result) {
-        log(`✓ Status updated`);
-      } else {
-        log('✗ Update failed');
-      }
+      const { data, error } = await supabase
+  .from('notes')
+  .update({ status: newStatus })
+  .eq('id', testNoteId);
+
+if (error) {
+  log('✗ Update failed');
+  log(JSON.stringify(error, null, 2));
+} else {
+  log(`✓ Status updated`);
+  log(`Updated note: ${JSON.stringify(data, null, 2)}`);
+}
+
     });
   </script>
 </body>
