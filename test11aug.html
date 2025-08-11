@@ -53,10 +53,8 @@
         return;
       }
       log(`Updating note ${testNoteId} to status ${newStatus}...`);
-      const { data, error } = await supabase
-  .from('notes')
-  .update({ status: newStatus })
-  .eq('id', testNoteId);
+const { data, error } = await saveNoteStatus(testNoteId, newStatus);
+
 
 if (error) {
   log('✗ Update failed');
