@@ -33,15 +33,42 @@
  //   import { readCategoryMap, readReverseCategoryMap, tagNoteByNames, tagNoteByIds } from './db/tags.js';
 
    
-import { tagNoteByNames, upsertTags, linkNoteToCategories } from './db/tags.js';
-
-const noteId = '439ebcbb-5d58-441b-a0f3-942a90d2da7f';
-const tags = ['refactor', 'design', 'accessibility'];
-
-await tagNoteByNames(noteId, tags);
+//import { tagNoteByNames, upsertTags, linkNoteToCategories } from './db/tags.js';
 
 
+//await tagNoteByNames(noteId, tags);
 
+//
+
+import { tagNoteByNames, linkNoteToCategories } from './db/tags.js';
+
+const output = document.getElementById('output');
+const testButton = document.getElementById('test-categories');
+
+// Mock data
+const mockNoteId = '439ebcbb-5d58-441b-a0f3-942a90d2da7f';
+const mockTags = ['refactor', 'design', 'accessibility'];
+
+testButton.addEventListener('click', async () => {
+  output.textContent = '⏳ Running tagNoteByNames test...';
+
+  try {
+    const result = await tagNoteByNames(mockNoteId, mockTags);
+    output.textContent = `✅ tagNoteByNames succeeded:\n${JSON.stringify(result, null, 2)}`;
+  } catch (err) {
+    output.textContent = `❌ tagNoteByNames failed:\n${err.message}`;
+  }
+
+  // Optional: test linkNoteToCategories separately
+  // const categoryIds = ['uuid1', 'uuid2'];
+  // const linkResult = await linkNoteToCategories(mockNoteId, categoryIds);
+  // output.textContent += `\n\n🔗 linkNoteToCategories result:\n${JSON.stringify(linkResult, null, 2)}`;
+});
+
+
+
+
+//    
     
     function log(message) {
       output.textContent += message + '\n';
