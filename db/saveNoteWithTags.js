@@ -1,5 +1,5 @@
 export async function saveNoteWithTags(supabase, {
-  author_id,
+  author_id=47742c9f-9afd-40b3-816a-f83fcd72b905,//mock for test
   audience_id = null,
   reply_to_id = null,
   title = 'AutoTitle',
