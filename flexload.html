@@ -75,11 +75,11 @@
       // Load Notes page initially (full width)
      loadPage('notes');
    // Ensure the async load completes before setting up interactivity
-      
+  /*    
        setTimeout(()=>{
           console.log('notes-page loaded 0.5s ago, call setupNotesListener()');
  setupNotesListeners();
-    },500);
+    },500);  */
      // });
       // Set up navigation
       navButtons.forEach(button => {
@@ -137,9 +137,9 @@
           // Clear container and add new content
           container.innerHTML = content;
           container.dataset.currentPage = pageName;
- //      if(pageName==="notes"){
-//         setUpNOtesInteractivity();
-//       }   
+      if(pageName==="notes"){ 
+        setupNotesListeners();
+       }   
         } catch (error) {
           console.error('Error loading page:', error);
           container.innerHTML = `
@@ -151,6 +151,7 @@
         }
       }
     });
+    import { setupNotesListeners } from './ui/setupNotesListeners.js';
   </script>
 </body>
 </html>
