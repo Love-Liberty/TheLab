@@ -77,8 +77,8 @@
    // Ensure the async load completes before setting up interactivity
       
        setTimeout(()=>{
-          console.log('notes-page had loaded 0.5s ago');
-//  setupNotesInteractivity();
+          console.log('notes-page loaded 0.5s ago, call setupNotesListener()');
+ setupNotesListeners();
     },500);
      // });
       // Set up navigation
