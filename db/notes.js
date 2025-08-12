@@ -1,5 +1,31 @@
 // db/notes.js
 
+           // [save/send] button handler 
+const saveNotesButton = document.getElementById('save-notes');
+if (saveNotesButton) {
+  saveNotesButton.addEventListener('click', async () => {
+    const noteContent = document.getElementById('note-content').value;
+    if (noteContent.trim() !== '') {
+      const authorId = '0023236b-58d7-4c41-ba0f-45a7efc31847';
+      const tagsArray = createTagArray(); // Still modular
+
+      const noteId = await saveNoteWithTags(supabaseClient, {
+        author_id: authorId,
+        content: noteContent,
+        tags: tagsArray
+      });
+
+      log(`Note saved with ID: ${noteId}`);
+    } else {
+      log('The Note has no content, so not saved.');
+    }
+  });
+}
+
+
+
+
+
 /**
  * Inserts a new note and returns its ID.
  */
