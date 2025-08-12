@@ -1,16 +1,17 @@
 // db/notes.js
 
-           // [save/send] button handler (new 14:03 12 Aug)
+// [save/send] button handler (new 14:03 12 Aug)
 import { collectUserChoices } from './collectUserChoices.js';
 import { saveNoteWithTags } from './db/saveNoteWithTags.js';
 import { createSupabaseClient } from './db/client.js';
 
 const supabase = createSupabaseClient();
-//document.addEventListener('DOMContentLoaded', () => { //new 22:03 12 aug Failed
+
 export function setupNotesListeners() {
   const notesPanel = document.getElementById('notes-panel');
   if (!notesPanel) return;
   console.log('23:44');
+  
   notesPanel.addEventListener('click', async (event) => {
     if (event.target.id === 'save-notes') {
       const noteContent = document.getElementById('note-content')?.value.trim();
@@ -20,17 +21,17 @@ export function setupNotesListeners() {
       }
       
       const userChoices = collectUserChoices();
-      await saveNoteWithTags(supabase, noteContent, userChoices);
+      const result = await saveNoteWithTags(supabase, noteContent, userChoices);
+      
+      // Check the result properly
+      if (result && result.id) {
+        console.log(`✅ Note saved with ID: ${result.id}`);
+      } else {
+        console.log('❌ Note save failed');
+      }
     }
   });
 }
-  if (noteId) {
-    console.log(`✅ Note saved with ID: ${noteId}`);
-  } else {
-    console.log('❌ Note save failed');
-  }
-});
-
 //});//end of DOMLoaded
 
 
