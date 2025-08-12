@@ -1,4 +1,4 @@
-import{ saveNotesWithTags }from '../db/saveNotesWithTags.js';
+import{ saveNotesWithTags }from '../db/saveNoteWithTags.js';
 
 export function setupNotesListeners() {
   const saveButton = document.getElementById('save-notes');
