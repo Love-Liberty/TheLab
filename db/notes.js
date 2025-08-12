@@ -6,11 +6,11 @@ import { saveNoteWithTags } from './db/saveNoteWithTags.js';
 import { createSupabaseClient } from './db/client.js';
 
 const supabase = createSupabaseClient();
-document.addEventListener('DOMContentLoaded', () => { //new 22:03 12 aug Failed
+//document.addEventListener('DOMContentLoaded', () => { //new 22:03 12 aug Failed
 export function setupNotesListeners() {
   const notesPanel = document.getElementById('notes-panel');
   if (!notesPanel) return;
-  
+  console.log('23:44');
   notesPanel.addEventListener('click', async (event) => {
     if (event.target.id === 'save-notes') {
       const noteContent = document.getElementById('note-content')?.value.trim();
@@ -31,7 +31,7 @@ export function setupNotesListeners() {
   }
 });
 
-});//end of DOMLoaded
+//});//end of DOMLoaded
 
 
 
