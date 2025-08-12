@@ -83,7 +83,7 @@
      // });
       // Set up navigation
       navButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', async function() {
           const pageName = this.getAttribute('data-page');
           
           // Remove active state from all buttons
