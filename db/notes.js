@@ -2,7 +2,7 @@
 
            // [save/send] button handler (new 14:03 12 Aug)
 import { collectUserChoices } from './collectUserChoices.js';
-//import { saveNoteWithTags } from './db/notes.js';
+import { saveNoteWithTags } from './db/saveNoteWithTags.js';
 import { createSupabaseClient } from './db/client.js';
 
 const supabase = createSupabaseClient();
