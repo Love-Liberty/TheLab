@@ -7,22 +7,23 @@ import { createSupabaseClient } from './db/client.js';
 
 const supabase = createSupabaseClient();
 document.addEventListener('DOMContentLoaded', () => { //new 22:03 12 aug Failed
-document.getElementById('save-notes')?.addEventListener('click', async () => {
-  const noteContent = document.getElementById('note-content')?.value.trim();
-  if (!noteContent) {
-    console.log('✗ Note content is empty');
-    return;
-  }
-
-  const tags = collectUserChoices();
-  const authorId = '0023236b-58d7-4c41-ba0f-45a7efc31847'; // Replace with dynamic ID if needed
-
-  const noteId = await saveNoteWithTags(supabase, {
-    author_id: authorId,
-    content: noteContent,
-    tags
+export function setupNotesListeners() {
+  const notesPanel = document.getElementById('notes-panel');
+  if (!notesPanel) return;
+  
+  notesPanel.addEventListener('click', async (event) => {
+    if (event.target.id === 'save-notes') {
+      const noteContent = document.getElementById('note-content')?.value.trim();
+      if (!noteContent) {
+        console.log('✗ Note content is empty');
+        return;
+      }
+      
+      const userChoices = collectUserChoices();
+      await saveNoteWithTags(supabase, noteContent, userChoices);
+    }
   });
-
+}
   if (noteId) {
     console.log(`✅ Note saved with ID: ${noteId}`);
   } else {
