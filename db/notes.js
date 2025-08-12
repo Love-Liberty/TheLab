@@ -1,26 +1,34 @@
 // db/notes.js
 
-           // [save/send] button handler 
-const saveNotesButton = document.getElementById('save-notes');
-if (saveNotesButton) {
-  saveNotesButton.addEventListener('click', async () => {
-    const noteContent = document.getElementById('note-content').value;
-    if (noteContent.trim() !== '') {
-      const authorId = '0023236b-58d7-4c41-ba0f-45a7efc31847';
-      const tagsArray = createTagArray(); // Still modular
+           // [save/send] button handler (new 14:03 12 Aug)
+import { collectUserChoices } from './collectUserChoices.js';
+import { saveNoteWithTags } from './db/notes.js';
+import { createSupabaseClient } from './db/client.js';
 
-      const noteId = await saveNoteWithTags(supabaseClient, {
-        author_id: authorId,
-        content: noteContent,
-        tags: tagsArray
-      });
+const supabase = createSupabaseClient();
 
-      log(`Note saved with ID: ${noteId}`);
-    } else {
-      log('The Note has no content, so not saved.');
-    }
+document.getElementById('save-notes')?.addEventListener('click', async () => {
+  const noteContent = document.getElementById('note-content')?.value.trim();
+  if (!noteContent) {
+    console.log('✗ Note content is empty');
+    return;
+  }
+
+  const tags = collectUserChoices();
+  const authorId = '0023236b-58d7-4c41-ba0f-45a7efc31847'; // Replace with dynamic ID if needed
+
+  const noteId = await saveNoteWithTags(supabase, {
+    author_id: authorId,
+    content: noteContent,
+    tags
   });
-}
+
+  if (noteId) {
+    console.log(`✅ Note saved with ID: ${noteId}`);
+  } else {
+    console.log('❌ Note save failed');
+  }
+});
 
 
 
