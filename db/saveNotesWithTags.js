@@ -1,4 +1,4 @@
-async function saveNoteWithTags(supabase, {
+export async function saveNoteWithTags(supabase, {
   author_id,
   audience_id = null,
   reply_to_id = null,
