@@ -6,7 +6,7 @@ import { saveNoteWithTags } from './db/saveNoteWithTags.js';
 import { createSupabaseClient } from './db/client.js';
 
 const supabase = createSupabaseClient();
-document.addEventListener('DOMContentLoaded', () => { //new 22:03 12 aug
+document.addEventListener('DOMContentLoaded', () => { //new 22:03 12 aug Failed
 document.getElementById('save-notes')?.addEventListener('click', async () => {
   const noteContent = document.getElementById('note-content')?.value.trim();
   if (!noteContent) {
@@ -30,7 +30,7 @@ document.getElementById('save-notes')?.addEventListener('click', async () => {
   }
 });
 
-};//end of DOMLoaded
+});//end of DOMLoaded
 
 
 
