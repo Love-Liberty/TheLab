@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>17:37-Aug12 The Lab</title>
+  <title>23:57-Aug12 The Lab</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <style>
@@ -100,7 +100,10 @@
               mainContainer.removeChild(mainContainer.lastChild);
             }
             // Load the content
-            loadPage('notes');
+await loadPage('notes');
+setupNotesListeners(); 
+            
+//            loadPage('notes');
           } else {
             // For other pages, create a split view
             if (mainContainer.children.length === 1) {
