@@ -4,10 +4,11 @@
 import { collectUserChoices } from '../ui/collectUserChoices.js';
 import { saveNoteWithTags } from './saveNoteWithTags.js';
 import { createSupabaseClient } from './client.js';
-
+console.log("notes.js");
 const supabase = createSupabaseClient();
 
 export function setupNotesListeners() {
+  console.log("setUpNotesListeners.js");
   const notesPanel = document.getElementById('notes-panel');
   if (!notesPanel) return;
   console.log('23:44');
@@ -18,7 +19,7 @@ export function setupNotesListeners() {
       if (!noteContent) {
         console.log('✗ Note content is empty');
         return;
-      }
+      } else console.log("content found");
       
       const userChoices = collectUserChoices();
       const result = await saveNoteWithTags(supabase, noteContent, userChoices);
@@ -40,6 +41,7 @@ export function setupNotesListeners() {
  * Inserts a new note and returns its ID.
  */
 export async function insertNote(supabase, author_id, audience_id = null, reply_to_id = null, title = 'AutoTitle', content, status = null) {
+ console.log("insertNotes()");
   try {
     const { data, error } = await supabase
       .from('notes')
