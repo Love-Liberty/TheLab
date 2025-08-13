@@ -4,7 +4,7 @@ console.log('notes.js');
 import { collectUserChoices } from '../ui/collectUserChoices.js';
 import { saveNoteWithTags } from './saveNoteWithTags.js';
 import { createSupabaseClient } from './client.js';
-console.log("notes.js");
+
 const supabase = createSupabaseClient();
 
 export function setupNotesListeners() {
