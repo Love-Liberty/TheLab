@@ -68,14 +68,18 @@
   </div>
 
   <script type="module">
-    document.addEventListener('DOMContentLoaded', function() {
+    import { setupNotesListeners } from "./db/notes.js";
+
+    document.addEventListener('DOMContentLoaded', async function() {
       const notesPanel = document.getElementById('notes-panel');
       const mainContainer = document.getElementById('main-container');
       const navButtons = document.querySelectorAll('nav button');
-
-    //  document.addEventListener('DOMContentLoaded', async function(){
-      // Load Notes page initially (full width)
-     loadPage('notes');
+      
+      loadPage('notes');
+      await loadPage('notes');
+      // Now setup the listeners
+      setupNotesListeners();
+});
 
       // Set up navigation
       navButtons.forEach(button => {
