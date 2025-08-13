@@ -14,14 +14,15 @@ export async function saveNoteWithTags(supabase, {
   tags = []
 }) {
   console.log('saveNoteWithTags() called with parameters:', {
-  title: title,
+  author: author_id,
   content: content,
   tags: tags
 });
-//  console.log('saveNoteWithTags() called title: ${title},content: ${content}, tags: ${tags}');
+//  console.log('saveNoteWithTags() called author: ${author_id},content: ${content}, tags: ${tags}');
 
   try {
     // Insert the note
+//    console.log('author_id');
     const rowId = await insertNote(supabase, author_id, audience_id, reply_to_id, title, content, status);
     console.log(`Note inserted with ID: ${rowId}`);
 
