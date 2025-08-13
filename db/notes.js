@@ -1,5 +1,5 @@
 // db/notes.js
-
+console.log('notes.js');
 // [save/send] button handler (new 14:03 12 Aug)
 import { collectUserChoices } from '../ui/collectUserChoices.js';
 import { saveNoteWithTags } from './saveNoteWithTags.js';
