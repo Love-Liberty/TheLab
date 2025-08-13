@@ -13,7 +13,12 @@ export async function saveNoteWithTags(supabase, {
   status = null,
   tags = []
 }) {
-  console.log('saveNoteWithTags() called');
+  console.log('saveNoteWithTags() called with parameters:', {
+  title: title,
+  content: content,
+  tags: tags
+});
+//  console.log('saveNoteWithTags() called title: ${title},content: ${content}, tags: ${tags}');
 
   try {
     // Insert the note
