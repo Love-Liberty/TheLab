@@ -62,11 +62,37 @@ export async function readReverseCategoryMap() {
 }
 
 
+
+
+
+
+//new version 21:02 13 Aug
+export async function tagNoteByNames(noteId, tagNames = []) {
+  if (!Array.isArray(tagNames)) {
+    throw new TypeError('tagNames must be an array');
+  }
+
+  const categoryMap = await readCategoryMap(); // Map<string, id>
+  const categoryIds = tagNames
+    .map(name => categoryMap.get(name))
+    .filter(Boolean);
+
+  if (categoryIds.length === 0) {
+    console.warn('No valid categories found for tags:', tagNames);
+    return;
+  }
+
+  await linkNoteToCategories(noteId, categoryIds);
+}
+
+
 /**
  * Tags a note using category names by looking up their IDs.
  * @param {string} noteId
  * @param {string[]} categoryNames
  */
+
+/*
 export async function tagNoteByNames(noteId, categoryNames) {
   console.log('tagsNotesByName()');
   const categoryMap = await readCategoryMap();
@@ -76,3 +102,4 @@ export async function tagNoteByNames(noteId, categoryNames) {
 
   await linkNoteToCategories(noteId, categoryIds);
 }
+*/
