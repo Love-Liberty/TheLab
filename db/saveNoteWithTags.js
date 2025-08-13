@@ -1,4 +1,9 @@
-console.log("saveNoteWithTags");//lacks imports and supabase
+console.log("saveNoteWithTags");//lacked imports and supabase
+
+import { createSupabaseClient } from './client.js';
+impport {insertNote} from './notes.js';
+import {tagNoteByNames} from './saveNoteWithTags';
+
 export async function saveNoteWithTags(supabase, {
   author_id='47742c9f-9afd-40b3-816a-f83fcd72b905',//mock for test
   audience_id = null,
@@ -17,7 +22,7 @@ export async function saveNoteWithTags(supabase, {
 
     // Insert tags if any
     if (tags.length > 0) {
-      await insertTags(supabase, rowId, tags);
+      await tagNoteByNames(supabase, rowId, tags);
       console.log(`Tags inserted for note ID ${rowId}:`, tags);
     } else {
       console.log(`No tags to insert for note ID ${rowId}`);
