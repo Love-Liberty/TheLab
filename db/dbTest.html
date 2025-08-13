@@ -44,9 +44,9 @@
                 messageDiv.className = 'success';
                 console.log('Supabase client successfully created.', supabase);
 
-                // Example: Fetch data from a 'todos' table
+                // Example: Fetch data from a table
                 const { data, error } = await supabase
-                    .from('todos')
+                    .from('notes_categories')
                     .select('*');
 
                 if (error) {
