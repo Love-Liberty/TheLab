@@ -9,7 +9,7 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 
 
 
-export function createSupabaseClientHIDE() {
+export function createSupabaseClient() {
        const supabaseUrl = 'https://kcdlbqotmuyyqvzzbxcn.supabase.co';
         const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw';
 
@@ -34,7 +34,7 @@ export function createSupabaseClientHIDE() {
      and hide the other function as 
      export function createSupabaseClientHIDE()
      */
-export async function createSupabaseClient() {
+export async function createSupabaseClientHIDE() {
         const supabaseUrl = 'https://kcdlbqotmuyyqvzzbxcn.supabase.co';
         const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw';
 
