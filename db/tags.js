@@ -65,9 +65,12 @@ export async function readReverseCategoryMap() {
 
 
 
-
 //new version 21:02 13 Aug
 export async function tagNoteByNames(noteId, tagNames = []) {
+  console.log('tagNoteByNames() called with:', tagNames);
+  console.log('Type of tagNames:', typeof tagNames);
+  console.log('Is array?', Array.isArray(tagNames));
+
   if (!Array.isArray(tagNames)) {
     throw new TypeError('tagNames must be an array');
   }
