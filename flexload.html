@@ -81,7 +81,9 @@ document.addEventListener('DOMContentLoaded', async function() {
   
   // Set up the listeners after the page is loaded
   setupNotesListeners();
-renderNotes();
+
+  //renderNotes() fails  - can't read properties of map 100:27  
+  //renderNotes();
   // Set up navigation
   navButtons.forEach(button => {
     button.addEventListener('click', async function() {
