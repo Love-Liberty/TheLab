@@ -38,7 +38,7 @@
         async function main() {
             try {
                 // Now, you can use the 'createClient' function directly
-                const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                const supabase = createClient(supabaseUrl, supabaseAnonKey);
                 
                 messageDiv.textContent = 'Supabase client successfully created.';
                 messageDiv.className = 'success';
