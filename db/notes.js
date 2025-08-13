@@ -23,7 +23,13 @@ export function setupNotesListeners() {
       
       const userChoices = collectUserChoices();
       console.log('setupNotesListeners()', {noteContent:noteContent, tags:userChoices});
-      const result = await saveNoteWithTags(supabase, noteContent, userChoices);
+      //const result = await saveNoteWithTags(supabase, noteContent, userChoices);
+
+      const result = await saveNoteWithTags(supabase, {
+                     content: noteContent,
+                     tags: userChoices,
+                     author_id: '477TESTf-9afd-40b3-816a-f83fcd72b905'
+});
       
       // Check the result properly
       if (result && result.id) {
