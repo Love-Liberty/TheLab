@@ -28,7 +28,7 @@ export function setupNotesListeners() {
       const result = await saveNoteWithTags(supabase, {
                      content: noteContent,
                      tags: userChoices,
-                     author_id: null
+                     author_id: '47742c9f-9afd-40b3-816a-f83fcd72b905'//mock data until implemented
 });
       
       // Check the result properly
