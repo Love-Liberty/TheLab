@@ -40,7 +40,7 @@ export async function saveNoteWithTags(supabase, params = {}) {
     throw error;
   }
 }
-*//end new
+*/
 
 export async function saveNoteWithTags(supabase, {
   author_id='47742c9f-9afd-40b3-816a-f83fcd72b905',//mock for test
