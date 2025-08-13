@@ -11,7 +11,7 @@ export function setupNotesListeners() {
   console.log("setUpNotesListeners.js");
   const notesPanel = document.getElementById('notes-panel');
   if (!notesPanel) return;
-  console.log('23:44');
+
   
   notesPanel.addEventListener('click', async (event) => {
     if (event.target.id === 'save-notes') {
@@ -22,6 +22,7 @@ export function setupNotesListeners() {
       } else console.log("content found");
       
       const userChoices = collectUserChoices();
+      console.log('setupNotesListeners()', {noteContent:noteContent, tags:userChoices});
       const result = await saveNoteWithTags(supabase, noteContent, userChoices);
       
       // Check the result properly
