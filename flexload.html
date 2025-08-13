@@ -76,13 +76,7 @@
     //  document.addEventListener('DOMContentLoaded', async function(){
       // Load Notes page initially (full width)
      loadPage('notes');
-   // Ensure the async load completes before setting up interactivity
-  /*    
-       setTimeout(()=>{
-          console.log('notes-page loaded 0.5s ago, call setupNotesListener()');
- setupNotesListeners();
-    },500);  */
-     // });
+
       // Set up navigation
       navButtons.forEach(button => {
         button.addEventListener('click', async function() {
@@ -102,8 +96,8 @@
               mainContainer.removeChild(mainContainer.lastChild);
             }
             // Load the content
-await loadPage('notes');
-setupNotesListeners(); 
+//await loadPage('notes');
+//setupNotesListeners(); 
             
 //            loadPage('notes');
           } else {
@@ -157,7 +151,17 @@ setupNotesListeners();
       }
     });
 
-     import { setupNotesListeners } from "./db/notes.js";
+import { setupNotesListeners } from "./db/notes.js";
+
+document.addEventListener('DOMContentLoaded', async function() {
+  // Load the notes page - see line 78
+  await loadPage('notes');
+  
+  // Now setup the listeners
+  setupNotesListeners();
+});
+
+    
   </script>
 </body>
 </html>
