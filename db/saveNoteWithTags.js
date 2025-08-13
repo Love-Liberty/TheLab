@@ -49,7 +49,7 @@ import {tagNoteByNames} from './tags.js';
 
 
 
-async function saveNoteAndTags(supabase, author_id, audience_id = null, reply_to_id = null, title = 'AutoTitle', content, status = null){
+export async function saveNoteWithTags(supabase, author_id, audience_id = null, reply_to_id = null, title = 'AutoTitle', content, status = null){
  console.log('old insert[save]NoteAnsTags()');
   const tagsArray=createTagArray();
     const rowId = await insertNote(supabase, author_id, audience_id, reply_to_id, title, content, status);
