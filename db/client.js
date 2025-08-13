@@ -26,8 +26,8 @@ export async function createSupabaseClient() {
         const supabaseUrl = 'https://kcdlbqotmuyyqvzzbxcn.supabase.co';
         const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw';
 
-        log('Starting Supabase Diagnostic...');
-        log(`Supabase URL: ${supabaseUrl}`);
+        console.log('Starting Supabase Diagnostic...');
+        console.log(`Supabase URL: ${supabaseUrl}`);
 
         try {
             const { createClient } = window.supabase;
@@ -39,25 +39,25 @@ export async function createSupabaseClient() {
             supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
                 auth: { persistSession: false }
             });
-            log('✓ Supabase client created and assigned globally');
+            console.log('✓ Supabase client created and assigned globally');
 
             if (typeof supabaseClient.from !== 'function') {
                 throw new Error('supabaseClient.from is not a function');
             }
-            log('✓ Supabase client methods verified');
+            console.log('✓ Supabase client methods verified');
 
             const { data, error } = await supabaseClient.from('notes').select('*');
 
             if (error) {
-                log('✗ Database read error:');
-                log(JSON.stringify(error, null, 2));
+                console.log('✗ Database read error:');
+                console.log(JSON.stringify(error, null, 2));
             } else {
-                log('✓ Successfully read from database');
-                log(`Records found: ${data.length}`);
+                console.log('✓ Successfully read from database');
+                console.log(`Records found: ${data.length}`);
             }
         } catch (err) {
-            log('✗ Diagnostic failed:');
-            log(err.message);
-            log(JSON.stringify(err, null, 2));
+            console.log('✗ Diagnostic failed:');
+            console.log(err.message);
+            console.log(JSON.stringify(err, null, 2));
         }
     }
