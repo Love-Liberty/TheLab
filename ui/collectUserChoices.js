@@ -1,5 +1,5 @@
 // collectUserChoices.js
-
+console.log("collectUserChoices.js");
 const checkboxGroups = ['main', 'events', 'process', 'business', 'resource'];
 const radioGroups = ['importance'];
 
