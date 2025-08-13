@@ -4,6 +4,44 @@ import { createSupabaseClient } from './client.js';
 import {insertNote} from './notes.js';
 import {tagNoteByNames} from './tags.js';
 
+//new 21:07 13 Aug 2025
+export async function saveNoteWithTags(supabase, params = {}) {
+  const {
+    author_id = '47742c9f-9afd-40b3-816a-f83fcd72b905',
+    audience_id = null,
+    reply_to_id = null,
+    title = '',
+    content = '',
+    status = null,
+    tags = []
+  } = params;
+
+  console.log('Saving note with tags:', { title, tags });
+
+  try {
+    const noteId = await insertNote(supabase, {
+      author_id,
+      audience_id,
+      reply_to_id,
+      title,
+      content,
+      status
+    });
+
+    console.log(`Note inserted with ID: ${noteId}`);
+
+    if (tags.length > 0) {
+      await tagNoteByNames(noteId, tags);
+    }
+
+    return noteId;
+  } catch (error) {
+    console.error('Failed to save note:', error);
+    throw error;
+  }
+}
+//end new
+/*
 export async function saveNoteWithTags(supabase, {
   author_id='47742c9f-9afd-40b3-816a-f83fcd72b905',//mock for test
   audience_id = null,
@@ -39,4 +77,4 @@ export async function saveNoteWithTags(supabase, {
     console.error('Error in saveNoteWithTags():', error);
     return null; // Caller can check for null to detect failure
   }
-}
+}*/
