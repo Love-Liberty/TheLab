@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Module Example</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; background: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; }
+        #message { margin-top: 20px; padding: 10px; border-radius: 4px; }
+        .success { background-color: #e8f5e9; color: #388e3c; border: 1px solid #c8e6c9; }
+        .error { background-color: #ffebee; color: #c62828; border: 1px solid #ef9a9a; }
+        .code-block { background-color: #ecf0f1; padding: 10px; border-radius: 4px; font-family: monospace; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Supabase Module Connection Test</h1>
+        <p>This page uses the modern ES Module syntax. The Supabase client is imported directly. Check the browser console and the message below for results.</p>
+        <div id="message" class="code-block">Loading...</div>
+    </div>
+
+    <!-- The 'type="module"' attribute is what enables the import/export syntax -->
+    <script type="module">
+        // This is the critical line! It imports the specific 'createClient' function
+        // from a module-compatible CDN URL.
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+        // Set your Supabase URL and key here
+       // const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+       // const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+       const supabaseUrl = 'https://kcdlbqotmuyyqvzzbxcn.supabase.co';
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjZGxicW90bXV5eXF2enpieGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzOTY3MjUsImV4cCI6MjA2OTk3MjcyNX0.jn1qV-Hz_z8pDVlQiR20Kwv_12BDL_z9rcHZvdbdahw';   
+
+      const messageDiv = document.getElementById('message');
+
+        async function main() {
+            try {
+                // Now, you can use the 'createClient' function directly
+                const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                
+                messageDiv.textContent = 'Supabase client successfully created.';
+                messageDiv.className = 'success';
+                console.log('Supabase client successfully created.', supabase);
+
+                // Example: Fetch data from a 'todos' table
+                const { data, error } = await supabase
+                    .from('todos')
+                    .select('*');
+
+                if (error) {
+                    messageDiv.textContent = `Error fetching data: ${error.message}`;
+                    messageDiv.className = 'error';
+                    console.error('Error fetching data:', error.message);
+                } else {
+                    messageDiv.textContent = `Successfully fetched data:\n${JSON.stringify(data, null, 2)}`;
+                    messageDiv.className = 'success';
+                    console.log('Successfully fetched data:', data);
+                }
+
+            } catch (e) {
+                messageDiv.textContent = `An error occurred: ${e.message}`;
+                messageDiv.className = 'error';
+                console.error('An error occurred during Supabase initialization or data fetch.', e);
+            }
+        }
+
+        // Call the main function to start the process
+        main();
+    </script>
+</body>
+</html>
