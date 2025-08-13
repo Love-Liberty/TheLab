@@ -2,7 +2,7 @@ console.log("saveNoteWithTags");//lacked imports and supabase
 
 import { createSupabaseClient } from './client.js';
 import {insertNote} from './notes.js';
-import {tagNoteByNames} from './saveNoteWithTags';
+import {tagNoteByNames} from './tags.js';
 
 export async function saveNoteWithTags(supabase, {
   author_id='47742c9f-9afd-40b3-816a-f83fcd72b905',//mock for test
