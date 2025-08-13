@@ -1,3 +1,4 @@
+console.log('tags.js');
 import { createSupabaseClient } from './client.js';
 
 const supabase = createSupabaseClient();
@@ -7,6 +8,7 @@ const supabase = createSupabaseClient();
  * @returns {Promise<Map<string, number>>}
  */
 export async function readCategoryMap() {
+  console.log('readCategoryMap()');
   const { data, error } = await supabase
     .from('notes_categories')
     .select('id, category_name');
@@ -25,6 +27,7 @@ export async function readCategoryMap() {
  * @param {number[]} categoryIds
  */
 export async function linkNoteToCategories(noteId, categoryIds) {
+  console.log('linkNoteToCategories()');
   if (!noteId || categoryIds.length === 0) return;
 
   const rows = categoryIds.map(catId => ({
@@ -45,6 +48,7 @@ export async function linkNoteToCategories(noteId, categoryIds) {
 }
 
 export async function readReverseCategoryMap() {
+  console.log('readReverseCategoryMap');
   const { data, error } = await supabase
     .from('notes_categories')
     .select('id, category_name');
@@ -64,6 +68,7 @@ export async function readReverseCategoryMap() {
  * @param {string[]} categoryNames
  */
 export async function tagNoteByNames(noteId, categoryNames) {
+  console.log('tagsNotesByName()');
   const categoryMap = await readCategoryMap();
   const categoryIds = categoryNames
     .map(name => categoryMap.get(name))
