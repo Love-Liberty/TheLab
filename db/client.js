@@ -1,6 +1,10 @@
 // db/client.js
 // We now import createClient directly from the Supabase library.
-import { createClient } from '@supabase/supabase-js';
+// Change this:
+// import { createClient } from '@supabase/supabase-js';
+
+// To this:
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 export function createSupabaseClientHIDE() {
           const supabaseUrl = 'https://kcdlbqotmuyyqvzzbxcn.supabase.co';
