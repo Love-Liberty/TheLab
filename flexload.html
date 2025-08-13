@@ -99,9 +99,11 @@
             while (mainContainer.children.length > 1) {
               mainContainer.removeChild(mainContainer.lastChild);
             }
-         
+
+            
 import { setupNotesListeners } from "./db/notes.js";
 
+            
 document.addEventListener('DOMContentLoaded', async function() {
   // Load the notes page - see line 78
   await loadPage('notes');
