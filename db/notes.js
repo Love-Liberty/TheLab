@@ -87,8 +87,109 @@ export async function fetchNotes(supabase, page = 1, pageSize = 10) {
 
   return { data, count };
 }
+function renderNotes(notes, totalCount, page) {
+  const output = document.getElementById('output');
+  
+  const notesHtml = notes.map(note => {
+    const shortContent = note.content.length > 200
+      ? `${note.content.slice(0, 200)} <span class="text-blue-600 cursor-pointer hover:text-blue-800" onclick="toggleContent(this)">[more]</span><span class="hidden">${note.content.slice(200)}</span>`
+      : note.content;
 
-export function renderNotes(notes, totalCount, page) {
+    const iconHTML = getIconHTML(note.status);
+    const statusAttr = note.status ?? '';
+    
+    // Use status-based styling like in the knowledge base
+    const statusClasses = {
+      'pending': 'bg-yellow-50 border-yellow-200',
+      'completed': 'bg-green-50 border-green-200',
+      'abandoned': 'bg-red-50 border-red-200'
+    };
+    
+    const statusClass = statusClasses[statusAttr] || 'bg-white border-gray-200';
+    const statusText = statusAttr || 'No status';
+
+    return `
+      <div class="mb-3" data-note-id="${note.id}" data-status="${statusAttr}">
+        <div class="bg-white p-4 rounded-lg border ${statusClass} hover:shadow-sm transition-all cursor-pointer group"
+             onclick="handleNoteClick(event)">
+          
+          <!-- Status indicator row -->
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center space-x-2">
+              <div class="w-2 h-2 rounded-full ${
+                statusAttr === 'pending' ? 'bg-yellow-400' : 
+                statusAttr === 'completed' ? 'bg-green-400' : 
+                statusAttr === 'abandoned' ? 'bg-red-400' : 'bg-gray-300'
+              }"></div>
+              <span class="text-sm text-gray-500">${statusText}</span>
+            </div>
+            <div class="status-icon text-lg opacity-70 group-hover:opacity-100 transition-opacity">
+              ${iconHTML}
+            </div>
+          </div>
+          
+          <!-- Note content -->
+          <div class="space-y-2 text-sm text-gray-800">
+            <p class="flex items-center">
+              <span class="font-medium w-20">ID:</span>
+              <span class="text-gray-600">${note.sort_int}</span>
+            </p>
+            <p class="flex items-center">
+              <span class="font-medium w-20">Author:</span>
+              <span class="text-gray-600">${note.author_id.slice(0, 8)}</span>
+            </p>
+            <p class="flex items-center">
+              <span class="font-medium w-20">Created:</span>
+              <span class="text-gray-600">${new Date(note.created_at).toLocaleString()}</span>
+            </p>
+            <p class="flex">
+              <span class="font-medium w-20 pt-1">Content:</span>
+              <span class="text-gray-700 flex-1">${shortContent}</span>
+            </p>
+          </div>
+          
+          <!-- Hover controls (subtle like knowledge base) -->
+          <div class="flex justify-end mt-3 pt-3 border-t border-gray-100 text-xs text-gray-400 group-hover:text-gray-600 transition-colors">
+            Click to change status
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const totalPages = Math.ceil(totalCount / pageSize);
+  const controls = `
+    <div class="flex items-center justify-between mt-6 pt-4 border-t border-gray-200">
+      <button onclick="changePage(${page - 1})" 
+              class="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              ${page === 1 ? 'disabled' : ''}>
+        ← Previous
+      </button>
+      <span class="text-sm text-gray-600">
+        Page ${page} of ${totalPages} (${totalCount} total notes)
+      </span>
+      <button onclick="changePage(${page + 1})" 
+              class="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              ${page === totalPages ? 'disabled' : ''}>
+        Next →
+      </button>
+    </div>
+  `;
+
+  output.innerHTML = `
+    <div class="mt-6">
+      <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center">
+        <span class="mr-2">📝</span>
+        Recent Notes
+      </h3>
+      ${notesHtml}
+      ${controls}
+    </div>
+  `;
+}
+
+
+export function renderNotesOLD(notes, totalCount, page) {
   const output = document.getElementById('output');
 
   const notesHtml = notes.map(note => {
