@@ -28,7 +28,7 @@ export function setupNotesListeners() {
       const result = await saveNoteWithTags(supabase, {
                      content: noteContent,
                      tags: userChoices,
-                     author_id: '477TESTf-9afd-40b3-816a-f83fcd72b905'
+                     author_id: null
 });
       
       // Check the result properly
