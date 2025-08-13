@@ -95,11 +95,17 @@
             while (mainContainer.children.length > 1) {
               mainContainer.removeChild(mainContainer.lastChild);
             }
-            // Load the content
-//await loadPage('notes');
-//setupNotesListeners(); 
-            
-//            loadPage('notes');
+         
+import { setupNotesListeners } from "./db/notes.js";
+
+document.addEventListener('DOMContentLoaded', async function() {
+  // Load the notes page - see line 78
+  await loadPage('notes');
+  
+  // Now setup the listeners
+  setupNotesListeners();
+}); 
+   //       loadPage('notes');
           } else {
             // For other pages, create a split view
             if (mainContainer.children.length === 1) {
@@ -151,15 +157,7 @@
       }
     });
 
-import { setupNotesListeners } from "./db/notes.js";
 
-document.addEventListener('DOMContentLoaded', async function() {
-  // Load the notes page - see line 78
-  await loadPage('notes');
-  
-  // Now setup the listeners
-  setupNotesListeners();
-});
 
     
   </script>
