@@ -45,12 +45,20 @@ export function setupNotesListeners() {
 
 
 /**
- * Inserts a new note and returns its ID.
+ * Inserts a new note and returns its ID. Updated to accept object containg the params
  */
-export async function insertNote(supabase, author_id, audience_id = null, reply_to_id = null, title = 'AutoTitle', content, status = null) {
- console.log("insertNotes() author_id:",author_id);//oddly null in console
-  author_id='b4d43158-cade-451a-b0c5-4b63838fb82c';//mock
-  console.log(content);
+export async function insertNote(supabase, noteData) {
+  const {
+    author_id,
+    audience_id = null,
+    reply_to_id = null,
+    title = 'AutoTitle',
+    content,
+    status = null
+  } = noteData;
+
+  console.log("📝 insertNote data:", { author_id, content, title }); // Debug
+
   try {
     const { data, error } = await supabase
       .from('notes')
@@ -62,20 +70,16 @@ export async function insertNote(supabase, author_id, audience_id = null, reply_
         content,
         status
       }])
-      .select();
+      .select('id');
 
-    if (error) {
-      console.error('Insert error:', error);
-      return null;
-    }
+    if (error) throw error;
 
-    return data[0]?.id ?? null;
-  } catch (err) {
-    console.error('Unexpected insert error:', err.message);
-    return null;
+    return data[0].id;
+  } catch (error) {
+    console.error('❌ insertNote failed:', error);
+    throw error;
   }
 }
-
 /**
  * Fetches a page of notes.
  */
