@@ -129,6 +129,8 @@ export function renderNotes(notes, totalCount, page) {
   const output = document.getElementById('output');
   
   const notesHtml = notes.map(note => {
+    const content = note.content || ''; //if content is null make it an empty string so .length doesn't crash
+const shortContent = content.length > 200
     const shortContent = note.content.length > 200
       ? `${note.content.slice(0, 200)} <span class="text-blue-600 cursor-pointer hover:text-blue-800" onclick="toggleContent(this)">[more]</span><span class="hidden">${note.content.slice(200)}</span>`
       : note.content;
