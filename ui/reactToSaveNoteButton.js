@@ -32,5 +32,5 @@ if (result) {
   });
 
 
-//cleanupPage() //{empty content, reset tags, re-render notes}
+cleanupPage() //{empty content, reset tags, re-render notes}
                                          }
