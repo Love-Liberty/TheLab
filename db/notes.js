@@ -48,12 +48,12 @@ export function setupNotesListeners() {
  * Inserts a new note and returns its ID.
  */
 export async function insertNote(supabase, author_id, audience_id = null, reply_to_id = null, title = 'AutoTitle', content, status = null) {
- console.log("insertNotes() author_id:",author_id);
+ console.log("insertNotes() author_id:",author_id);//oddly null in console
   try {
     const { data, error } = await supabase
       .from('notes')
       .insert([{
-        author_id,
+        author_id='b4d43158-cade-451a-b0c5-4b63838fb82c',//mock
         audience_id,
         reply_to_id,
         title,
