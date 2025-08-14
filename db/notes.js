@@ -8,12 +8,13 @@ import { createSupabaseClient } from './client.js';
 const supabase = createSupabaseClient();
 
 export function setupNotesListeners() {
-  console.log("setUpNotesListeners.js");
+  console.log("setUpNotesListeners()");
   const notesPanel = document.getElementById('notes-panel');
   if (!notesPanel) return;
 
   
   notesPanel.addEventListener('click', async (event) => {
+    console.log("notesPanel.addEventListener()");
     if (event.target.id === 'save-notes') {
       const noteContent = document.getElementById('note-content')?.value.trim();
       if (!noteContent) {
@@ -85,6 +86,8 @@ export async function insertNote(supabase, noteData) {
  */
 // In fetchNotes.js - return with consistent naming
 export async function fetchNotes(supabase, page = 1, pageSize = 10) {
+    console.log("fetchNote()", page);
+
   const start = (page - 1) * pageSize;
   const end = start + pageSize - 1;
 
@@ -104,6 +107,7 @@ export async function fetchNotes(supabase, page = 1, pageSize = 10) {
 
 // Add this function to your JavaScript file
 function getIconHTML(status) {
+  console.log("getIconHTML()");
   switch(status) {
     case 6:
       return '<span class="text-green-600 font-semibold">?</span>';
@@ -121,6 +125,7 @@ function getIconHTML(status) {
 
 
 export function renderNotes(notes, totalCount, page) {
+  console.log("renderNote()");
   const output = document.getElementById('output');
   
   const notesHtml = notes.map(note => {
@@ -375,6 +380,7 @@ export function renderNotesOLD(notes, totalCount, page) {
  * Updates the status of a note.
  */
 export async function saveNoteStatus(supabase, noteId, newStatus) {
+  console.log("saveNoteStatus()");
   const { data, error } = await supabase
     .from('notes')
     .update({ status: newStatus })
