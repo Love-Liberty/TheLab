@@ -97,12 +97,12 @@ export async function tagNoteByNames(noteId, tagNames = []) {
 
 /*
 export async function tagNoteByNames(noteId, categoryNames) {
-  console.log('tagsNotesByName()');
+  console.log('tagsNotesByName() noteId:',noteId,'names:' ,categoryNames);
   const categoryMap = await readCategoryMap();
   const categoryIds = categoryNames
     .map(name => categoryMap.get(name))
     .filter(Boolean);
-
+console.log('calling linkNoteToCategories() with noteId:',noteId,'ids:', categoryIds);
   await linkNoteToCategories(noteId, categoryIds);
 }
 */
