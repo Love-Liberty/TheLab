@@ -97,9 +97,10 @@ export async function fetchNotes(supabase, page = 1, pageSize = 10) {
     console.error('Error fetching notes:', error);
     return { data: [], count: 0 };
   }
-
+ console.log('Successfully fetched notes:', { data, count });
   return { data, count };
 }
+
 
 // Add this function to your JavaScript file
 function getIconHTML(status) {
