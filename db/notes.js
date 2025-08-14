@@ -32,8 +32,8 @@ export function setupNotesListeners() {
 });
       
       // Check the result properly
-      if (result && result.id) {
-        console.log(`✅ Note saved with ID: ${result.id}`);
+      if (result) {
+        console.log(`✅ Note saved`);
       } else {
         console.log('❌ Note save failed');
       }
