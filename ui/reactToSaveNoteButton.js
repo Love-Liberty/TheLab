@@ -4,7 +4,7 @@ console.log('reactToSaveButton.js');
 
 export async function reactToSaveButton(){
  console.log('reactToSaveButton()');
-
+/*
  const noteContent = document.getElementById('note-content')?.value.trim();
       if (!noteContent) {
         console.log('✗ Note content is empty');
@@ -30,7 +30,7 @@ if (result) {
 }
     }
   });
-
+*/
 
 cleanupPage() //{empty content, reset tags, re-render notes}
                                          }
