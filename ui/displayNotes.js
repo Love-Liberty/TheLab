@@ -1,7 +1,7 @@
 //displayNotes.js
 console.log('displayNotes.js');
 import { createSupabaseClient } from '../db/client.js';
-import { fetchNotes } from "../db/Notes.js";  
+import { fetchNotes } from "../db/notes.js";  
 
 
 
