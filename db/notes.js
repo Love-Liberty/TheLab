@@ -101,6 +101,24 @@ export async function fetchNotes(supabase, page = 1, pageSize = 10) {
   return { data, count };
 }
 
+// Add this function to your JavaScript file
+function getIconHTML(status) {
+  switch(status) {
+    case 6:
+      return '<span class="text-green-600 font-semibold">?</span>';
+    case 7:
+      return '<span class="text-green-600">✅</span>';
+    case 8:
+      return '<span class="text-red-600 font-semibold">?</span>';
+    case 9:
+      return '<span class="text-red-600">❌</span>';
+    default:
+      return '<span class="text-gray-400">○</span>'; // Default icon for no status
+  }
+}
+
+
+
 export function renderNotes(notes, totalCount, page) {
   const output = document.getElementById('output');
   
