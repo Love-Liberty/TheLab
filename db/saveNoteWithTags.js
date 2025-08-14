@@ -135,7 +135,7 @@ import { createSupabaseClient } from './client.js';
 import {insertNote} from './notes.js';
 import {tagNoteByNames} from './tags.js';
 
-/*new 21:07 13 Aug 2025
+//new 21:07 13 Aug 2025
 export async function saveNoteWithTags(supabase, params = {}) {
   const {   //   47742c9f-9afd-40b3-816a-f83fcd72b905
     author_id = '47742c9f-9afd-40b3-816a-f83fcd72b905',
