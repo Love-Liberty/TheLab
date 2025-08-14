@@ -8,6 +8,8 @@ export function setupNotesListeners() {
     return;
   }
   console.log('setupNotesListeners() -> saveNoteWithTags');
-saveButton.addEventListener('click', saveNoteWithTags);
+    saveButton.addEventListener('click', saveNoteWithTags);
+
+  //saveButton.addEventListener('click', reactToSaveNoteButton());
 
 }
