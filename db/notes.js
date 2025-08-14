@@ -83,6 +83,7 @@ export async function insertNote(supabase, noteData) {
 /**
  * Fetches a page of notes.
  */
+// In fetchNotes.js - return with consistent naming
 export async function fetchNotes(supabase, page = 1, pageSize = 10) {
   const start = (page - 1) * pageSize;
   const end = start + pageSize - 1;
@@ -95,12 +96,11 @@ export async function fetchNotes(supabase, page = 1, pageSize = 10) {
 
   if (error) {
     console.error('Error fetching notes:', error);
-    return { data: [], count: 0 };
+    return { notes: [], totalCount: 0 };
   }
- console.log('Successfully fetched notes:', { data, count });
-  return { data, count };
-}
 
+  return { notes: data, totalCount: count };
+}
 
 // Add this function to your JavaScript file
 function getIconHTML(status) {
