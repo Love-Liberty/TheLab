@@ -1,3 +1,4 @@
+/*
 // reverting to the old function at 22:26 13 Aug  changed name from insert to save
 import { createSupabaseClient } from './client.js';
 import {insertNote} from './notes.js';
@@ -121,14 +122,13 @@ async function insertTags(supabase, noteId, tagsArray) {
     }
 }
 
+*/
 
 
 
 
 
 
-
-/*
 console.log("saveNoteWithTags.js");//lacked imports and supabase
 
 import { createSupabaseClient } from './client.js';
@@ -174,7 +174,9 @@ console.log('📥 [save] tags type:', typeof tags, 'is array?', Array.isArray(ta
     throw error;
   }
 }
-*/
+
+
+
 /*
 export async function saveNoteWithTags(supabase, {
   author_id='47742c9f-9afd-40b3-816a-f83fcd72b905',//mock for test
