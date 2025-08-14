@@ -50,10 +50,10 @@ import {tagNoteByNames} from './tags.js';
 
 
 export async function saveNoteWithTags(supabase, author_id, audience_id = null, reply_to_id = null, title = 'AutoTitle', content, status = null){
- console.log('old insert[save]NoteAnsTags()');
+ console.log('old insert[save]NoteAnsTags() author_id:,author_id');
   const tagsArray=createTagArray();
                   // Placeholder for a real author_id
-                const author_Id = '0023236b-58d7-4c41-ba0f-45a7efc31847';    
+                const author_id = '0023236b-58d7-4c41-ba0f-45a7efc31847';    
   const rowId = await insertNote(supabase, author_id, audience_id, reply_to_id, title, content, status);
   await insertTags(supabase, rowId, tagsArray);
  return true;} //placeholder
