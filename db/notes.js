@@ -124,7 +124,7 @@ function getIconHTML(status) {
 
 
 
-export function renderNotes(notes, totalCount, page) {
+export function renderNotes(notes, totalCount, page, pageSize) {
   console.log("renderNote()");
   const output = document.getElementById('output');
   
