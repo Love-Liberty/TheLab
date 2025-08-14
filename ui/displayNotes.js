@@ -6,13 +6,13 @@ import { renderNotes } from "../db/notes.js";
 
 export async function displayNotes() {
   console.log('displayNotes()');
-  
+  const pageSize = 10;
   try {
     const supabase = createSupabaseClient();
-    const { notes, totalCount } = await fetchNotes(supabase, 1, 10);
+    const { notes, totalCount } = await fetchNotes(supabase, 1, pageSize);
     console.log ('notes:',notes,'totalCount:', totalCount)
     // Render the notes fetch return { notes: data, totalCount: count };
-    renderNotes(notes, totalCount, 1);
+    renderNotes(notes, totalCount, 1, pageSize);
     console.log('displayNotes() fetch ended');
     
   } catch (error) {
