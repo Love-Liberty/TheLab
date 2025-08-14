@@ -9,9 +9,9 @@ export async function displayNotes() {
   
   try {
     const supabase = createSupabaseClient();
-    const { data: notes, count: totalCount } = await fetchNotes(supabase, 1, 10);
-    
-    // Render the notes
+    const { notes, totalCount } = await fetchNotes(supabase, 1, 10);
+    console.log ('notes:',notes,'totalCount:', totalCount)
+    // Render the notes fetch return { notes: data, totalCount: count };
     renderNotes(notes, totalCount, 1);
     console.log('displayNotes() fetch ended');
     
