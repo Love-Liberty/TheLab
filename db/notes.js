@@ -49,11 +49,12 @@ export function setupNotesListeners() {
  */
 export async function insertNote(supabase, author_id, audience_id = null, reply_to_id = null, title = 'AutoTitle', content, status = null) {
  console.log("insertNotes() author_id:",author_id);//oddly null in console
+  author_id='b4d43158-cade-451a-b0c5-4b63838fb82c',//mock
   try {
     const { data, error } = await supabase
       .from('notes')
       .insert([{
-        author_id='b4d43158-cade-451a-b0c5-4b63838fb82c',//mock
+        author_id,
         audience_id,
         reply_to_id,
         title,
