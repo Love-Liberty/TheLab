@@ -48,7 +48,7 @@ export function setupNotesListeners() {
  * Inserts a new note and returns its ID.
  */
 export async function insertNote(supabase, author_id, audience_id = null, reply_to_id = null, title = 'AutoTitle', content, status = null) {
- console.log("insertNotes()");
+ console.log("insertNotes() author_id:",author_id);
   try {
     const { data, error } = await supabase
       .from('notes')
