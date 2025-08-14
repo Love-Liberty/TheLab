@@ -51,10 +51,6 @@ import {tagNoteByNames} from './tags.js';
 
 export async function saveNoteWithTags(supabase, author_id= '0023236b-58d7-4c41-ba0f-45a7efc31847', audience_id = null, reply_to_id = null, title = 'AutoTitle', content, status = null){
  console.log('old insert[save]NoteAnsTags() author_id:,author_id');
-
-  console.log('📥 [save] params:', params);
-console.log('📥 [save] tags:', tags);
-console.log('📥 [save] tags type:', typeof tags, 'is array?', Array.isArray(tags));
   
   const tagsArray=createTagArray();
                   // Placeholder for a real author_id
@@ -153,6 +149,9 @@ export async function saveNoteWithTags(supabase, params = {}) {
 
   console.log('Saving note with tags:', { title, tags });
 
+  console.log('📥 [save] params:', params);
+console.log('📥 [save] tags:', tags);
+console.log('📥 [save] tags type:', typeof tags, 'is array?', Array.isArray(tags));
   try {
     const noteId = await insertNote(supabase, {
       author_id,
