@@ -1,18 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Documentation Index</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Index</title>
+  <link rel="icon" href="project-icon.png" type="image/png" />
   <style>
     body {
       font-family: system-ui, sans-serif;
-      margin: 2em;
-      background: #f9f9f9;
-      color: #333;
+      background-color: #0b1c2c;
+      color: #f0f0f0;
+      margin: 0;
+      padding: 2em;
     }
     h1 {
-      font-size: 1.8em;
+      text-align: center;
+      font-size: 2em;
       margin-bottom: 0.5em;
+    }
+    .diagram {
+      display: block;
+      margin: 1em auto;
+      max-width: 600px;
+      border: 2px solid #444;
+      border-radius: 8px;
     }
     ul {
       list-style: none;
@@ -20,36 +31,61 @@
     }
     li {
       margin: 0.5em 0;
+      padding: 0.3em 0.6em;
+      background-color: #162b40;
+      border-radius: 6px;
+      transition: background-color 0.2s ease;
+    }
+    li:hover {
+      background-color: #1f3d5a;
     }
     a {
-      font-weight: bold;
-      color: #0066cc;
+      color: #9ddcff;
       text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
+      font-weight: bold;
     }
     .desc {
+      color: #ccc;
       margin-left: 0.5em;
-      color: #555;
-      font-style: italic;
+      font-weight: normal;
+    }
+    .group-divider {
+      border-top: 2px solid #3a5c7a;
+      margin: 1.5em 0 0.5em;
+    }
+    h3 {
+      margin: 0.5em 0;
+      color: #7ec8f3;
     }
   </style>
 </head>
 <body>
-  <h1>🗂️ Notes App Documentation Index</h1>
+
+  <img src="project-icon.png" alt="Project Icon" style="width:48px; height:48px; float:left; margin-right:1em;" />
+  <h1>🧠 Modular Notes System</h1>
+
+  <img src="quadrant-diagram.png" alt="System Architecture Diagram" class="diagram" />
+
   <ul>
-    <li><a href="changePage.html">changePage.html</a><span class="desc">– handles pagination logic</span></li>
-    <li><a href="client.html">client.html</a><span class="desc">– creates and returns a Supabase client</span></li>
-    <li><a href="collectUserChoices.html">collectUserChoices.html</a><span class="desc">– gathers selected tag values</span></li>
-    <li><a href="displayNotes.html">displayNotes.html</a><span class="desc">– fetches and renders notes</span></li>
-    <li><a href="flexload.html">flexload.html</a><span class="desc">– Home page. A mechanism that Loads the actual pages</span></li>
-    <li><a href="noteClick-reactNotesLoad.html">noteClick-reactNotesLoad.html</a><span class="desc">– placeholders </span></li>
-    <li><a href="notes.html">notes.html</a><span class="desc">– legacy file with note-related functions</span></li>
-    <li><a href="reactToSaveButton.html">reactToSaveButton.html</a><span class="desc">– called by save button - validates and saves note input</span></li>
-    <li><a href="saveNoteWithTags.html">saveNoteWithTags.html</a><span class="desc">– calls to insertNote & write tags to db</span></li>
-    <li><a href="setupNotesListeners.html">setupNotesListeners.html</a><span class="desc">– attaches listeners to the Notes panel</span></li>
-    <li><a href="tags.html">tags.html</a><span class="desc">– handles category lookup and tagging logic</span></li>
+    <hr class="group-divider"><h3>A–C</h3>
+    <li><a href="changePage.html">🌀 changePage.html</a><span class="desc">– Manages pagination and page transitions</span></li>
+    <li><a href="client.html">🔌 client.html</a><span class="desc">– Initializes and returns a Supabase client</span></li>
+    <li><a href="collectUserChoices.html">🎯 collectUserChoices.html</a><span class="desc">– Collects selected tag values from the UI</span></li>
+
+    <hr class="group-divider"><h3>D–F</h3>
+    <li><a href="displayNotes.html">🗒️ displayNotes.html</a><span class="desc">– Fetches notes from the database and renders them</span></li>
+    <li><a href="flexload.html">🚪 flexload.html</a><span class="desc">– Entry point; dynamically loads actual pages</span></li>
+
+    <hr class="group-divider"><h3>N–S</h3>
+    <li><a href="noteClick-reactNotesLoad.html">🧪 noteClick-reactNotesLoad.html</a><span class="desc">– Placeholder for note click and reactive loading logic</span></li>
+    <li><a href="notes.html">📜 notes.html</a><span class="desc">– Legacy note functions; retained for reference</span></li>
+    <li><a href="reactToSaveButton.html">💾 reactToSaveButton.html</a><span class="desc">– Handles save button click; validates and stores note input</span></li>
+    <li><a href="saveNoteWithTags.html">🏷️ saveNoteWithTags.html</a><span class="desc">– Saves note and writes associated tags to the database</span></li>
+    <li><a href="setupNotesListeners.html">🎧 setupNotesListeners.html</a><span class="desc">– Attaches event listeners to the Notes panel</span></li>
+
+    <hr class="group-divider"><h3>T</h3>
+    <li><a href="tags.html">🔖 tags.html</a><span class="desc">– Manages category lookup and tag assignment logic</span></li>
   </ul>
+
 </body>
 </html>
