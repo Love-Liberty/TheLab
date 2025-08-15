@@ -34,7 +34,7 @@ if (result) {
   console.log('❌ Note save failed');
 }
     }
-  });
+  
 
 cleanupPage() //{empty content, reset tags, re-render notes}
                                          }
