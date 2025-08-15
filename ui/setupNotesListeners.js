@@ -38,9 +38,10 @@ reactToSaveButton()
         console.log(`✅ Note saved`);
       } else {
         console.log('❌ Note save failed');
-      }
+      }  
+      */
     }
-  }); */
+  }); 
 }
 
 
