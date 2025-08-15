@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notes App Architecture Overview</title>
+  <style>
+    body { font-family: sans-serif; background: #f9f9f9; padding: 2rem; line-height: 1.6; }
+    h1, h2, h3 { color: #333; }
+    h1 { font-size: 2rem; margin-bottom: 1rem; }
+    h2 { font-size: 1.5rem; margin-top: 2rem; }
+    h3 { font-size: 1.2rem; margin-top: 1.5rem; }
+    pre, code { background: #eee; padding: 0.5rem; border-radius: 4px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
+    th { background: #f0f0f0; }
+    .section { margin-bottom: 3rem; }
+    .tag { font-weight: bold; color: #0055aa; }
+    .note { background: #fff8dc; padding: 0.5rem; border-left: 4px solid #ffa; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>🧠 Notes App Architecture Overview</h1>
+
+  <div class="section">
+    <h2>Entry Point: <code>flexload.html</code></h2>
+    <p>This file sets up the layout, loads the Notes page, and attaches navigation logic.</p>
+    <table>
+      <tr><th>Category</th><th>Details</th></tr>
+      <tr><td>Imports</td><td>Tailwind CSS, Supabase CDN, JS modules</td></tr>
+      <tr><td>Functions</td><td><code>loadPage()</code>, <code>DOMContentLoaded</code> handler</td></tr>
+      <tr><td>Control Flow</td><td>Initial page load → Notes → Event listeners → Dynamic panel creation</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>UI Logic: <code>setupNotesListeners.js</code></h2>
+    <p>Attaches a click listener to <code>#notes-panel</code> and delegates to <code>reactToSaveButton()</code>.</p>
+    <div class="note">Legacy versions are commented out and ready for removal.</div>
+  </div>
+
+  <div class="section">
+    <h2>Save Handler: <code>reactToSaveButton.js</code></h2>
+    <p>Validates input, collects tags, saves note, and triggers cleanup.</p>
+    <table>
+      <tr><th>Step</th><th>Action</th></tr>
+      <tr><td>1</td><td>Get <code>note-content</code> from textarea</td></tr>
+      <tr><td>2</td><td>Call <code>collectUserChoices()</code></td></tr>
+      <tr><td>3</td><td>Call <code>saveNoteWithTags()</code></td></tr>
+      <tr><td>4</td><td>Call <code>cleanupPage()</code> (placeholder)</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>Tag Logic: <code>tags.js</code></h2>
+    <p>Handles category lookup and note–tag linking.</p>
+    <ul>
+      <li><code>readCategoryMap()</code> → <em>name → id</em></li>
+      <li><code>tagNoteByNames()</code> → links note to categories</li>
+      <li><code>linkNoteToCategories()</code> → upserts into <code>notes_categorised</code></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Note Creation: <code>saveNoteWithTags.js</code></h2>
+    <p>Inserts note into Supabase and links tags.</p>
+    <pre><code>{ title, content, tags, author_id }</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>Note Display: <code>displayNotes.js</code></h2>
+    <p>Fetches notes and renders them into <code>#output</code>.</p>
+    <ul>
+      <li>Uses <code>fetchNotes()</code> and <code>renderNotes()</code></li>
+      <li>Handles pagination and error fallback</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Data Layer: <code>notes.js</code></h2>
+    <p>Legacy file containing <code>insertNote()</code>, <code>fetchNotes()</code>, and <code>renderNotes()</code>.</p>
+    <div class="note">Functions are being migrated to better-named files.</div>
+  </div>
+
+  <div class="section">
+    <h2>Tag Input UI</h2>
+    <p>HTML structure for tag selection and note input:</p>
+    <ul>
+      <li>Checkbox groups: <code>main</code>, <code>events</code>, <code>process</code>, <code>business</code>, <code>resource</code></li>
+      <li>Radio group: <code>importance</code></li>
+      <li>Textarea: <code>note-content</code></li>
+      <li>Buttons: <code>save-notes</code>, <code>clear-notes</code></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Future Improvements</h2>
+    <ul>
+      <li>✅ Sanitize <code>note-content</code> to prevent HTML injection</li>
+      <li>✅ Implement <code>cleanupPage()</code> to reset UI</li>
+      <li>✅ Remove legacy code blocks</li>
+      <li>✅ Rename files for consistency</li>
+      <li>🧠 Modularize <code>handleNoteClick()</code> and <code>reactToNotesPageLoad()</code></li>
+    </ul>
+  </div>
+
+</body>
+</html>
