@@ -4,6 +4,7 @@ console.log('changePage.js');
 
 
 // Updated changePage.js
+// changePage.js
 console.log('changePage.js');
 
 import { displayNotes } from './displayNotes.js';
@@ -23,9 +24,11 @@ export function changePage(currentPage, totalCount, direction) {
     if (newPage > totalPages) newPage = totalPages;
   }
   
-  // Only call displayNotes if page changed
   if (newPage !== currentPage) {
     console.log('Loading page:', newPage);
     displayNotes(newPage, totalCount);
   }
 }
+
+// Make the function available globally for onclick handlers
+window.changePage = changePage;
