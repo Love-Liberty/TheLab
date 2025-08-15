@@ -4,6 +4,7 @@ console.log('notes.js');
 import { collectUserChoices } from '../ui/collectUserChoices.js';
 import { saveNoteWithTags } from './saveNoteWithTags.js';
 import { createSupabaseClient } from './client.js';
+import { changePage } from '../ui/changePage.js';
 
 const supabase = createSupabaseClient();
 
@@ -186,7 +187,7 @@ export function renderNotes(notes, totalCount, page, pageSize) {
       <button onclick="changePage(${page - 1})" 
               class="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               ${page === 1 ? 'disabled' : ''}>
-        ← Older
+        ← Newer
       </button>
       <span class="text-sm text-gray-600">
         Page ${page} of ${totalPages} (${totalCount} total notes)
@@ -194,7 +195,7 @@ export function renderNotes(notes, totalCount, page, pageSize) {
       <button onclick="changePage(${page + 1})" 
               class="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               ${page === totalPages ? 'disabled' : ''}>
-        Newer →
+        Older →
       </button>
     </div>
   `;
