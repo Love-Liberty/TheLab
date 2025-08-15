@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>client.js</title>
+  <style>/* shared styles omitted for brevity */</style>
+</head>
+<body>
+  <h1>🔌 client.js</h1>
+  <p>Creates and returns a singleton Supabase client instance.</p>
+
+  <h2>Function</h2>
+  <ul>
+    <li><code>createSupabaseClient()</code> → returns cached client or creates new one</li>
+  </ul>
+
+  <h2>Notes</h2>
+  <ul>
+    <li>Uses CDN import of Supabase</li>
+    <li>Session persistence disabled (<code>persistSession: false</code>)</li>
+    <li>Hardcoded credentials — consider moving to config</li>
+  </ul>
+</body>
+</html>
