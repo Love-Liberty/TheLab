@@ -13,3 +13,31 @@ export function setupNotesListeners() {
   //saveButton.addEventListener('click', reactToSaveNoteButton());
 
 }
+
+
+// notesPanelListener.js
+export function setupNotesPanelListener() {
+  const notesPanel = document.getElementById('notes-panel');
+  if (!notesPanel) return;
+  
+  notesPanel.addEventListener('click', async (event) => {
+    // Handle note clicks
+    const noteElement = event.target.closest('[data-note-id]');
+    if (noteElement) {
+      const noteId = noteElement.dataset.noteId;
+      await handleNoteClick(noteId);
+      return;
+    }
+    
+    // Handle pagination clicks
+    const pageButton = event.target.closest('[data-page-action]');
+    if (pageButton) {
+      const action = pageButton.dataset.pageAction;
+      const currentPage = parseInt(pageButton.dataset.currentPage);
+      const totalCount = parseInt(pageButton.dataset.totalCount);
+      
+      changePage(currentPage, totalCount, action);
+      return;
+    }
+  });
+}
