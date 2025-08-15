@@ -7,7 +7,7 @@ import { createSupabaseClient } from './client.js';
 import { changePage } from '../ui/changePage.js';
 
 const supabase = createSupabaseClient();
-
+/*
 export function setupNotesListeners() {
   console.log("setUpNotesListeners()");
   const notesPanel = document.getElementById('notes-panel');
@@ -43,7 +43,7 @@ export function setupNotesListeners() {
   });
 }
 //});//end of DOMLoaded
-
+*/
 
 
 /**
