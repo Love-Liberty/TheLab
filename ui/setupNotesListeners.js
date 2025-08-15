@@ -1,3 +1,57 @@
+// In your setupNotesListeners function
+export function setupNotesListeners() {
+  const notesPanel = document.getElementById('notes-panel');
+  if (!notesPanel) return;
+  
+  notesPanel.addEventListener('click', async (event) => {
+    console.log("notesPanel.addEventListener()");
+    
+    // Handle Save button click
+    if (event.target.id === 'save-notes' || event.target.closest('#save-notes')) {
+      const noteContent = document.getElementById('note-content')?.value.trim();
+      if (!noteContent) {
+        console.log('✗ Note content is empty');
+        return;
+      }
+      
+      const userChoices = collectUserChoices();
+      console.log('setupNotesListeners()', {noteContent, tags: userChoices});
+      return;
+    }
+    
+    // Handle note clicks
+    const noteElement = event.target.closest('[data-note-id]');
+    if (noteElement) {
+      const noteId = noteElement.dataset.noteId;
+      const status = noteElement.dataset.status || '';
+      
+      // Your note click handling logic here
+      console.log('Note clicked:', { noteId, status });
+      
+      // Update status logic
+      const newStatus = cycleStatus(status);
+      await updateNoteStatus(noteId, newStatus);
+      
+      // Refresh the display
+      await displayNotes();
+      return;
+    }
+    
+    // Handle pagination clicks
+    const pageButton = event.target.closest('[data-page-action]');
+    if (pageButton) {
+      const action = pageButton.dataset.pageAction;
+      const currentPage = parseInt(pageButton.dataset.currentPage);
+      const totalCount = parseInt(pageButton.dataset.totalCount);
+      
+      changePage(currentPage, totalCount, action);
+      return;
+    }
+  });
+}
+
+
+/*
 import{ saveNoteWithTags }from '../db/saveNoteWithTags.js';
 console.log('setupNoteslisteners.js');
 export function setupNotesListeners() {
@@ -40,4 +94,4 @@ export function setupNotesPanelListener() {
       return;
     }
   });
-}
+}*/
