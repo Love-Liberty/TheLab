@@ -1,7 +1,7 @@
 //setupNotesListeners.js
   console.log("setUpNotesListeners.js");
 
-import { reactToSaveButton } from './reactToSaveButton.js';
+import { reactToSaveButton } from './reactToSaveNoteButton.js';
 
 // copy pasted setupNotesListeners() from db/notes.js 16:38 15 Aug - and may god have mercy on my soul
 export function setupNotesListeners() {
