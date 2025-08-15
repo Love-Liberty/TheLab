@@ -5,7 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>21:40-Aug14 The Lab</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js">
+import { changePage } from './ui/changePage.js';
+
+// Make changePage available globally for onclick handlers
+window.changePage = changePage;
+</script>
 </head>
 <style>
   .side-panel {
