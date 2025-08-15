@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>collectUserChoices.js</title>
+  <style>/* shared styles omitted for brevity */</style>
+</head>
+<body>
+  <h1>🏷️ collectUserChoices.js</h1>
+  <p>Parses checked inputs from the tag UI and returns selected values.</p>
+
+  <h2>Suggested Implementation</h2>
+  <pre><code>
+export function collectUserChoices() {
+  const tags = new Set();
+  const inputs = document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
+  inputs.forEach(input => tags.add(input.value));
+  return tags;
+}
+  </code></pre>
+
+  <h2>Notes</h2>
+  <ul>
+    <li>Supports multiple tag groups</li>
+    <li>Returns a flat <code>Set</code> of tag values</li>
+    <li>Could be extended to preserve tag categories</li>
+  </ul>
+</body>
+</html>
