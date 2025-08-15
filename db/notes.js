@@ -122,7 +122,7 @@ function getIconHTML(status) {
   }
 }
 
-export function renderNotes(notes, totalCount, page) {
+export function renderNotes(notes, totalCount, page, pageSize) {
   const output = document.getElementById('output');
   
   const notesHtml = notes.map(note => {
