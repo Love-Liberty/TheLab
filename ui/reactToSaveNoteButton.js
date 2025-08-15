@@ -1,6 +1,11 @@
 //reactToSaveButton.js
-
 console.log('reactToSaveButton.js');
+
+import { collectUserChoices } from './collectUserChoices'.js;
+import { saveNoteWithTags } from '.,/db/saveNoteWithTags'.js;
+import { createSupabaseClient } from '.,/db/client.js;
+
+const supabase = createSupabaseClient();
 
 export async function reactToSaveButton(){
  console.log('reactToSaveButton()');
