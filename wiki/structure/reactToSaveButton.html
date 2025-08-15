@@ -2,19 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>reactToSaveButton.js</title>
-  <style>/* shared styles omitted for brevity */</style>
+  <title>reactToSaveButton.html – Validate and Save Notes</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2em; background: #f9f9f9; color: #333; }
+    h1 { font-size: 1.6em; margin-bottom: 0.5em; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 2em; }
+    th, td { border: 1px solid #ccc; padding: 0.6em; text-align: left; }
+    th { background-color: #eee; }
+    .section { margin-bottom: 2em; }
+  </style>
 </head>
 <body>
-  <h1>💾 reactToSaveButton.js</h1>
-  <p>Handles note saving: validates input, collects tags, and triggers cleanup.</p>
+  <h1>✅ reactToSaveButton.html</h1>
+  <div class="section">
+    <p>This file defines the behavior when the user clicks the Save button. It validates input, triggers note saving, and provides feedback. It acts as a bridge between UI and database logic.</p>
+  </div>
 
-  <h2>Workflow</h2>
-  <ol>
-    <li>Get note content from textarea</li>
-    <li>Call <code>collectUserChoices()</code></li>
-    <li>Call <code>saveNoteWithTags()</code></li>
-    <li>Call <code>cleanupPage()</code> (placeholder)</li>
-  </ol>
+  <div class="section">
+    <h2>🔍 Summary</h2>
+    <table>
+      <tr><th>Purpose</th><td>Validate note input and trigger save logic</td></tr>
+      <tr><th>Inputs</th><td>Note content, selected tags, Save button click</td></tr>
+      <tr><th>Outputs</th><td>Saved note record, user feedback</td></tr>
+      <tr><th>Dependencies</th><td>saveNoteWithTags, DOM elements, validation logic</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>🧠 Design Notes</h2>
+    <ul>
+      <li>Separates validation from saving for clarity</li>
+      <li>Can be extended to support autosave or draft mode</li>
+      <li>Should provide clear feedback on success or failure</li>
+    </ul>
+  </div>
 </body>
 </html>
