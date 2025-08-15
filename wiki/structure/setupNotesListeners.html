@@ -2,18 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>setupNotesListeners.js</title>
-  <style>/* shared styles omitted for brevity */</style>
+  <title>setupNotesListeners.html – Attach UI Event Listeners</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2em; background: #f9f9f9; color: #333; }
+    h1 { font-size: 1.6em; margin-bottom: 0.5em; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 2em; }
+    th, td { border: 1px solid #ccc; padding: 0.6em; text-align: left; }
+    th { background-color: #eee; }
+    .section { margin-bottom: 2em; }
+  </style>
 </head>
 <body>
-  <h1>🧷 setupNotesListeners.js</h1>
-  <p>Attaches listeners to the Notes panel and delegates save button logic.</p>
+  <h1>🎧 setupNotesListeners.html</h1>
+  <div class="section">
+    <p>This file attaches event listeners to key UI elements in the Notes panel — such as save buttons, tag selectors, and note inputs. It ensures that user interactions trigger the correct logic.</p>
+  </div>
 
-  <h2>Highlights</h2>
-  <ul>
-    <li>Targets <code>#notes-panel</code></li>
-    <li>Delegates to <code>reactToSaveButton()</code></li>
-    <li>Legacy code is commented and ready for removal</li>
-  </ul>
+  <div class="section">
+    <h2>🔍 Summary</h2>
+    <table>
+      <tr><th>Purpose</th><td>Attach event listeners to Notes UI elements</td></tr>
+      <tr><th>Inputs</th><td>DOM elements (buttons, inputs, tag containers)</td></tr>
+      <tr><th>Outputs</th><td>Responsive UI behavior on user interaction</td></tr>
+      <tr><th>Dependencies</th><td>Event handler functions, DOM structure</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>🧠 Design Notes</h2>
+    <ul>
+      <li>Centralizes listener setup for maintainability</li>
+      <li>Can be extended to support dynamic element creation</li>
+      <li>Should be called once after DOM is fully loaded</li>
+    </ul>
+  </div>
 </body>
 </html>
