@@ -106,7 +106,7 @@ export async function fetchNotes(supabase, page = 1, pageSize = 10) {
   return { notes: data, totalCount: count };
 }
 
-// Add this function to your JavaScript file
+
 function getIconHTML(status) {
   console.log("getIconHTML()");
   switch(status) {
@@ -123,7 +123,7 @@ function getIconHTML(status) {
   }
 }
 
-function renderNotes(notes, totalCount, page, pageSize) {
+export function renderNotes(notes, totalCount, page, pageSize) {
   const output = document.getElementById('output');
   
   const notesHtml = notes.map(note => {
