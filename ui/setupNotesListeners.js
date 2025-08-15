@@ -1,3 +1,8 @@
+//setupNotesListeners.js
+  console.log("setUpNotesListeners.js");
+
+import { reactToSaveButton } from './reactToSaveButton.js';
+
 // copy pasted setupNotesListeners() from db/notes.js 16:38 15 Aug - and may god have mercy on my soul
 export function setupNotesListeners() {
   console.log("setUpNotesListeners()");
@@ -8,6 +13,10 @@ export function setupNotesListeners() {
   notesPanel.addEventListener('click', async (event) => {
     console.log("notesPanel.addEventListener()");
     if (event.target.id === 'save-notes') {
+
+reactToSaveButton()
+
+ /*     
       const noteContent = document.getElementById('note-content')?.value.trim();
       if (!noteContent) {
         console.log('✗ Note content is empty');
@@ -31,7 +40,7 @@ export function setupNotesListeners() {
         console.log('❌ Note save failed');
       }
     }
-  });
+  }); */
 }
 
 
