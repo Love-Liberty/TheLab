@@ -2,26 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>handleNoteClick.js & reactToNotesPageLoad.js</title>
-  <style>/* shared styles omitted for brevity */</style>
+  <title>noteClick-reactNotesLoad.html – Note Click and Page Load Logic</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2em; background: #f9f9f9; color: #333; }
+    h1 { font-size: 1.6em; margin-bottom: 0.5em; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 2em; }
+    th, td { border: 1px solid #ccc; padding: 0.6em; text-align: left; }
+    th { background-color: #eee; }
+    .section { margin-bottom: 2em; }
+  </style>
 </head>
 <body>
-  <h1>🧪 Placeholder Functions</h1>
+  <h1>🖱️ noteClick-reactNotesLoad.html</h1>
+  <div class="section">
+    <p>This file handles user interactions with notes — specifically, clicking a note to load its content and tags. It also manages page load behavior to ensure the correct note is displayed when arriving from another view.</p>
+  </div>
 
-  <h2>handleNoteClick.js</h2>
-  <p>Intended to respond to clicks on rendered notes.</p>
-  <ul>
-    <li>Will likely update note status</li>
-    <li>May trigger <code>displayNotes()</code> to refresh UI</li>
-  </ul>
+  <div class="section">
+    <h2>🔍 Summary</h2>
+    <table>
+      <tr><th>Purpose</th><td>Respond to note clicks and load note data on page entry</td></tr>
+      <tr><th>Inputs</th><td>Note ID from click event or URL parameter</td></tr>
+      <tr><th>Outputs</th><td>Populated note editor with content and tags</td></tr>
+      <tr><th>Dependencies</th><td>Supabase client, DOM elements, tag rendering logic</td></tr>
+    </table>
+  </div>
 
-  <h2>reactToNotesPageLoad.js</h2>
-  <p>Intended to initialize the Notes panel on page load.</p>
-  <ul>
-    <li>Could call <code>displayNotes()</code> or set up filters</li>
-    <li>May be triggered by <code>loadPage('notes')</code></li>
-  </ul>
-
-  <div class="note">Both functions are placeholders and ready for implementation.</div>
+  <div class="section">
+    <h2>🧠 Design Notes</h2>
+    <ul>
+      <li>Supports both direct clicks and deep-linking via query parameters</li>
+      <li>Decouples note loading from UI rendering for modularity</li>
+      <li>Can be extended to support animations or loading indicators</li>
+    </ul>
+  </div>
 </body>
 </html>
