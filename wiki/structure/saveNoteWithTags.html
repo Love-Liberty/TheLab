@@ -2,20 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>saveNoteWithTags.js</title>
-  <style>/* shared styles omitted for brevity */</style>
+  <title>saveNoteWithTags.html – Save Notes and Link Tags</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2em; background: #f9f9f9; color: #333; }
+    h1 { font-size: 1.6em; margin-bottom: 0.5em; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 2em; }
+    th, td { border: 1px solid #ccc; padding: 0.6em; text-align: left; }
+    th { background-color: #eee; }
+    .section { margin-bottom: 2em; }
+  </style>
 </head>
 <body>
-  <h1>📝 saveNoteWithTags.js</h1>
-  <p>Inserts note into Supabase and links tags.</p>
+  <h1>💾 saveNoteWithTags.html</h1>
+  <div class="section">
+    <p>This file handles the insertion of a new note into the database and links it to selected tags. It ensures relational integrity between notes and tags via a junction table.</p>
+  </div>
 
-  <h2>Payload</h2>
-  <pre><code>{ title, content, tags, author_id }</code></pre>
+  <div class="section">
+    <h2>🔍 Summary</h2>
+    <table>
+      <tr><th>Purpose</th><td>Insert note and associate it with tags</td></tr>
+      <tr><th>Inputs</th><td>Note content, selected tag IDs</td></tr>
+      <tr><th>Outputs</th><td>New note record, tag-link records</td></tr>
+      <tr><th>Dependencies</th><td>Supabase client, notes and tag_links tables</td></tr>
+    </table>
+  </div>
 
-  <h2>Steps</h2>
-  <ul>
-    <li>Insert note</li>
-    <li>Call <code>tagNoteByNames()</code></li>
-  </ul>
+  <div class="section">
+    <h2>🧠 Design Notes</h2>
+    <ul>
+      <li>Uses a junction table to support many-to-many relationships</li>
+      <li>Handles async insertion and linking in sequence</li>
+      <li>Can be extended to support tag weights or priorities</li>
+    </ul>
+  </div>
 </body>
 </html>
