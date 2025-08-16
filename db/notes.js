@@ -3,7 +3,7 @@ console.log('notes.js');
 // [save/send] button handler (new 14:03 12 Aug)
 import { collectUserChoices } from '../ui/collectUserChoices.js';
 import { saveNoteWithTags } from './saveNoteWithTags.js';
-import { createSupabaseClient } from './client.js';
+import { createSupabaseClient } from '../db/client.js';
 import { changePage } from '../ui/changePage.js';
 
 const supabase = createSupabaseClient();
