@@ -13,6 +13,30 @@ const statusMap = {
 const debounceTimers = new Map();
 
 function findNextStatus(currentStatus) {
+  // Treat undefined, null, or empty string as "unclassified"
+  if (currentStatus === undefined || currentStatus === null || currentStatus === '') {
+    currentStatus = 6;
+  }
+
+  // Normalize stringified numbers
+  if (!isNaN(currentStatus)) {
+    currentStatus = Number(currentStatus);
+  }
+
+  switch (currentStatus) {
+    case 6: return 9;
+    case 9: return 7;
+    case 7: return 8;
+    case 8: return 'No status';
+    case 'No status': return 6;
+    default: return 6; // fallback for anything unexpected
+  }
+}
+
+
+
+/*
+function findNextStatus(currentStatus) {
 
     // Normalize to number if it's numeric. added 19:20 16 Aug. Suspect it is a string '6' etc
 if (!isNaN(currentStatus) && currentStatus !== '') {
@@ -34,7 +58,7 @@ if (!isNaN(currentStatus) && currentStatus !== '') {
     }// end switch
   }// end if
 }//end of func
-
+*/
 function getIconFromStatus(status) {
     if (statusMap[status]) {
         return statusMap[status].icon;
