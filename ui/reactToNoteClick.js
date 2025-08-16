@@ -51,8 +51,9 @@ export async function reactToNoteClick(noteId) {
         return;
     }
     
-    const currentStatus = noteElement.dataset.notesStatus;
-    if (!currentStatus) {
+// Get status from the status bar element
+const currentStatus = statusBar.dataset.notesStatus;
+        if (!currentStatus) {
         console.error(`Note status not found`);
         return;
     }
