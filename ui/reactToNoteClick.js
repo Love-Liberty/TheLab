@@ -79,7 +79,7 @@ console.log('statusBar.dataset.notesStatus:', statusBar.dataset.notesStatus);
     }
 
     // Update the data attribute
-    noteElement.dataset.status = nextStatus;
+    statusBar.dataset.status = nextStatus;
     
     // Update the UI
     statusBar.innerHTML = `
