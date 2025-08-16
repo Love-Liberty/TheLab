@@ -50,8 +50,8 @@ export async function reactToNoteClick(noteId) {
         console.error(`Status bar not found for note ${noteId}`);
         return;
     }
-
-    const currentStatus = noteElement.dataset.status;
+    
+    const currentStatus = noteElement.dataset.notesStatus;
     if (!currentStatus) {
         console.error(`Note status not found`);
         return;
