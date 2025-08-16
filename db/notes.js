@@ -108,17 +108,17 @@ export function renderNotes(notes, totalCount, page, pageSize) {
     const statusText = statusAttr || 'No status';
 
     return `
-      <div class="mb-3" data-note-id="${note.id}" data-status="${statusAttr}">
-        <div class="bg-white p-4 rounded-lg border ${statusClass} hover:shadow-sm transition-all cursor-pointer group"
-             data-note-id="${note.id}">
-          
-          <!-- Status bar - top center -->
-          <div class="flex items-center justify-center mb-3 py-1 bg-gray-50 rounded text-xs font-medium text-gray-600">
-            <span>Status: ${statusText}</span>
-            ${iconHTML ? `<span class="ml-2">${iconHTML}</span>` : ''}
-            <span class="mx-2">•</span>
-            <span>Click anywhere to cycle through status choices</span>
-          </div>
+        <div class="mb-3" data-note-id="${note.id}" data-status="${statusAttr}">
+    <div class="bg-white p-4 rounded-lg border ${statusClass} hover:shadow-sm transition-all cursor-pointer group"
+         data-note-id="${note.id}">
+      
+      <!-- Status bar - top center -->
+      <div class="status-bar flex items-center justify-center mb-3 py-1 bg-gray-50 rounded text-xs font-medium text-gray-600">
+        <span>Status: ${statusText}</span>
+        ${iconHTML ? `<span class="ml-2">${iconHTML}</span>` : ''}
+        <span class="mx-2">•</span>
+        <span>Click anywhere to cycle through status choices</span>
+      </div>
           
           <!-- Note content -->
           <div class="space-y-2 text-sm text-gray-800">
