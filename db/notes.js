@@ -147,7 +147,7 @@ console.log('Rendering note:', {
             </p>
             <p class="flex">
               <span class="font-medium w-20 pt-1">Content:</span>
-              <span class="text-gray-700 flex-1">${shortContent}</span>
+        //      <span class="text-gray-700 flex-1">${shortContent}</span>
             </p>
           </div>
         </div>
