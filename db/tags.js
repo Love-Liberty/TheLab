@@ -89,20 +89,4 @@ export async function tagNoteByNames(noteId, tagNames = []) {
 }
 
 
-/**
- * Tags a note using category names by looking up their IDs.
- * @param {string} noteId
- * @param {string[]} categoryNames
- */
 
-/*
-export async function tagNoteByNames(noteId, categoryNames) {
-  console.log('tagsNotesByName() noteId:',noteId,'names:' ,categoryNames);
-  const categoryMap = await readCategoryMap();
-  const categoryIds = categoryNames
-    .map(name => categoryMap.get(name))
-    .filter(Boolean);
-console.log('calling linkNoteToCategories() with noteId:',noteId,'ids:', categoryIds);
-  await linkNoteToCategories(noteId, categoryIds);
-}
-*/
