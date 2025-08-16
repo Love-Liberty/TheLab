@@ -76,9 +76,9 @@ function getIconHTML(status) {
     case 6:
       return '<span class="text-green-600 font-semibold">?</span>';
     case 7:
-      return '<span class="text-green-600">✅</span>';
-    case 8:
       return '<span class="text-red-600 font-semibold">?</span>';
+    case 8:
+      return '<span class="text-green-600">✅</span>';
     case 9:
       return '<span class="text-red-600">❌</span>';
     default:
