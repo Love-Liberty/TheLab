@@ -21,15 +21,5 @@ export function setupNotesListeners() {
     await reactToNoteClick(noteId); return;
   }
 
-    }
-  }); 
+    }); 
 }
-
-
-
-
-
-
-
-
-
