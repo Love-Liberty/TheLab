@@ -3,14 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>21:40-Aug14 The Lab</title>
+  <title>15:40-Aug16 The Lab</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js">
-//import { changePage } from './ui/changePage.js';
-
-// Make changePage available globally for onclick handlers
-//window.changePage = changePage;
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <style>
   .side-panel {
@@ -29,6 +24,7 @@
     transition: all 0.3s ease;
   }
 </style>
+  
 <body class="flex h-screen bg-gray-50">
   <script>console.log("flexload.html");</script>
   <div id="app" class="flex w-full h-full">
@@ -67,14 +63,16 @@
     <div class="main-container" id="main-container">
       <!-- Notes Panel (always visible with full width) -->
       <div class="notes-panel bg-amber-50 p-8" id="notes-panel">
-        <!-- Content will be loaded here -->
+        
+        <!-- Content will be loaded in this div "notes-panel" -->
+      
       </div>
     </div>
   </div>
 
 <script type="module">
 import { setupNotesListeners } from "./ui/setupNotesListeners.js";
-//import { setupNotesPanelListeners } from "./ui/setupNotesListeners.js";
+
 import { renderNotes } from "./db/notes.js";  
 import { displayNotes } from "./ui/displayNotes.js";  
 
@@ -88,7 +86,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   
   // Set up the listeners after the page is loaded
   setupNotesListeners();
- //  setupNotesPanelListener(); //new 15:04 15 Aug - removed 17:17 15 Aug it is in the new setupNotesListeners()
+
   await displayNotes(); //new file 19:15 aug 14 to call fetchnotes()
   
   // Set up navigation
