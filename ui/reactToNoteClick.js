@@ -1,9 +1,9 @@
 //reactToNoteClick.js
 //response to click on a note in the rendered list of published notes
-console.log('handleNoteClick.js');
+console.log('ui/reactToNoteClick.js');
 
 export async function reactToNoteClick(){
-console.log('handleNoteClick()');
+console.log('reactToNoteClick()');
   
 }
 //there is a write to db function in db/notes.js
