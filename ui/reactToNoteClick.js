@@ -2,7 +2,7 @@
 // response to click on a note in the rendered list of published notes
 console.log('ui/reactToNoteClick.js');
 
-import { createSupabaseClient } from './client.js';
+import { createSupabaseClient } from '../db/client.js';
 
 // Status mapping and cycle logic
 const statusMap = {
