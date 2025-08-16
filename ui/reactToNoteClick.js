@@ -13,6 +13,32 @@ const statusMap = {
 const debounceTimers = new Map();
 
 function findNextStatus(currentStatus) {
+  if (currentStatus === 'No status') {
+    return 6;
+  }
+
+  if (currentStatus === undefined || currentStatus === null || currentStatus === '') {
+    return 6; // ← return early instead of assigning
+  }
+
+  if (!isNaN(currentStatus)) {
+    currentStatus = Number(currentStatus);
+  }
+
+  switch (currentStatus) {
+    case 6: return 9;
+    case 9: return 7;
+    case 7: return 8;
+    case 8: return 'No status';
+    default: return 6;
+  }
+}
+
+
+
+
+/*
+function findNextStatus(currentStatus) {
   // Treat undefined, null, or empty string as "unclassified"
   if (currentStatus === undefined || currentStatus === null || currentStatus === '') {
     currentStatus = 6;
@@ -31,7 +57,7 @@ function findNextStatus(currentStatus) {
     case 'No status': return 6;
     default: return 6; // fallback for anything unexpected
   }
-}
+}*/
 
 
 
