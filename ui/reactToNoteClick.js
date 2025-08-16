@@ -13,6 +13,11 @@ const statusMap = {
 const debounceTimers = new Map();
 
 function findNextStatus(currentStatus) {
+
+    // Normalize to number if it's numeric. added 19:20 16 Aug. Suspect it is a string '6' etc
+if (!isNaN(currentStatus) && currentStatus !== '') {
+  currentStatus = Number(currentStatus);
+    
     switch(currentStatus) {
         case 6:
             return 9;
@@ -55,7 +60,7 @@ export async function reactToNoteClick(noteId) {
 const currentStatus = statusBar.dataset.notesStatus;
 //        if (!currentStatus) {
 //        console.error(`Note status not found`);
-  //      return;
+  //      return;  // this fails because status seems to be '' initially
   //  }
 
 console.log(`Reading status for note ${noteId}`);
