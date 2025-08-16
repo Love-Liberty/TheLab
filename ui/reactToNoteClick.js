@@ -18,26 +18,33 @@ export async function reactToNoteClick(noteId) {
         return;
     }
     
-    const icon = noteElement.querySelector('.status-icon');
-    if (!icon) {
-        console.error(`Status icon not found for note ${noteId}`);
-        return;
-    }
+    // Get the current status from the data attribute (this is the source of truth)
+    const currentStatus = noteElement.dataset.status;
     
-    // Handle null status (convert to string for dataset)
-    const currentStatus = icon.dataset.status === 'null' ? null : parseInt(icon.dataset.status, 10);
+    // Define the status cycle using the actual values we use in the system
+    const statusCycle = [null, 6, 9, 7, 8]; // null for "No status"
+    
+    // Convert current status to proper type for comparison
+    const currentStatusValue = currentStatus === 'null' ? null : parseInt(currentStatus, 10);
     
     // Find the next status in the cycle
-    const currentIndex = statusCycle.indexOf(currentStatus);
+    const currentIndex = statusCycle.indexOf(currentStatusValue);
     const nextIndex = (currentIndex + 1) % statusCycle.length;
     const nextStatus = statusCycle[nextIndex];
     
-    // Update the icon's display immediately
-    const nextStatusInfo = statusMap[nextStatus];
-    icon.textContent = nextStatusInfo.icon;
-    icon.className = `status-icon ${nextStatusInfo.color}`;
-    icon.dataset.status = nextStatus; // Store as actual value (null or number)
-    icon.title = nextStatusInfo.label;
+    // Update the status bar text
+    const statusBar = noteElement.querySelector('.status-bar');
+    if (statusBar) {
+        const statusText = nextStatus === null ? 'No status' : nextStatus;
+        statusBar.innerHTML = `
+            <span>Status: ${statusText}</span>
+            <span class="mx-2">•</span>
+            <span>Click anywhere to cycle through status choices</span>
+        `;
+    }
+    
+    // Update the data attribute to reflect the new status
+    noteElement.dataset.status = nextStatus;
     
     // Clear any existing timer for this note
     if (debounceTimers.has(noteId)) {
