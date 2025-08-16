@@ -5,9 +5,9 @@ import { createSupabaseClient } from '../db/client.js';
 
 const statusMap = {
     6: { label: 'Pending (Complete)', icon: '❓', color: 'text-green-500' },
-    9: { label: 'Completed', icon: '✅', color: 'text-green-500' },
+    9: { label: 'Abandoned', icon: '❌', color: 'text-red-500' },
     7: { label: 'Pending (Abandon)', icon: '❓', color: 'text-red-500' },
-    8: { label: 'Abandoned', icon: '❌', color: 'text-red-500' }
+    8: { label: 'Completed', icon: '✅', color: 'text-green-500' }
 };
 
 const debounceTimers = new Map();
