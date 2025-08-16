@@ -46,17 +46,23 @@ export async function reactToNoteClick(noteId) {
     }
 
     const statusBar = noteElement.querySelector('.status-bar');
-    if (!statusBar) {
+   if (!statusBar) {
         console.error(`Status bar not found for note ${noteId}`);
         return;
     }
     
 // Get status from the status bar element
 const currentStatus = statusBar.dataset.notesStatus;
-        if (!currentStatus) {
-        console.error(`Note status not found`);
-        return;
-    }
+//        if (!currentStatus) {
+//        console.error(`Note status not found`);
+  //      return;
+  //  }
+
+console.log(`Reading status for note ${noteId}`);
+console.log('statusBar element:', statusBar);
+console.log('statusBar.dataset:', statusBar.dataset);
+console.log('statusBar.dataset.notesStatus:', statusBar.dataset.notesStatus);
+
     
     console.log('currentStatus:', currentStatus);
     
