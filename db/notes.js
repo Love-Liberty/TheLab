@@ -115,6 +115,14 @@ export function renderNotes(notes, totalCount, page, pageSize) {
     const statusClass = statusClasses[statusAttr] || 'bg-white border-gray-200';
     const statusText = statusAttr || 'No status';
 
+console.log('Rendering note:', {
+  id: note.id,
+  rawStatus: note.status,
+  statusAttr: statusAttr,
+  statusText: statusText
+});
+
+    
     return `
         <div class="mb-3" data-note-id="${note.id}" data-status="${statusAttr}">
     <div class="bg-white p-4 rounded-lg border ${statusClass} hover:shadow-sm transition-all cursor-pointer group"
