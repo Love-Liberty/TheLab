@@ -91,9 +91,17 @@ export function renderNotes(notes, totalCount, page, pageSize) {
   
   const notesHtml = notes.map(note => {
     const content = note.content || '';
+  
+   const shortContent = content.length > 200
+  ? `${content.slice(0, 200)}<span class="text-blue-600 cursor-pointer hover:text-blue-800 toggle-content"> [more]</span><span class="hidden extra-content">${content.slice(200)} <span class="text-blue-600 cursor-pointer hover:text-blue-800 toggle-content"> [less]</span></span>`
+  : content;
+ 
+    
+    /* 
     const shortContent = content.length > 200
   ? `${content.slice(0, 200)} <span class="text-blue-600 cursor-pointer hover:text-blue-800 toggle-content">[more]</span><span class="hidden">${content.slice(200)}</span>`
   : content;
+  */  
     const iconHTML = getIconHTML(note.status);
     const statusAttr = note.status ?? '';
     
