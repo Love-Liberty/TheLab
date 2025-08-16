@@ -18,7 +18,7 @@ const statusCycle = [null, 6, 9, 7, 8];
 const debounceTimers = new Map();
 
 export async function reactToNoteClick(noteId) {
-    console.log(`reactToNoteClick(${noteId})`);
+    console.log(`reactToNoteClick(${noteId})`); //noteId is type: uuid
     
     const noteElement = document.querySelector(`[data-note-id="${noteId}"]`);
     if (!noteElement) {
@@ -29,7 +29,7 @@ export async function reactToNoteClick(noteId) {
     // Get the current status from the data attribute
     const currentStatus = noteElement.dataset.status;
     const currentStatusValue = currentStatus === 'null' ? null : parseInt(currentStatus, 10);
-    
+console.log('currentStatusValue:',currentStatusValue) ;
     // Find the next status in the cycle
     const currentIndex = statusCycle.indexOf(currentStatusValue);
     const nextIndex = (currentIndex + 1) % statusCycle.length;
@@ -39,6 +39,8 @@ export async function reactToNoteClick(noteId) {
     const statusBar = noteElement.querySelector('.status-bar');
     if (statusBar) {
         const statusText = nextStatus === null ? 'No status' : nextStatus;
+console.log('statusText:',statusText) ;
+        
         statusBar.innerHTML = `
             <span>Status: ${statusText}</span>
             <span class="mx-2">•</span>
@@ -65,7 +67,7 @@ export async function reactToNoteClick(noteId) {
 }
 
 export async function saveNoteStatus(supabase, noteId, newStatus) {
-    console.log("saveNoteStatus()");
+    console.log("saveNoteStatus()" ,newStatus);
     const { data, error } = await supabase
         .from('notes')
         .update({ status: newStatus })
