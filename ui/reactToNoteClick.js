@@ -31,8 +31,9 @@ if (!isNaN(currentStatus) && currentStatus !== '') {
             return 6;
         default:
             return 6;
-    }
-}
+    }// end switch
+  }// end if
+}//end of func
 
 function getIconFromStatus(status) {
     if (statusMap[status]) {
