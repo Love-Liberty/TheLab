@@ -113,7 +113,7 @@ export function renderNotes(notes, totalCount, page, pageSize) {
          data-note-id="${note.id}">
       
       <!-- Status bar - top center -->
-      <div class="status-bar flex items-center justify-center mb-3 py-1 bg-gray-50 rounded text-xs font-medium text-gray-600" data-notes-status="${statusAttr}>
+      <div data-notes-status="${statusAttr}" class="status-bar flex items-center justify-center mb-3 py-1 bg-gray-50 rounded text-xs font-medium text-gray-600" >
         <span>Status: ${statusText}</span>
         ${iconHTML ? `<span class="ml-2">${iconHTML}</span>` : ''}
         <span class="mx-2">•</span>
