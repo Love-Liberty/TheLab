@@ -1,6 +1,6 @@
 //changePage.js
 //response to click on the [older] or [Newer] page buttons on the rendered list of published notes. Calls for the next page of notes to be rendered
-console.log('changePage.js');
+console.log('ui/reactToPageButton.js');
 
 import { displayNotes } from './displayNotes.js';
 
@@ -22,6 +22,8 @@ export async function reactToPageButton(direction) {
     return;
   }
 
+console.log('newPage:', newPage, ' currentPge:', currentPage);
+  
   // Trigger display — which will fetch and re-render
   await displayNotes(newPage);
   // renderNotes() will update buttons based on new state
