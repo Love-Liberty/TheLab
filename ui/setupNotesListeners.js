@@ -32,7 +32,7 @@ export function setupNotesListeners() {
     }
 
     // ✅ Pagination: Older / Newer
-    button = target.closest('[data-page-action="older"]');
+    button = target.closest('[data-page-action]');
     if (button) {
       event.preventDefault();
       const direction = button.dataset.pageAction;
@@ -40,14 +40,6 @@ export function setupNotesListeners() {
       return;
     }
 
-       // ✅ Pagination: Older / Newer
-    button = target.closest('[data-page-action]="newer"');
-    if (button) {
-      event.preventDefault();
-      const direction = button.dataset.pageAction;
-      await reactToPageButton(direction);
-      return;
-    }
 
     // ✅ Note card click
     button = target.closest('[data-note-id]');
