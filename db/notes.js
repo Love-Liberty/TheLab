@@ -158,7 +158,7 @@ console.log('Rendering note:', {
   const totalPages = Math.ceil(totalCount / pageSize);
   const controls = `
     <div class="flex items-center justify-between mt-6 pt-4 border-t border-gray-200">
-      <button data-page-action="Newer" data-current-page="${page}" data-total-count="${totalCount}"
+      <button data-page-action="newer" data-current-page="${page}" data-total-count="${totalCount}"
               class="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               ${page === 1 ? 'disabled' : ''}>
          Newer
@@ -166,7 +166,7 @@ console.log('Rendering note:', {
       <span class="text-sm text-gray-600">
         Page ${page} of ${totalPages} (${totalCount} total notes)
       </span>
-      <button data-page-action="Older" data-current-page="${page}" data-total-count="${totalCount}"
+      <button data-page-action="older" data-current-page="${page}" data-total-count="${totalCount}"
               class="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               ${page === totalPages ? 'disabled' : ''}>
         Older 
