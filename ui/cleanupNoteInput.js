@@ -8,7 +8,7 @@ console.log('cleanupNoteInput()');
 
 const note = document.getElementById('note-content');
 note.value = "";
-note.placeholder = "Saved";
+note.placeholder = "Cleared";
 
 setTimeout(() => {
   note.placeholder = "Enter your notes here & press [Save/send]... (Use the checkboxes to tag your note for later search & retrieval ) The saved notes can be seen by scrolling down. When you look at saved notes you can click them to mark them as pending, completed or abandonded.";
