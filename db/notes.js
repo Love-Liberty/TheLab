@@ -4,7 +4,7 @@ console.log('notes.js');
 import { collectUserChoices } from '../ui/collectUserChoices.js';
 import { saveNoteWithTags } from './saveNoteWithTags.js';
 import { createSupabaseClient } from '../db/client.js';
-import { changePage } from '../ui/changePage.js';
+//import { reactToPageButton } from '../ui/reactToPageButton.js';
 
 const supabase = createSupabaseClient();
 
