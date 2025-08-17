@@ -129,6 +129,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   
   // Function to load a page
   async function loadPage(pageName, container = notesPanel) {
+    console.log('loadPage() - in flexload');
     try {
       // Don't reload if it's already the current page
       if (container.dataset.currentPage === pageName) {
