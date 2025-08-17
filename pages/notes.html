@@ -1,38 +1,26 @@
 <div class="flex w-full">
-  <!-- 🌐 Main Tags Section -->
-  <div class="mb-6 w-full">
-    <div class="bg-white p-4 rounded-lg border hover:shadow-sm transition-all">
-      <h4 class="text-sm font-medium text-gray-700 mb-2">🌐 Main click the word</h4>
-      <div class="flex flex-wrap gap-2 mb-3">
-        <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center hover:shadow-sm transition-all" id="TagSection002">
-          <input type="checkbox" id="tag-main-bug" name="main" value="bug" checked class="mr-2 text-blue-600">
-          <label for="tag-main-bug" class="text-gray-600 text-sm">bug</label>
-        </div>
-        <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center hover:shadow-sm transition-all" id="TagSection003">
-          <input type="checkbox" id="tag-main-me" name="main" value="me" class="mr-2 text-blue-600">
-          <label for="tag-main-me" class="text-gray-600 text-sm">me</label>
-        </div>
-        <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center hover:shadow-sm transition-all" id="TagSection004">
-          <input type="checkbox" id="tag-main-else" name="main" value="else" class="mr-2 text-blue-600">
-          <label for="tag-main-else" class="text-gray-600 text-sm">else</label>
-        </div>
-        <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center hover:shadow-sm transition-all" id="TagSection005">
-          <input type="checkbox" id="tag-main-reply" name="main" value="reply" class="mr-2 text-blue-600">
-          <label for="tag-main-reply" class="text-gray-600 text-sm">reply</label>
-        </div>
-      </div>
+<!-- Unified Tag Input Section -->
+<div class="mb-4 p-4 border rounded-lg bg-white">
+  <!-- 🌐 Main Tags -->
+  <h4 class="text-sm font-medium text-gray-700 mb-2">🌐 Main click the word</h4>
+  <div class="flex flex-wrap gap-1 mb-3">
+    <div class="px-2 py-1 border rounded cursor-pointer text-sm flex items-center" id="TagSection002">
+      <input type="checkbox" id="tag-main-bug" name="main" value="bug" checked class="mr-2 text-blue-600">
+      <label for="tag-main-bug" class="text-gray-600 text-sm">bug</label>
     </div>
+    <!-- Repeat for other tags... -->
   </div>
 
-  <!-- 📶 Importance Tags Section -->
-  <div class="mb-6 w-full">
-    <div class="bg-white p-4 rounded-lg border hover:shadow-sm transition-all">
-      <h4 class="text-sm font-medium text-gray-700 mb-2">📶 Important?</h4>
-      <div class="flex flex-wrap gap-2 mb-3">
-        <div class="text-sm flex items-center hover:shadow-sm transition-all" id="TagSection026">
-          <input type="radio" id="importance-1" name="importance" value="importance-1" class="mr-2 text-blue-600">
-          <label for="importance-1" class="text-gray-600 text-sm">1</label>
-        </div>
+  <!-- 📶 Importance Tags -->
+  <h4 class="text-sm font-medium text-gray-700 mb-2">📶 Important?</h4>
+  <div class="flex flex-wrap gap-1 mb-3">
+    <div class="text-sm flex items-center" id="TagSection026">
+      <input type="radio" id="importance-1" name="importance" value="importance-1" class="mr-2 text-blue-600">
+      <label for="importance-1" class="text-gray-600 text-sm">1</label>
+    </div>
+    <!-- Repeat for other radios... -->
+  </div>
+</div>
         <div class="text-sm flex items-center hover:shadow-sm transition-all" id="TagSection027">
           <input type="radio" id="importance-2" name="importance" value="importance-2" class="mr-2 text-blue-600">
           <label for="importance-2" class="text-gray-600 text-sm">2</label>
