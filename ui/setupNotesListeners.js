@@ -1,8 +1,11 @@
 // setupNotesListeners.js
 console.log("setupNotesListeners.js");
 
+import { reactToClearAllButton } from './reactToClearAllButton.js';
 import { reactToSaveButton } from './reactToSaveNoteButton.js';
+import { reactToPageButton } from './reactToPageButton.js';
 import { reactToNoteClick } from './reactToNoteClick.js';
+
 
 //newer data based rather than id based
 
@@ -14,6 +17,16 @@ export function setupNotesListeners() {
   notesPanel.addEventListener('click', async (event) => {
     const target = event.target;
 
+
+    // ✅ Clear All button
+    const saveBtn = target.closest('[data-action="clear-all"]');
+    if (saveBtn) {
+      event.preventDefault();
+      await reactToClearAllButton();
+      return;
+    }
+
+    
     // ✅ Save button
     const saveBtn = target.closest('[data-action="save-note"]');
     if (saveBtn) {
@@ -22,14 +35,15 @@ export function setupNotesListeners() {
       return;
     }
 
+    
     // ✅ Changing page
   const paginationBtn = target.closest('[data-page-action]');
   if (paginationBtn) {
     event.preventDefault();
     const direction = paginationBtn.dataset.pageAction;
-    await reactToPage(direction);
+    await reactToPageButton(direction);
     return;
-  }
+    }
     
 
     // ✅ Note card click
