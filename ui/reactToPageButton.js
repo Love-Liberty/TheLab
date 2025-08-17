@@ -2,7 +2,33 @@
 //response to click on the [older] or [Newer] page buttons on the rendered list of published notes. Calls for the next page of notes to be rendered
 console.log('changePage.js');
 
+// reactToPage.js
+export async function reactToPageButton(direction) {
+  // Find the button (it exists → it was rendered → action is valid)
+  const btn = document.querySelector(`[data-page-action="${direction}"]`);
+  if (!btn) return; // Should not happen, but safe
 
+  const currentPage = parseInt(btn.dataset.currentPage) || 1;
+
+  // Calculate new page
+  let newPage;
+  if (direction === 'older') {
+    newPage = currentPage + 1; // Safe: button exists → currentPage < totalPages
+  } else if (direction === 'newer') {
+    newPage = currentPage - 1; // Safe: button exists → currentPage > 1
+  } else {
+    return;
+  }
+
+  // Trigger display — which will fetch and re-render
+  await displayNotes(newPage);
+  // renderNotes() will update buttons based on new state
+}
+
+
+
+
+/*
 // Updated changePage.js
 // changePage.js
 console.log('changePage.js');
@@ -29,6 +55,6 @@ export function changePage(currentPage, totalCount, direction) {
     displayNotes(newPage, totalCount);
   }
 }
-
+*/
 // Make the function available globally for onclick handlers
-window.changePage = changePage;
+//window.changePage = changePage;
