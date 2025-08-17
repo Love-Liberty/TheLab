@@ -5,6 +5,7 @@ console.log("saveNoteWithTags.js");//lacked imports and supabase
 import { createSupabaseClient } from './client.js';
 import {insertNote} from './notes.js';
 import {tagNoteByNames} from './tags.js';
+import { displayNotes } from '../ui/displayNotes.js';
 
 export async function getUserInputWriteToDb(){
 console.log("getUserInputWriteToDb()");  
@@ -45,7 +46,7 @@ console.log('📥 [save] tags type:', typeof tags, 'is array?', Array.isArray(ta
     if (tags.length > 0) {
       await tagNoteByNames(noteId, tags);
     }
-
+    displayNotes(1);//page 1 does it need another param??
     return noteId;
   } catch (error) {
     console.error('Failed to save note:', error);
