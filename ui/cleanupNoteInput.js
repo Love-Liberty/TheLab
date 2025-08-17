@@ -1,9 +1,9 @@
-//cleanupNotesPage.js
+//cleanupNoteInput.js
 
-console.log('cleanupNotesPage.js');
+console.log('cleanupNoteInput.js');
 
-export async function cleanupNotesPage (){
-console.log('cleanupNotesPage()');
+export async function cleanupNoteInput (){
+console.log('cleanupNoteInput()');
 //  const noteContent = document.getElementById('note-content')
 
 const note = document.getElementById('note-content');
