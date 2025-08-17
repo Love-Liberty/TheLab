@@ -22,6 +22,16 @@ export function setupNotesListeners() {
       return;
     }
 
+    // ✅ Changing page
+  const paginationBtn = target.closest('[data-page-action]');
+  if (paginationBtn) {
+    event.preventDefault();
+    const direction = paginationBtn.dataset.pageAction;
+    await reactToPage(direction);
+    return;
+  }
+    
+
     // ✅ Note card click
     const noteElement = target.closest('[data-note-id]');
     if (noteElement) {
@@ -30,13 +40,10 @@ export function setupNotesListeners() {
       return;
     }
 
-    // ✅ Pagination button
-    const paginationBtn = target.closest('[data-page-action]');
-    if (paginationBtn) {
-      event.preventDefault();
-      await reactToPageButton(paginationBtn); // ← clean: pass the button
-      return;
-    }
+
+
+
+    
   });
 }
 
