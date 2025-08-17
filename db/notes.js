@@ -161,7 +161,7 @@ console.log('Rendering note:', {
       <button data-page-action="older" data-current-page="${page}" data-total-count="${totalCount}"
               class="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               ${page === 1 ? 'disabled' : ''}>
-        ← Older
+         Newer
       </button>
       <span class="text-sm text-gray-600">
         Page ${page} of ${totalPages} (${totalCount} total notes)
@@ -169,7 +169,7 @@ console.log('Rendering note:', {
       <button data-page-action="newer" data-current-page="${page}" data-total-count="${totalCount}"
               class="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               ${page === totalPages ? 'disabled' : ''}>
-        Newer →
+        Older 
       </button>
     </div>
   `;
