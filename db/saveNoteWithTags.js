@@ -1,6 +1,6 @@
 //saveNoteWithTags.js
 
-console.log("saveNoteWithTags.js");//lacked imports and supabase
+console.log("db/saveNoteWithTags.js");//lacked imports and supabase
 
 import { createSupabaseClient } from './client.js';
 import {insertNote} from './notes.js';
