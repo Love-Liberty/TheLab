@@ -19,8 +19,8 @@ export function setupNotesListeners() {
 
 
     // ✅ Clear All button
-    const saveBtn = target.closest('[data-action="clear-all"]');
-    if (saveBtn) {
+    const button = target.closest('[data-action="clear-all"]');
+    if (button) {
       event.preventDefault();
       await reactToClearAllButton();
       return;
@@ -28,8 +28,8 @@ export function setupNotesListeners() {
 
     
     // ✅ Save button
-    const saveBtn = target.closest('[data-action="save-note"]');
-    if (saveBtn) {
+    const button = target.closest('[data-action="save-note"]');
+    if (button) {
       event.preventDefault();
       await reactToSaveButton();
       return;
@@ -37,8 +37,8 @@ export function setupNotesListeners() {
 
     
     // ✅ Changing page
-  const paginationBtn = target.closest('[data-page-action]');
-  if (paginationBtn) {
+  const button = target.closest('[data-page-action]');
+  if (button) {
     event.preventDefault();
     const direction = paginationBtn.dataset.pageAction;
     await reactToPageButton(direction);
@@ -47,8 +47,8 @@ export function setupNotesListeners() {
     
 
     // ✅ Note card click
-    const noteElement = target.closest('[data-note-id]');
-    if (noteElement) {
+    const button = target.closest('[data-note-id]');
+    if (button) {
       const noteId = noteElement.dataset.noteId;
       await reactToNoteClick(noteId);
       return;
