@@ -2,6 +2,8 @@
 //response to click on the [older] or [Newer] page buttons on the rendered list of published notes. Calls for the next page of notes to be rendered
 console.log('changePage.js');
 
+import { displayNotes } from './displayNotes.js';
+
 // reactToPage.js
 export async function reactToPageButton(direction) {
   // Find the button (it exists → it was rendered → action is valid)
