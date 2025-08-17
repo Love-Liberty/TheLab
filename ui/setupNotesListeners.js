@@ -32,7 +32,16 @@ export function setupNotesListeners() {
     }
 
     // ✅ Pagination: Older / Newer
-    button = target.closest('[data-page-action]');
+    button = target.closest('[data-page-action="older"]');
+    if (button) {
+      event.preventDefault();
+      const direction = button.dataset.pageAction;
+      await reactToPageButton(direction);
+      return;
+    }
+
+       // ✅ Pagination: Older / Newer
+    button = target.closest('[data-page-action]="newer"');
     if (button) {
       event.preventDefault();
       const direction = button.dataset.pageAction;
