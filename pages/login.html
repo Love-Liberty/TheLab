@@ -1,4 +1,23 @@
-<input type="email" id="email" placeholder="Email">
-<input type="password" id="password" placeholder="Password">
-<button onclick="login()">Login</button>
-<button onclick="signup()">Sign Up</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reset Password</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+
+  
+  <div id="login-container">
+        <h2>Reset Your Password</h2>
+        <form id="reset-form">
+         <input type="email" id="email" placeholder="Email">
+         <input type="password" id="password" placeholder="Password">
+         <button onclick="login()">Login</button>
+         <button onclick="signup()">Sign Up</button>
+        </form>
+        <div id="message"></div>
+    </div>
+</body>
+</html>
+  
