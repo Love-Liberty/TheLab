@@ -26,8 +26,7 @@ export function createSupabaseClient() {
   
   // If not, create a new client and store it in our variable.
   supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
-    auth: {
-    persistSession: true // ← Now session saves to localStorage
+    auth: { persistSession: true }
   });
 
   // Acknowledge the creation of the client
@@ -36,4 +35,3 @@ export function createSupabaseClient() {
   // Return the newly created client.
   return supabaseClient;
 }
-
