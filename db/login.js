@@ -14,9 +14,14 @@ async function signup() {
 
 async function login() {
   console.log('login()');
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  const { error, session } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) alert(error.message);
-  else alert("Logged in!");
+  try {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const { error, session } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) alert(error.message);
+    else alert("Logged in!");
+  } catch (err) {
+    console.error('Login error:', err);
+    alert('Unexpected error: ' + err.message);
+  }
 }
