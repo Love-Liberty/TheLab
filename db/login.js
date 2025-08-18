@@ -13,6 +13,8 @@ async function signup() {
 }
 
 async function login() {
+  console.log('Supabase client:', supabase);
+
   console.log('login()');
   try {
     const email = document.getElementById('email').value;
