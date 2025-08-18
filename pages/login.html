@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>    <meta charset="UTF-8">
+    <title>Login</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+     <style>
+    body {
+      background-color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    .login-container {
+      max-width: 400px;
+    }
+    .input-field {
+      @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm;
+    }
+    .btn-primary {
+      @apply w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-all duration-200 shadow-sm hover:shadow;
+    }
+    .btn-secondary {
+      @apply mt-3 w-full bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium py-3 rounded-lg transition-all duration-200;
+    }
+    .form-group {
+      @apply mb-4;
+    }
+    .divider {
+      @apply my-6 text-center text-gray-500 text-xs uppercase tracking-wider relative;
+    }
+    .divider::before {
+      content: '';
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      top: 50%;
+      height: 1px;
+      background-color: #e2e8f0;
+      z-index: 0;
+    }
+    .divider span {
+      background-color: #f8fafc;
+      padding: 0 12px;
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <!-- Card -->
+  <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg hover:shadow-xl transition-shadow">
+  <div id="login-container">
+        <h2>Login</h2>
+
+         <input type="email" id="email" placeholder="Email">
+         <input type="password" id="password" placeholder="Password">
+         <button id="login-button" type="button">Login</button>
+         <button id="signup-button" type="button">Sign Up</button>
+
+        <div id="message"></div>
+    </div>
+  </div>
+    <script type=module src='../db/login.js' defer></script>
+</body>
+</html>
+  
