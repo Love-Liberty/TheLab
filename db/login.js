@@ -1,5 +1,5 @@
 //login.js
-import { createSupabaseClient } from './client';
+import { createSupabaseClient } from './client.js';
 console.log('login.js');
 const supabase = createSupabaseClient();
 
