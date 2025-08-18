@@ -2,6 +2,9 @@
 
 console.log("db/saveNoteWithTags.js");//lacked imports and supabase
 
+const { data } = await supabase.auth.getUser();
+console.log('Current user:', data.user); //check if a user is logged-in
+
 import { createSupabaseClient } from './client.js';
 import {insertNote} from './notes.js';
 import {tagNoteByNames} from './tags.js';
