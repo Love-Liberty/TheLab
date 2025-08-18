@@ -3,6 +3,11 @@ import { createSupabaseClient } from './client.js';
 console.log('login.js');
 const supabase = createSupabaseClient();
 
+document.getElementById('login-button').addEventListener('click', login)
+document.getElementById('signup-button').addEventListener('click', signup)
+
+
+
 async function signup() {
   console.log('signup()');
   const email = document.getElementById('email').value;
