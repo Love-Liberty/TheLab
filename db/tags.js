@@ -28,7 +28,11 @@ export async function readCategoryMap() {
  * @param {number[]} categoryIds
  */
 export async function linkNoteToCategories(noteId, categoryIds) {
-  console.log('linkNoteToCategories()');
+  //tests 17:00 19 Aug
+  if (!noteId) console.log('No noteId'); 
+   console.log('categoryId.length:', categoryIds.length);
+  
+  console.log('linkNoteToCategories()',noteId, categoryIds.length);
   if (!noteId || categoryIds.length === 0) return;
 
   const rows = categoryIds.map(catId => ({
