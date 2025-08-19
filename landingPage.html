@@ -6,8 +6,6 @@
     <title>T&M Landing</title>
     <!-- Inter font from Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Supabase JS CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -18,15 +16,15 @@
 </head>
 <body class="bg-black min-h-screen flex items-center justify-center p-4">
 
-    <!-- Splash Screen Modal -->
-    <div id="splash-modal" class="absolute transition-opacity duration-1000 ease-in-out opacity-100">
+    <!-- Splash Screen Modal (Initially invisible) -->
+    <div id="splash-modal" class="absolute transition-opacity duration-2000 ease-in-out opacity-0">
         <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-xl flex items-center justify-center w-60 h-60">
             <span class="text-5xl font-bold text-slate-800 tracking-widest">T&M</span>
         </div>
     </div>
 
     <!-- Login Form Modal (Initially Hidden) -->
-    <div id="login-modal" class="w-full max-w-sm transition-opacity duration-1000 ease-in-out opacity-0 pointer-events-none">
+    <div id="login-modal" class="w-full max-w-sm transition-opacity duration-2000 ease-in-out opacity-0 pointer-events-none">
         
         <!-- Header -->
         <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-xl w-full">
@@ -76,18 +74,22 @@
         const loginModal = document.getElementById('login-modal');
 
         const startAnimation = () => {
-            // After 2 seconds, fade out the splash modal and fade in the login modal
+            // Step 1: Fade in the splash modal over 2 seconds.
+            splashModal.classList.add('opacity-100');
+
+            // Step 2: Wait for 3 seconds (2s for fade-in + 1s for a brief hold).
             setTimeout(() => {
+                // Fade out the splash modal and fade in the login modal.
                 splashModal.classList.remove('opacity-100');
                 splashModal.classList.add('opacity-0');
                 
-                // Allow the splash modal to be fully hidden before removing pointer events
+                // After another 2 seconds, remove splash from the document flow and make login interactive.
                 setTimeout(() => {
                     splashModal.style.display = 'none';
                     loginModal.classList.remove('opacity-0', 'pointer-events-none');
                     loginModal.classList.add('opacity-100');
-                }, 1000); // This duration should be equal to the CSS transition duration
-            }, 2000);
+                }, 2000); // This duration should be equal to the CSS transition duration
+            }, 3000);
         };
 
         // Start the animation when the page loads
@@ -99,7 +101,6 @@
             e.preventDefault();
             const email = document.getElementById('email-input').value;
             const password = document.getElementById('password-input').value;
-            // Add your Supabase authentication logic here
             console.log("Attempting login with:", { email, password });
         });
     </script>
