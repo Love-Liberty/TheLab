@@ -95,6 +95,8 @@
         // Start the animation when the page loads
         window.addEventListener('load', startAnimation);
 
+
+        
         // Your login form submission logic would go here
         const loginForm = document.getElementById('login-form');
         loginForm.addEventListener('submit', (e) => {
@@ -102,6 +104,7 @@
             const email = document.getElementById('email-input').value;
             const password = document.getElementById('password-input').value;
             console.log("Attempting login with:", { email, password });
+              window.location.href = 'https://preview--stage-master-hub.lovable.app/admin';
         });
     </script>
 
