@@ -92,8 +92,8 @@ export function renderNotes(notes, totalCount, page, pageSize) {
   const notesHtml = notes.map(note => {
     const content = note.content || '';
   
-   const shortContent = content.length > 400
-  ? `${content.slice(0, 400)}<span class="text-blue-600 cursor-pointer hover:text-blue-800 toggle-content"> [more]</span><span class="hidden extra-content">${content.slice(400)} <span class="text-blue-600 cursor-pointer hover:text-blue-800 toggle-content"> [less]</span></span>`
+   const shortContent = content.length > 1000
+  ? `${content.slice(0, 1000)}<span class="text-blue-600 cursor-pointer hover:text-blue-800 toggle-content"> [more]</span><span class="hidden extra-content">${content.slice(1000)} <span class="text-blue-600 cursor-pointer hover:text-blue-800 toggle-content"> [less]</span></span>`
   : content;
  
     
